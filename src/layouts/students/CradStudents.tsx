@@ -217,7 +217,7 @@ const totalFilteredData = filteredData?.length || 0;
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
-            placeholder="Cari siswa..."
+            placeholder="Cari Data Mahasiswa..."
             className="md:w-full mt-2 mb-2 w-[700px]"
           />
         </div>

@@ -13,22 +13,22 @@ const sidebarItems: SidebarItems = {
       icon: User
     },
     {
-      label: 'Akademik',
+      label: 'Academics',
       href: '/dashboard/academics',
       icon: BookA
     },
     {
-      label: 'Beasiswa',
+      label: 'Scholarships',
       href: '/dashboard/scholarships',
       icon: Banknote
     },
     {
-      label: 'Kegiatan',
+      label: 'Activities',
       href: '/dashboard/activities',
       icon: SquareActivity
     },
     {
-      label: 'Mahasiswa',
+      label: 'Students',
       href: '/dashboard/students',
       icon: GraduationCap
     },

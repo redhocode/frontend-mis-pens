@@ -7,11 +7,14 @@ import React from 'react'
 export default function Students() {
   return (
     <>
-    <section className='mt-32 px-4 py-4 container shadow-inner'>
       <Navbar/>
+    <section className='mt-32 px-4 py-4 container shadow-inner'>
     <CradStudentsUser/>
     </section>
+    
+
     <Footer/>
+    
     </>
 
   )

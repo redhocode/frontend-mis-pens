@@ -6,7 +6,7 @@ export default function Footer() {
     <div className="bg-secondarypens h-[6px] w-full">
     </div>
     <div className="bg-footer h-[30px] flex justify-center items-center w-full">
-        <p className="text-sm text-white">Copyright © 2023. All Rights Reserved</p>
+        <p className="text-sm text-white">Copyright © 2024. All Rights Reserved. Uhuy</p>
     </div>
 </footer>
 
