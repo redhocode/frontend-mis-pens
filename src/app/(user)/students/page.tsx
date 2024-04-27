@@ -8,7 +8,7 @@ export default function Students() {
   return (
     <>
       <Navbar/>
-    <section className='mt-32 px-4 py-4 container shadow-inner'>
+    <section className='mt-24 px-4 py-4 shadow-inner min-h-screen'>
     <CradStudentsUser/>
     </section>
     

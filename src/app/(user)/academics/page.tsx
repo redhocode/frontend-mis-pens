@@ -8,7 +8,7 @@ import React from 'react'
 export default function Academics() {
   return (
     <>
-    <section className='mt-32 px-4 py-4 container shadow-inner'>
+    <section className='mt-32 px-4 py-4 container shadow-inner min-h-screen'>
       <Navbar/>
     <CradAcademics/>
     </section>

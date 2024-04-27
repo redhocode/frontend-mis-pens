@@ -9,6 +9,14 @@ export interface SidebarItems{
     }>;
     extras?: ReactNode;
 }
+export interface NavbarItems{
+    links: Array<{
+        label: string;
+        href: string;
+        icon?: LucideIcon;
+    }>;
+    extras?: ReactNode;
+}
 
   export interface Student {
     id: string;

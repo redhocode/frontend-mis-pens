@@ -1,7 +1,8 @@
 import axios from "axios";
 
-export const axiosInstance = axios.create({
-    baseURL: "http://localhost:9000",
-      withCredentials: true,
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-})
+export const axiosInstance = axios.create({
+  baseURL: NEXT_PUBLIC_API_URL,
+  withCredentials: true,
+});

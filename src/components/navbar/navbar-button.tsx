@@ -9,7 +9,7 @@ export const NavbarButton = ({icon: Icon,className,children,...props}: NavbarBut
   return (
     <Button
     variant={"ghost"}
-    className={cn("gap-2 justify-start ",className)} {...props}
+    className={cn("justify-start gap-2 hover:bg-transparent",className)} {...props}
     >
         {Icon && <Icon/>}
         <span>{children}</span>

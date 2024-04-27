@@ -192,12 +192,13 @@ const totalFilteredData = filteredData?.length || 0;
   return (
     <>
       <div className="flex justify-center flex-col mx-auto">
-        <div className="flex flex-col justify-center mb-12">
+        {/* <div className="bg-[url('https://www.pens.ac.id/wp-content/uploads/2023/10/JOSS-WEB.jpg')] h-96 w-full px-5 py-5 bg-cover bg-fixed"> */}
+        <div className="flex flex-col justify-center mb-12  ">
           <h1 className="text-2xl font-bold justify-center mb-4 mx-auto">
-            Data Mahasiswa
+            - Data Mahasiswa -
           </h1>
-          <div className="container">
-            <section className="block mx-auto container max-w-4xl text-justify">
+          <div className="">
+            <section className="block mx-auto container max-w-4xl text-justif">
               <p className="mb-4">
                 Selamat datang di halaman informasi mahasiswa untuk Program
                 Pendidikan Jarak Jauh (PJJ) D3 Teknik Informatika di Politeknik
@@ -211,6 +212,7 @@ const totalFilteredData = filteredData?.length || 0;
               </p>
             </section>
           </div>
+        {/* </div> */}
         </div>
         <div className="flex justify-center flex-wrap">
           <Input

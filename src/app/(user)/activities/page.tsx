@@ -9,7 +9,7 @@ import React from 'react'
 export default function Activities() {
   return (
 <>
-    <section className='mt-32 px-4 py-4 container shadow-inner'>
+    <section className='mt-32 px-4 py-4 container shadow-inner min-h-screen'>
       <Navbar/>
     <CradActivities/>
     </section>
