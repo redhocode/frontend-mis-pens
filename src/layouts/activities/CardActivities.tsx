@@ -158,7 +158,7 @@ export const CradActivities = () => {
     <>
       <div className="flex justify-center flex-col mx-auto">
         <div className="flex flex-col justify-center mb-12">
-          <h1 className="text-4xl font-bold justify-center mb-4 mx-auto">
+          <h1 className="text-4xl font-bold justify-center mb-4 mx-auto uppercase">
             Informasi Kegiatan
           </h1>
           <section className="container">

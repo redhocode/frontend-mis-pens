@@ -151,12 +151,12 @@ export const CradAcademics = () => {
     <>
       <div className="flex justify-center flex-col mx-auto mb-12">
          
-        <div className="flex flex-col justify-center mb-12">
-          <h1 className="text-4xl font-bold justify-center mb-4 mx-auto">
+        <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl">
+          
+          <h1 className="text-4xl font-bold justify-center mb-4 mx-auto uppercase">
             Informasi Akademik
           </h1>
-          <div className="container">
-            <article className="block mx-auto container max-w-4xl text-justify">
+            <article className="block mx-auto  max-w-4xl text-justify">
               <p className="mb-4">
                 Selamat datang di halaman informasi akademik untuk Program
                 Pendidikan Jarak Jauh (PJJ) D3 Teknik Informatika di Politeknik
@@ -174,15 +174,14 @@ export const CradAcademics = () => {
                 informasi lebih lanjut mengenai persyaratan pendaftaran dan
                 jadwal kuliah.
               </p>
-              <p>
-                Semoga informasi ini bermanfaat bagi Anda yang sedang mencari
-                program pendidikan yang sesuai dengan minat dan kebutuhan Anda.
-                Terima kasih telah mengunjungi halaman informasi akademik ini.
-              </p>
-            </article>
 
+            </article>
+                 <div className="flex justify-center mt-5">
+ <embed src="https://pjj.pens.ac.id/wp-content/uploads/2017/03/Final-Kurikulum-2022-2.pdf" width="100%" height="" className="max-w-4xl mb-5 h-[400px] md:h-[300px]" />
+     
+      </div>
             <hr className="mt-4 ouline" />
-          </div>
+        
         </div>
         <div className="flex justify-center flex-wrap">
           <Input
@@ -236,6 +235,7 @@ export const CradAcademics = () => {
           </PaginationItem>
         </PaginationContent>
       </Pagination>
+ 
     </>
   );
 };

@@ -6,7 +6,7 @@ export default function About(){
     return(
         <>
         <Navbar/>
-        <section className="mt-32">
+        <section className="mt-24">
 
         <AboutLayout/>
         </section>

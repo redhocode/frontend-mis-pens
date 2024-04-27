@@ -170,7 +170,7 @@ export const CradScholarships = () => {
     <>
       <div className="flex flex-col mx-auto mb-12">
         <div className="flex flex-col justify-center mb-12">
-          <h1 className="text-4xl font-bold justify-center mb-4 mx-auto">
+          <h1 className="text-4xl font-bold justify-center mb-4 mx-auto uppercase">
             Informasi Beasiswa
           </h1>
           <section className="container">

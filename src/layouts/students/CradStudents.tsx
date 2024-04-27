@@ -43,6 +43,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const CradStudentsUser = () => {
   const [totalFilteredData, setTotalFilteredData] = useState<number | null>(null);
@@ -155,10 +156,14 @@ const totalFilteredData = filteredData?.length || 0;
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Avatar className="w-[200px] h-[200px] justify-center mx-auto mb-5 rounded-none">
+            {/* <Avatar className="w-[200px] h-[200px] justify-center mx-auto mb-5 rounded-none">
               <AvatarImage src="https://github.com/shadcn.png" />
               <AvatarFallback>Uhuy</AvatarFallback>
-            </Avatar>
+            </Avatar> */}
+                  <div className="flex flex-col space-y-3 mt-2">
+      <Skeleton className="h-[125px] w-full rounded-xl" />
+
+    </div>
             <div className="flex justify-between flex-col gap-3 outline outline-1 py-4 px-4 outline-slate-100 rounded-md shadow-sm">
               <div className="flex justify-between gap-3">
                 <div className="flex flex-col font-semibold">
@@ -192,9 +197,9 @@ const totalFilteredData = filteredData?.length || 0;
   return (
     <>
       <div className="flex justify-center flex-col mx-auto">
-        {/* <div className="bg-[url('https://www.pens.ac.id/wp-content/uploads/2023/10/JOSS-WEB.jpg')] h-96 w-full px-5 py-5 bg-cover bg-fixed"> */}
+       
         <div className="flex flex-col justify-center mb-12  ">
-          <h1 className="text-2xl font-bold justify-center mb-4 mx-auto">
+          <h1 className="text-2xl font-bold justify-center mb-4 mx-auto uppercase">
             - Data Mahasiswa -
           </h1>
           <div className="">
@@ -212,7 +217,7 @@ const totalFilteredData = filteredData?.length || 0;
               </p>
             </section>
           </div>
-        {/* </div> */}
+     
         </div>
         <div className="flex justify-center flex-wrap">
           <Input
@@ -300,6 +305,7 @@ const totalFilteredData = filteredData?.length || 0;
           </PaginationItem>
         </PaginationContent>
       </Pagination>
+      
     </>
   );
 };
