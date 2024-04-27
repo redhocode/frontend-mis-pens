@@ -68,10 +68,10 @@ export const CradActivities = () => {
     setPage(newPage);
   };
 
-//   const handleFilterChange = (value: string) => {
-//     console.log("New Filter Value:", value); // Tambahkan logging di sini
-//     setFilterValue(value);
-//   };
+  //   const handleFilterChange = (value: string) => {
+  //     console.log("New Filter Value:", value); // Tambahkan logging di sini
+  //     setFilterValue(value);
+  //   };
 
   const renderStudent = (
     page: number,
@@ -131,18 +131,15 @@ export const CradActivities = () => {
             <CardDescription>
               <span>{data.date}</span>
               <br />
-                         <div className="flex flex-col space-y-3 mt-2">
-      <Skeleton className="h-[100px] w-full rounded-xl" />
-
-    </div>
+              <div className="flex flex-col space-y-3 mt-2">
+                <Skeleton className="h-[100px] w-full rounded-xl" />
+              </div>
             </CardDescription>
           </CardHeader>
           <CardContent>
             <p>{data.description}</p>
-
           </CardContent>
           <CardFooter className="flex justify-between">
-
             <Link href={data.link} target="_blank" rel="noopener noreferrer">
               <Button variant="ghost" className="ml-2 bg-primary text-white">
                 Lebih Lanjut
@@ -156,25 +153,33 @@ export const CradActivities = () => {
 
   return (
     <>
-      <div className="flex justify-center flex-col mx-auto">
-        <div className="flex flex-col justify-center mb-12">
+      <div className="flex justify-center flex-col mx-auto mb-12">
+        <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl">
+          
+           
           <h1 className="text-4xl font-bold justify-center mb-4 mx-auto uppercase">
             Informasi Kegiatan
           </h1>
-          <section className="container">
-            <article className="block mx-auto container max-w-4xl text-justify">   <p className="mb-4">
-      Selamat datang di halaman informasi kegiatan untuk Program Pendidikan Jarak Jauh (PJJ) D3 Teknik Informatika di Politeknik Elektronika Negeri Surabaya (PENS). Di sini Anda dapat menemukan informasi tentang berbagai kegiatan di luar jam kuliah atau kegiatan yang bersifat ekstrakurikuler, seperti kegiatan UKM, seminar, workshop, dan lain sebagainya.
-    </p>
-    <p className="mb-4">
-      Jika Anda tertarik untuk mengikuti kegiatan di luar jam kuliah, silakan hubungi bagian kemahasiswaan atau kunjungi situs web resmi PENS untuk informasi lebih lanjut mengenai kegiatan yang tersedia dan cara untuk bergabung.
-    </p>
-    <p>
-      Semoga informasi ini bermanfaat bagi Anda yang ingin lebih aktif berpartisipasi dalam kegiatan di lingkungan kampus. Terima kasih telah mengunjungi halaman informasi kegiatan ini.
-    </p>
-            </article>
+              {" "}
+              <p className="mb-4 text-justify">
+                Selamat datang di halaman informasi kegiatan untuk Program
+                Pendidikan Jarak Jauh (PJJ) D3 Teknik Informatika di Politeknik
+                Elektronika Negeri Surabaya (PENS). Di sini Anda dapat menemukan
+                informasi tentang berbagai kegiatan di luar jam kuliah atau
+                kegiatan yang bersifat ekstrakurikuler, seperti kegiatan UKM,
+                seminar, workshop, dan lain sebagainya.
+              </p>
+              <p className="mb-4 text-justify">
+                Jika Anda tertarik untuk mengikuti kegiatan di luar jam kuliah,
+                silakan hubungi bagian kemahasiswaan atau kunjungi situs web
+                resmi PENS untuk informasi lebih lanjut mengenai kegiatan yang
+                tersedia dan cara untuk bergabung.
+              </p>
+             
+            
 
             <hr className="mt-4 ouline" />
-          </section>
+         
         </div>
         <div className="flex justify-center flex-wrap">
           <Input

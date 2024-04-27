@@ -168,15 +168,16 @@ export const CradScholarships = () => {
 
   return (
     <>
-      <div className="flex flex-col mx-auto mb-12">
-        <div className="flex flex-col justify-center mb-12">
+     <div className="flex justify-center flex-col mx-auto mb-12">
+         
+        <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl">
+         
+           
+              {" "}
           <h1 className="text-4xl font-bold justify-center mb-4 mx-auto uppercase">
             Informasi Beasiswa
           </h1>
-          <section className="container">
-            <article className="block mx-auto container max-w-4xl text-justify">
-              {" "}
-              <p className="mb-4">
+              <p className="mb-4 text-justify">
                 Selamat datang di halaman informasi mahasiswa untuk Program
                 Pendidikan Jarak Jauh (PJJ) D3 Teknik Informatika di Politeknik
                 Elektronika Negeri Surabaya (PENS). Di sini Anda dapat menemukan
@@ -184,7 +185,7 @@ export const CradScholarships = () => {
                 untuk mahasiswa PJJ, serta tips dan saran untuk menyelesaikan
                 studi secara efektif dalam lingkungan pembelajaran jarak jauh.
               </p>
-              <p className="mb-4">
+              <p className="mb-4 text-justify">
                 Jika Anda adalah mahasiswa PJJ D3 Teknik Informatika di PENS,
                 pastikan Anda memanfaatkan semua fasilitas yang tersedia,
                 termasuk platform pembelajaran daring, perpustakaan online, dan
@@ -192,15 +193,11 @@ export const CradScholarships = () => {
                 forum diskusi atau grup studi online untuk berinteraksi dengan
                 sesama mahasiswa dan mendukung proses belajar Anda.
               </p>
-              <p>
-                Semoga informasi ini membantu Anda dalam menavigasi pengalaman
-                belajar Anda sebagai mahasiswa PJJ D3 Teknik Informatika. Terima
-                kasih telah mengunjungi halaman informasi mahasiswa ini.
-              </p>
-            </article>
+
+            
 
             <hr className="mt-4 ouline" />
-          </section>
+        
         </div>
         <div className="flex justify-center flex-wrap">
           <Input
@@ -215,7 +212,7 @@ export const CradScholarships = () => {
              
         </div>
       </div>
-      <div className="flex gap-4 mb-5 justify-center">
+      <div className="flex gap-4 mb-5 justify-center md:flex-col">
         {renderStudent(page, pageSize, data, searchTerm, filterValue)}
         {isLoading && (
           <div className="flex items-center justify-center mt-4">
