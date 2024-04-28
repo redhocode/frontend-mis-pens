@@ -239,7 +239,7 @@ function Navbar() {
                     </NavbarButton>
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr] uppercase">
                       <Link href="/academics">
                         <ListItem href="" title="Akademik">
                           Informasi Seputar Akademik PJJ D3 Teknik Informatika

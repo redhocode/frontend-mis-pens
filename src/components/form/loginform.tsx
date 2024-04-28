@@ -8,29 +8,35 @@ import loginUser from '../../features/user/loginUser';
 // Import loginUser function
 import { useToast } from '../ui/use-toast';
 import { Button } from '../ui/button';
+import { axiosInstance } from '@/lib/axios';
 const LoginForm = () => {
   const router = useRouter();
   const { toast } = useToast();
-  const handleLogin = async (values: any, { setSubmitting, setErrors }: any) => {
-  try {
-    const response = await loginUser(values);
-    // console.log('Response from backend:', response); 
-    // Ensure that accessToken is accessed from response.data
-    const accessToken = response.data.accessToken;
+  const handleLogin = async (
+    values: any,
+    { setSubmitting, setErrors }: any
+  ) => {
+    try {
+      const response = await loginUser(values);
+      const accessToken = response.data.accessToken;
+      localStorage.setItem("accessToken", accessToken);
 
-    // Store token and username in local storage
-    localStorage.setItem('accessToken', accessToken);
+      // Tambahkan token auth ke header Axios secara default
+      axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 
-
-    // Redirect to dashboard after successful login
-    router.push('/dashboard');
-  } catch (error) {
-    // Handle login errors
-    toast({ title: 'Login failed', description: 'Invalid username or password', variant: 'destructive', className: 'w-[400px] md:w-[300px]' });
-    // setErrors({ password: 'Invalid username or password' });
-    setSubmitting(false);
-  }
-};
+      // Redirect to dashboard after successful login
+      router.push("/dashboard");
+    } catch (error) {
+      // Handle login errors
+      toast({
+        title: "Login failed",
+        description: "Invalid username or password",
+        variant: "destructive",
+        className: "w-[400px] md:w-[300px]",
+      });
+      setSubmitting(false);
+    }
+  };
 
   return (
     <section>

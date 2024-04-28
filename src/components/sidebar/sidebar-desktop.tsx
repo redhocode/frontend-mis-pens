@@ -19,7 +19,7 @@ export const SidebarDesktop = (props: SidebarDesktopProps) => {
     try {
        localStorage.removeItem('accessToken');
 
-      router.push("/login");
+      router.push("/");
     } catch (error) {
       console.error("Gagal logout:", error);
     }
