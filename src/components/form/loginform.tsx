@@ -14,7 +14,7 @@ const LoginForm = () => {
   const handleLogin = async (values: any, { setSubmitting, setErrors }: any) => {
   try {
     const response = await loginUser(values);
-    console.log('Response from backend:', response); 
+    // console.log('Response from backend:', response); 
     // Ensure that accessToken is accessed from response.data
     const accessToken = response.data.accessToken;
 
