@@ -14,7 +14,7 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
         {/* <Navbar /> */}
         <Sidebar />
         <Providers>
-          <div className="flex flex-col flex-1 mx-4 my-4 md:mx-8">{children}</div>
+          <div className="flex flex-col flex-1 mx-4 my-4 md:mx-8 md:pl-2">{children}</div>
         </Providers>
       </div>
     </section>

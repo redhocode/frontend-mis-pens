@@ -37,6 +37,7 @@ export interface NavbarItems{
     link: string;
   }
   export interface User {
+    id: string;
     username: string;
     password: string;
   }

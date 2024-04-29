@@ -1,4 +1,4 @@
-import { axiosInstance } from "../lib/axios";
+import { axiosInstance } from "@/lib/axios";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 export const useFetchStudent = (page, pageSize, filterValue) => {
@@ -113,9 +113,11 @@ export const useFetchUsers = (page, pageSize, filterValue) => {
       return response.data;
     },
   });
-   return {
+  return {
     data,
     isLoading,
     refetch,
   };
-}
+};
+
+

@@ -10,16 +10,52 @@
 //   );
 // }
 import AuthGuard from "@/components/AuthGuard";
+import Chart from "@/layouts/dashboard/Chart";
+import Link from "next/link";
+
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import axios from "axios";
+import { axiosInstance } from "@/lib/axios";
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 const Dashboard: React.FC = () => {
   return (
     <>
-    <AuthGuard>
-      <div className="grid grid-rows-3 grid-flow-col gap-4">
-        <div className="row-span-3 ...">01</div>
-        <div className="col-span-2 ...">02</div>
-        <div className="row-span-2 col-span-2 ...">03</div>
-      </div>
-    </AuthGuard>
+      <AuthGuard>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink>
+                <Link href="/dashboard">Admin</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Dashboard</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <Chart />
+      </AuthGuard>
     </>
   );
 };
