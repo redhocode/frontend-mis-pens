@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
@@ -33,7 +34,7 @@
     "antd": "^5.16.4",
     "axios": "^1.6.8",
     "babel": "^6.23.0",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "chart.js": "^4.4.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.6.0",
