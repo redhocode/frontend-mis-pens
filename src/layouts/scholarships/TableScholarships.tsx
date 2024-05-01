@@ -236,12 +236,15 @@ export default function TableSholarships() {
       });
     }
     const dataToRender = data?.slice(startIndex, endIndex);
+    let orderNumber = startIndex + 1;
     return dataToRender?.map((scholarships: Scholarship) => {
+      const currentOrderNumber = orderNumber++;
       return (
         <TableRow key={scholarships.id}>
           <TableCell className="w-[100px]" hidden>
             {scholarships.id}
           </TableCell>
+          <TableCell className="w-[50px]">{currentOrderNumber}</TableCell>
           <TableCell>{scholarships.title}</TableCell>
           <TableCell>{scholarships.date}</TableCell>
           <TableCell>{scholarships.description}</TableCell>
@@ -563,6 +566,7 @@ export default function TableSholarships() {
               <TableHead className="w-[100px] text-white" hidden>
                 Id
               </TableHead>
+              <TableHead className="text-gray-600 font-semibold">No</TableHead>
               <TableHead className="text-gray-600 font-semibold">
                 Title
               </TableHead>

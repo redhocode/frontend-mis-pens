@@ -83,7 +83,7 @@ export default function TableStudent() {
     nrp: Yup.number()
       .required("NRP is required")
       .min(8, "NRP must be 8 digits"),
-    ipk: Yup.number().required("IPK is required"),
+    ipk: Yup.number().required("IPK is required").lessThan(5, "IPK must be less than 4"),
     major: Yup.string().required("Major is required"),
     year: Yup.number().required("Year is required"),
     semester: Yup.number().required("Semester is required"),
@@ -237,12 +237,16 @@ export default function TableStudent() {
 
     // Memotong array data yang telah difilter untuk hanya merender data yang sesuai dengan halaman saat ini
     const studentsToRender = filteredData?.slice(startIndex, endIndex);
+    // Nomor urutan yang dimulai dari nomor tertentu (misalnya, 100)
+    let orderNumber = startIndex + 1;
     return studentsToRender?.map((student: Student) => {
+      const currentOrderNumber = orderNumber++;
       return (
         <TableRow key={student.id}>
           <TableCell className="w-[100px]" hidden>
             {student.id}
           </TableCell>
+          <TableCell className="w-[50px]">{currentOrderNumber}</TableCell>
           <TableCell>{student.nrp}</TableCell>
           <TableCell>{student.name}</TableCell>
           <TableCell>{student.major}</TableCell>
@@ -432,7 +436,9 @@ export default function TableStudent() {
                           </div>
                           <div className="mb-4">
                             <Label htmlFor="semester">Semester</Label>
-                            <span className="ml-2">{formik.values.semester}</span>
+                            <span className="ml-2">
+                              {formik.values.semester}
+                            </span>
                             <Field name="semester" as="select">
                               {({
                                 field,
@@ -527,9 +533,7 @@ export default function TableStudent() {
                                       Status Mahasiswa
                                     </option>
                                     <option value="Lulus">Lulus</option>
-                                    <option value="Aktif">
-                                      Aktif
-                                    </option>
+                                    <option value="Aktif">Aktif</option>
                                     <option value="Cuti">Cuti</option>
 
                                     {/* Tambahkan pilihan semester lainnya sesuai kebutuhan */}
@@ -837,7 +841,12 @@ export default function TableStudent() {
                                 <select
                                   {...field}
                                   value={formik.values.status}
-                                  onChange={formik.handleChange}
+                                  onChange={(e) => {
+                                    formik.handleChange(e);
+                                    if (e.target.value === "Lulus") {
+                                      formik.setFieldValue("tahunLulus", ""); // Reset tahun jika status bukan "Lulus"
+                                    }
+                                  }}
                                   onBlur={formik.handleBlur}
                                   className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 >
@@ -845,13 +854,28 @@ export default function TableStudent() {
                                     Status Mahasiswa
                                   </option>
                                   <option value="Lulus">Lulus</option>
-                                  <option value="Lulus">
-                                    Aktif
-                                  </option>
+                                  <option value="Aktif">Aktif</option>
                                   <option value="Cuti">Cuti</option>
-
-                                  {/* Tambahkan pilihan semester lainnya sesuai kebutuhan */}
                                 </select>
+
+                                {/* Tampilkan pilihan tahun jika status "Lulus" dipilih */}
+                                {formik.values.status === "Lulus" && (
+                                  <select
+                                    name="tahunLulus"
+                                    // value={formik.values.tahunLulus}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                  >
+                                    <option value="" disabled>
+                                      Tahun Lulus
+                                    </option>
+                                    {/* Tambahkan opsi tahun sesuai kebutuhan */}
+                                    <option value="2021">2021</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                  </select>
+                                )}
                               </>
                             )}
                           </Field>
@@ -861,6 +885,7 @@ export default function TableStudent() {
                             </div>
                           ) : null}
                         </div>
+
                         {/* Add other form fields similarly */}
                         <Button type="submit" className="w-full">
                           Submit
@@ -892,6 +917,7 @@ export default function TableStudent() {
               <TableHead className="w-[100px] text-white" hidden>
                 Id
               </TableHead>
+              <TableHead className="text-gray-600 font-semibold">No</TableHead>
               <TableHead className="text-gray-600 font-semibold">NRP</TableHead>
               <TableHead className="text-gray-600 font-semibold">
                 Nama

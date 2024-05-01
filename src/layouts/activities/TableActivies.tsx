@@ -239,12 +239,15 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
       });
     }
     const activityToRender = data?.slice(startIndex, endIndex);
+    let orderNumber = startIndex + 1;
     return activityToRender?.map((activity: Activity) => {
+      const currentOrderNumber = orderNumber++;
       return (
         <TableRow key={activity.id}>
           <TableCell className="w-[100px]" hidden>
             {activity.id}
           </TableCell>
+          <TableCell className="w-[50px]">{currentOrderNumber}</TableCell>
           <TableCell>{activity.title}</TableCell>
           <TableCell>{activity.date}</TableCell>
           <TableCell>{activity.description}</TableCell>
@@ -564,6 +567,7 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
               <TableHead className="w-[100px] text-white" hidden>
                 Id
               </TableHead>
+              <TableHead className="text-gray-600 font-semibold">No</TableHead>
               <TableHead className="text-gray-600 font-semibold">
                 Title
               </TableHead>

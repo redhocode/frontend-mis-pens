@@ -71,7 +71,7 @@ const CradStudentsUser = () => {
   };
 
  const handleFilterChange = (value: string) => {
-  console.log("New Filter Value:", value); // Tambahkan logging di sini
+  //console.log("New Filter Value:", value); // Tambahkan logging di sini
   setFilterValue(value);
   
   // Setelah Anda melakukan pemfilteran data, update totalFilteredData di sini
@@ -160,9 +160,8 @@ const totalFilteredData = filteredData?.length || 0;
               <AvatarImage src="https://github.com/shadcn.png" />
               <AvatarFallback>Uhuy</AvatarFallback>
             </Avatar> */}
-                  <div className="flex flex-col space-y-3 mt-2">
+                  <div className="flex flex-col space-y-3 mt-2 pb-4">
       <Skeleton className="h-[125px] w-full rounded-xl" />
-
     </div>
             <div className="flex justify-between flex-col gap-3 outline outline-1 py-4 px-4 outline-slate-100 rounded-md shadow-sm">
               <div className="flex justify-between gap-3">

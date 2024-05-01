@@ -221,12 +221,15 @@ export default function TableAcademic() {
       });
     }
     const academicToRender = data?.slice(startIndex, endIndex);
+    let orderNumber = startIndex + 1;
     return academicToRender?.map((academic: Academic) => {
+      const currentOrderNumber = orderNumber++;
       return (
         <TableRow key={academic.id}>
               <TableCell className="w-[100px]" hidden>
                   {academic.id}
               </TableCell>
+              <TableCell className="w-[50px]">{currentOrderNumber}</TableCell>
               <TableCell className="w-[200px]">{academic.title}</TableCell>
               <TableCell>{academic.date}</TableCell>
               <TableCell className="w-[200px]"><span className="text-justify">{academic.description}</span></TableCell>
@@ -535,6 +538,7 @@ export default function TableAcademic() {
               <TableHead className="w-[100px] text-white" hidden>
                 Id
               </TableHead>
+              <TableHead className="text-gray-600 font-semibold">No</TableHead>
               <TableHead className="text-gray-600 font-semibold">
                 Title
               </TableHead>

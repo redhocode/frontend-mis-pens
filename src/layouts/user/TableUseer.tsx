@@ -30,7 +30,7 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { CirclePlus, LoaderIcon, Pencil } from "lucide-react";
+import { ArrowDownUp, CirclePlus, LoaderIcon, Pencil } from "lucide-react";
 import { axiosInstance } from "@/lib/axios";
 import { useQuery, useMutation, Mutation } from "@tanstack/react-query";
 import type { Academic, Activity, Student, User } from "@/types";
@@ -67,7 +67,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Textarea } from "@/components/ui/textarea";
 import { link } from "fs";
-
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 export default function TableUser() {
   
   const pageSize = 3; // Tentukan nilai pageSize
@@ -190,6 +190,7 @@ export default function TableUser() {
     validationSchema: validationSchema,
     onSubmit: hendlerSubmit,
   });
+  
   const renderData = (
     page: number,
     pageSize: number,
@@ -198,26 +199,32 @@ export default function TableUser() {
   ) => {
     const startIndex = (page - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize, data?.length);
+
     // Filter berdasarkan searchTerm
     // Filter berdasarkan searchTerm
     if (searchTerm) {
       data = data?.filter((user: User) => {
         const searchTermLower = searchTerm.toLowerCase();
-        const fieldsToSearch = [
-          user.username
-        ];
+        const fieldsToSearch = [user.username];
         return fieldsToSearch.some((field) =>
           field.toLowerCase().includes(searchTermLower)
         );
       });
     }
     const dataToRender = data?.slice(startIndex, endIndex);
+    // Nomor urutan yang dimulai dari nomor tertentu (misalnya, 100)
+    let orderNumber = startIndex + 1;
+
     return dataToRender?.map((user: User) => {
+      // Gunakan nomor urutan yang sudah dihitung sebelumnya
+      const currentOrderNumber = orderNumber++;
+
       return (
         <TableRow key={user.id}>
           <TableCell className="w-[100px]" hidden>
             {user.id}
           </TableCell>
+          <TableCell className="w-[50px]">{currentOrderNumber}</TableCell>
           <TableCell>{user.username}</TableCell>
           {/* <TableCell>{user.password}</TableCell> */}
           <TableCell className="flex gap-2">
@@ -461,21 +468,11 @@ export default function TableUser() {
               <TableHead className="w-[100px] text-white" hidden>
                 Id
               </TableHead>
+              <TableHead className="text-gray-600 font-semibold">No</TableHead>
               <TableHead className="text-gray-600 font-semibold">
-                Username
+            Username
               </TableHead>
-              {/* <TableHead className="text-gray-600 font-semibold">
-                Date
-              </TableHead>
-              <TableHead className="text-gray-600 font-semibold">
-                Description
-              </TableHead>
-              {/* <TableHead className="text-gray-600 font-semibold">
-                Image
-              </TableHead> */}
-              {/* <TableHead className="text-gray-600 font-semibold">
-                Link
-              </TableHead> */}
+
               <TableHead className="text-gray-600 font-semibold justify-center content-center ">
                 Action
               </TableHead>
