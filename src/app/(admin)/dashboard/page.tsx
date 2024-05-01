@@ -10,7 +10,7 @@
 //   );
 // }
 import AuthGuard from "@/components/AuthGuard";
-import Chart from "@/layouts/dashboard/Chart";
+import Chart from "@/layouts/dashboard/ChartDashboard";
 import Link from "next/link";
 
 
