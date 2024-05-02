@@ -10,6 +10,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 const inter = Inter({ subsets: ["latin"] });
 import Providers from "@/components/providers";
 import Footer from "@/components/footer/footer";
+import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleTagManager } from '@next/third-parties/google'
 export const metadata: Metadata = {
   metadataBase: new URL("https://pjj.pens.ac.id"),
 icons: {
@@ -42,6 +44,11 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/shortcut-icon.png" />
 <link rel="icon" href="/images/pens.svg" />
 <link rel="/image/png" href="/images/pens.png" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FSYRLCVKQ5"></script>
+
+
       </head>
 
    <body className={`${inter.className}`}>
@@ -56,6 +63,8 @@ export default function RootLayout({
             <Providers>
         {/* <Navbar /> */}
             {children}
+             <GoogleTagManager gtmId="G-FSYRLCVKQ5" /> // METRIC ID
+             <GoogleAnalytics gaId="G-FSYRLCVKQ5" />
           </Providers>
           </ThemeProvider>
          <Toaster />
