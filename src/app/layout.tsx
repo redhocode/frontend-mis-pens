@@ -12,6 +12,9 @@ import Providers from "@/components/providers";
 import Footer from "@/components/footer/footer";
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { GoogleTagManager } from '@next/third-parties/google'
+import Script from "next/script";
+declare let dataLayer: any[];
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://pjj.pens.ac.id"),
 icons: {
@@ -46,9 +49,15 @@ export default function RootLayout({
 <link rel="/image/png" href="/images/pens.png" />
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FSYRLCVKQ5"></script>
+<Script async src="https://www.googletagmanager.com/gtag/js?id=G-FSYRLCVKQ5"></Script>
 
+<Script>
+ window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)}
+          gtag('js', new Date());
 
+          gtag('config', 'G-FSYRLCVKQ5');
+</Script>
       </head>
 
    <body className={`${inter.className}`}>
@@ -63,7 +72,7 @@ export default function RootLayout({
             <Providers>
         {/* <Navbar /> */}
             {children}
-             <GoogleTagManager gtmId="G-FSYRLCVKQ5" /> // METRIC ID
+             {/* <GoogleTagManager gtmId="G-FSYRLCVKQ5" /> // METRIC ID */}
              <GoogleAnalytics gaId="G-FSYRLCVKQ5" />
           </Providers>
           </ThemeProvider>
