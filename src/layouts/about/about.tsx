@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import PDFViewer from "@/components/pdfViewer";
 import { Separator } from "@/components/ui/separator";
 
 export default function AboutLayout() {
