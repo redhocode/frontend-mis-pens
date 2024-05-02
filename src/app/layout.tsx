@@ -49,14 +49,19 @@ export default function RootLayout({
 <link rel="/image/png" href="/images/pens.png" />
 
 
-<Script async src="https://www.googletagmanager.com/gtag/js?id=G-FSYRLCVKQ5"></Script>
+<Script async strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-FSYRLCVKQ5"></Script>
 
 <Script>
- window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments)}
-          gtag('js', new Date());
+{
+  `
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-          gtag('config', 'G-FSYRLCVKQ5');
+  gtag('config', 'G-FSYRLCVKQ5');
+  
+  `
+}
 </Script>
       </head>
 
