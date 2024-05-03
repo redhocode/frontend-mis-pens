@@ -53,7 +53,7 @@ const ChartDashboard = () => {
       </div>
       <div className="flex flex-warp gap-4 w-full md:flex-col">
         <div className="flex">
-          <Card className="w-full shadow-md">
+          {/* <Card className="w-full shadow-md">
             <CardHeader>
               <CardTitle>Card Title</CardTitle>
               <CardDescription>
@@ -69,11 +69,11 @@ const ChartDashboard = () => {
             <CardFooter>
               <p>Card Footer</p>
             </CardFooter>
-          </Card>
+          </Card> */}
         </div>
         <div className="flex">
           {" "}
-          <Card className="w-full">
+          {/* <Card className="w-full">
             <CardHeader>
               <CardTitle>Card Title</CardTitle>
               <CardDescription>
@@ -89,7 +89,7 @@ const ChartDashboard = () => {
             <CardFooter>
               <p>Card Footer</p>
             </CardFooter>
-          </Card>
+          </Card> */}
         </div>
       </div>
     </div>
