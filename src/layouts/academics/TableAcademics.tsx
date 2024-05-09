@@ -67,6 +67,7 @@ import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Textarea } from "@/components/ui/textarea";
+import Tiptap from "@/components/tiptap";
 export default function TableAcademic() {
 
   const pageSize = 3; // Tentukan nilai pageSize
@@ -416,7 +417,7 @@ export default function TableAcademic() {
                 Add Data
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] w-[800px] mx-auto">
+            <DialogContent className="sm:max-w-[425px] w-full mx-auto">
               <DialogHeader>
                 <DialogTitle>Add Data</DialogTitle>
               </DialogHeader>
@@ -533,23 +534,17 @@ export default function TableAcademic() {
         <Table className="shadow-md border-2">
           <TableCaption className="">Total Data : {totalStudents}</TableCaption>
           <TableHeader className="rounded-md bg-primary">
-            <TableRow >
+            <TableRow>
               <TableHead className="w-[100px] text-white" hidden>
                 Id
               </TableHead>
               <TableHead className="text-white font-semibold">No</TableHead>
-              <TableHead className="text-white font-semibold">
-                Title
-              </TableHead>
-              <TableHead className="text-white font-semibold">
-                Date
-              </TableHead>
+              <TableHead className="text-white font-semibold">Title</TableHead>
+              <TableHead className="text-white font-semibold">Date</TableHead>
               <TableHead className="text-white font-semibold">
                 Description
               </TableHead>
-              <TableHead className="text-white font-semibold">
-                Link
-              </TableHead>
+              <TableHead className="text-white font-semibold">Link</TableHead>
               <TableHead className="text-white font-semibold justify-center content-center ">
                 Action
               </TableHead>

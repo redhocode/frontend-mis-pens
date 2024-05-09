@@ -62,7 +62,7 @@ const handleLogout = async () => {
           </Avatar>
         </div>
         <div className="flex flex-col">
-          <Label className="text-foreground ml-20 mb-2 text-xl">{user}</Label>
+          <Label className="text-foreground ml-20 mb-2 text-xl uppercase antialiased">{user}</Label>
           <Label className="text-foreground ml-20 font-light text-xs">
             ({role})
           </Label>
