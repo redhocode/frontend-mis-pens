@@ -1,32 +1,32 @@
-import Link from "next/link";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import React from "react";
 
-interface BreadcrumbItem {
+interface Menu {
   label: string;
-  href?: string;
+  href: string;
 }
 
-interface BreadcrumbProps {
-  items: BreadcrumbItem[];
-}
-
-const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
+export function CustomBreadcrumb({ menu }: { menu: Menu[] }) {
   return (
-    <nav aria-label="Breadcrumb">
-      <ol className="breadcrumb">
-        {items.map((item, index) => (
-          <li className="breadcrumb-item" key={index}>
-            {item.href ? (
-              <Link href={item.href}>
-                {item.label}
-              </Link>
-            ) : (
-              <span>{item.label}</span>
+    <Breadcrumb>
+      <BreadcrumbList>
+        {menu.map((item, index) => (
+          <React.Fragment key={index}>
+            <BreadcrumbItem className="text-white">
+              <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
+            </BreadcrumbItem>
+            {index < menu.length - 1 && (
+              <BreadcrumbSeparator style={{ color: "white" }} />
             )}
-          </li>
+          </React.Fragment>
         ))}
-      </ol>
-    </nav>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
-};
-
-export default Breadcrumb;
+}

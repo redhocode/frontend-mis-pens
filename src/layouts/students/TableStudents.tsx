@@ -52,6 +52,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Edit, Trash } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function TableStudent() {
   const pageSize = 3; // Tentukan nilai pageSize
@@ -78,45 +79,63 @@ export default function TableStudent() {
 
   const { toast } = useToast();
   // Define validation schema
+  const MAX_FILE_SIZE = 1024 * 1024;
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     nrp: Yup.number()
       .required("NRP is required")
       .min(8, "NRP must be 8 digits"),
-    ipk: Yup.number().required("IPK is required").lessThan(5, "IPK must be less than 4"),
+    ipk: Yup.number()
+      .required("IPK is required")
+      .lessThan(5, "IPK must be less than 4"),
     major: Yup.string().required("Major is required"),
     year: Yup.number().required("Year is required"),
     semester: Yup.number().required("Semester is required"),
     status: Yup.string().required("Status is required"),
+    image: Yup.mixed()
+      .test("fileSize", "File size too large", (value: any) => {
+        const file = value as File | undefined;
+        return !file || file.size <= MAX_FILE_SIZE;
+      })
+      .test("fileType", "Invalid file type", (value: any) => {
+        const file = value as File | undefined;
+        return (
+          !file ||
+          (typeof file.type === "string" && file.type.includes("image"))
+        );
+      }),
   });
   const { mutate: CreateOrUpdateStudent } = useMutation({
     mutationFn: async () => {
       try {
-        const { id, name, nrp, ipk, major, year, semester, status } =
+        const { id, name, nrp, ipk, major, year, semester, status, image } =
           formik.values;
         let studentsRes;
-
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("nrp", nrp);
+        formData.append("ipk", ipk);
+        formData.append("major", major);
+        formData.append("year", year);
+        formData.append("semester", semester);
+        formData.append("status", status);
+        if (image !== null) {
+          formData.append("image", image);
+        }
         if (id) {
           // Jika ada ID, berarti kita akan mengedit data
-          studentsRes = await axiosInstance.patch(`/students/${id}`, {
-            name,
-            nrp: parseInt(nrp),
-            ipk: parseFloat(ipk),
-            major,
-            year: parseInt(year),
-            semester: parseInt(semester),
-            status,
+          studentsRes = await axiosInstance.patch(`/students/${id}`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           });
         } else {
           // Jika tidak ada ID, berarti kita akan membuat data baru
-          studentsRes = await axiosInstance.post("/students", {
-            name,
-            nrp: parseInt(nrp),
-            ipk: parseFloat(ipk),
-            major,
-            year: parseInt(year),
-            semester: parseInt(semester),
-            status,
+          // Jika tidak ada ID, berarti kita akan membuat data baru
+          studentsRes = await axiosInstance.post("/students", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           });
         }
 
@@ -166,6 +185,8 @@ export default function TableStudent() {
     },
   });
   // Submit handler function
+
+  const [preview, setPreview] = useState<string | null>(null);
   const hendlerSubmit = async (values: any) => {
     try {
       await CreateOrUpdateStudent(values);
@@ -198,6 +219,7 @@ export default function TableStudent() {
       semester: "",
       status: "",
       id: "",
+      image: "",
     },
     validationSchema: validationSchema,
     onSubmit: hendlerSubmit,
@@ -254,6 +276,21 @@ export default function TableStudent() {
           <TableCell>{student.semester}</TableCell>
           <TableCell>{student.ipk}</TableCell>
           <TableCell>{student.status}</TableCell>
+          <TableCell>
+            {!student.image ? ( // Periksa jika tidak ada gambar
+              <Skeleton className="h-[50px] w-full rounded-xl" />
+            ) : (
+              <img
+                src={
+                  process.env.NODE_ENV === "production"
+                    ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD + student.image
+                    : process.env.NEXT_PUBLIC_URL_IMAGE_DEV + student.image
+                }
+                alt="Image"
+                className="object-cover"
+              />
+            )}
+          </TableCell>
           <TableCell className="flex gap-2">
             <Dialog>
               <DialogTrigger asChild>
@@ -275,6 +312,7 @@ export default function TableStudent() {
                         year: student.year.toString(),
                         semester: student.semester.toString(),
                         status: student.status,
+                        image: student.image,
                       });
                     }}
                   >
@@ -293,7 +331,7 @@ export default function TableStudent() {
                   validationSchema={validationSchema}
                   onSubmit={hendlerSubmit}
                 >
-                  <ScrollArea className="h-full w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
+                  <ScrollArea className="h-[700px] w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
                     <Form
                       className="flex flex-wrap "
                       onSubmit={formik.handleSubmit}
@@ -547,6 +585,52 @@ export default function TableStudent() {
                               </div>
                             ) : null}
                           </div>
+                          <div className="flex flex-col mb-4">
+                            <Label htmlFor="image">Picture</Label>
+                            <Input
+                              id="image"
+                              name="image"
+                              type="file"
+                              className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              onChange={(e) => {
+                                if (
+                                  e.target.files &&
+                                  e.target.files.length > 0
+                                ) {
+                                  const reader = new FileReader();
+                                  reader.onload = (event) => {
+                                    if (reader.readyState === 2) {
+                                      const file = e.target.files![0];
+                                      if (file) {
+                                        formik.setFieldValue("image", file);
+                                        setPreview(reader.result as string);
+                                      }
+                                    }
+                                  };
+                                  reader.readAsDataURL(e.target.files[0]);
+                                }
+                              }}
+                              onBlur={formik.handleBlur}
+                            />
+                            {formik.touched.image && formik.errors.image && (
+                              <div className="text-red-500">
+                                {formik.errors.image}
+                              </div>
+                            )}
+                            {preview && ( // Tampilkan pratinjau gambar jika ada
+                              <img
+                                src={preview}
+                                alt="Selected"
+                                className="mt-2 max-w-full h-auto"
+                              />
+                            )}
+
+                            <ErrorMessage
+                              name="image"
+                              component="div"
+                              className="text-red-500"
+                            />
+                          </div>
                           {/* Add other form fields similarly */}
                           <Button type="submit" className="w-full">
                             Submit
@@ -615,7 +699,7 @@ export default function TableStudent() {
                 validationSchema={validationSchema}
                 onSubmit={hendlerSubmit}
               >
-                <ScrollArea className="h-full w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
+                <ScrollArea className="h-[700px] w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
                   <Form
                     className="flex flex-wrap "
                     onSubmit={formik.handleSubmit}
@@ -857,8 +941,7 @@ export default function TableStudent() {
                                   <option value="Aktif">Aktif</option>
                                   <option value="Cuti">Cuti</option>
                                 </select>
-
-                                {/* Tampilkan pilihan tahun jika status "Lulus" dipilih */}
+                                {" "}
                                 {formik.values.status === "Lulus" && (
                                   <select
                                     name="tahunLulus"
@@ -885,6 +968,49 @@ export default function TableStudent() {
                             </div>
                           ) : null}
                         </div>
+                        <div className="flex flex-col mb-4">
+                          <Label htmlFor="image">Picture</Label>
+                          <Input
+                            id="image"
+                            name="image"
+                            type="file"
+                            className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            onChange={(e) => {
+                              if (e.target.files && e.target.files.length > 0) {
+                                const reader = new FileReader();
+                                reader.onload = (event) => {
+                                  if (reader.readyState === 2) {
+                                    const file = e.target.files![0];
+                                    if (file) {
+                                      formik.setFieldValue("image", file);
+                                      setPreview(reader.result as string);
+                                    }
+                                  }
+                                };
+                                reader.readAsDataURL(e.target.files[0]);
+                              }
+                            }}
+                            onBlur={formik.handleBlur}
+                          />
+                          {formik.touched.image && formik.errors.image && (
+                            <div className="text-red-500">
+                              {formik.errors.image}
+                            </div>
+                          )}
+                          {preview && ( // Tampilkan pratinjau gambar jika ada
+                            <img
+                              src={preview}
+                              alt="Selected"
+                              className="mt-2 max-w-full h-auto"
+                            />
+                          )}
+
+                          <ErrorMessage
+                            name="image"
+                            component="div"
+                            className="text-red-500"
+                          />
+                        </div>
 
                         {/* Add other form fields similarly */}
                         <Button type="submit" className="w-full">
@@ -909,33 +1035,32 @@ export default function TableStudent() {
           />
         </div>
       </div>
-      <div className="rounded-md shadow py-2 mb-4">
-        <Table className="">
+      <div className="rounded-md shadow py-2 mb-4 px-4">
+        <Table className="shadow-md border-2">
           <TableCaption className="">Total Data : {totalStudents}</TableCaption>
-          <TableHeader className=" rounded-md">
+          <TableHeader className=" rounded-md bg-primary">
             <TableRow>
               <TableHead className="w-[100px] text-white" hidden>
                 Id
               </TableHead>
-              <TableHead className="text-gray-600 font-semibold">No</TableHead>
-              <TableHead className="text-gray-600 font-semibold">NRP</TableHead>
-              <TableHead className="text-gray-600 font-semibold">
-                Nama
-              </TableHead>
-              <TableHead className="text-gray-600 font-semibold">
+              <TableHead className="text-white font-semibold">No</TableHead>
+              <TableHead className="text-white font-semibold">NRP</TableHead>
+              <TableHead className="text-white font-semibold">Nama</TableHead>
+              <TableHead className="text-white font-semibold">
                 Jurusan
               </TableHead>
-              <TableHead className="text-gray-600 font-semibold">
+              <TableHead className="text-white font-semibold">
                 Angkatan
               </TableHead>
-              <TableHead className="text-gray-600 font-semibold">
+              <TableHead className="text-white font-semibold">
                 Semester
               </TableHead>
-              <TableHead className="text-gray-600 font-semibold">IPK</TableHead>
-              <TableHead className="text-gray-600 font-semibold">
-                Status
+              <TableHead className="text-white font-semibold">IPK</TableHead>
+              <TableHead className="text-white font-semibold">Status</TableHead>
+              <TableHead className="text-white font-semibold">
+                Picture
               </TableHead>
-              <TableHead className="text-gray-600 font-semibold justify-center content-center ">
+              <TableHead className="text-white font-semibold justify-center content-center ">
                 Action
               </TableHead>
             </TableRow>

@@ -1,6 +1,7 @@
-import { axiosInstance } from "@/lib/axios";
+import { axiosInstance,getAuthorizationHeader } from "@/lib/axios";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+
 export const useFetchStudent = (page, pageSize, filterValue) => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["students", page, pageSize, filterValue],
@@ -108,6 +109,7 @@ export const useFetchUsers = (page, pageSize, filterValue) => {
           page,
           pageSize,
         },
+        // headers: { Authorization: getAuthorizationHeader() },
       });
       // console.log("Response from API:", response.data);
       return response.data;

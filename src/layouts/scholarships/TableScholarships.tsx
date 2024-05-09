@@ -41,7 +41,7 @@ import * as Yup from "yup";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   Pagination,
   PaginationContent,
@@ -99,38 +99,54 @@ export default function TableSholarships() {
     description: Yup.string().required("Description is required"),
     date: Yup.date().required("Date is required"),
     link: Yup.string().optional(),
-    // image: Yup.mixed()
-    //   .test('fileSize', 'File size too large', (value: any) => {
-    //     const file = value as File | undefined;
-    //     return !file || (file && file.size <= MAX_FILE_SIZE);
-    //   })
-    //   .test('fileType', 'Invalid file type', (value: any) => {
-    //     const file = value as File | undefined;
-    //     return !file || (file && file.type.includes('image'));
-    //   }),
+    image: Yup.mixed()
+      .test("fileSize", "File size too large", (value: any) => {
+        const file = value as File | undefined;
+        return !file || file.size <= MAX_FILE_SIZE;
+      })
+      .test("fileType", "Invalid file type", (value: any) => {
+        const file = value as File | undefined;
+        return (
+          !file ||
+          (typeof file.type === "string" && file.type.includes("image"))
+        );
+      }),
   });
   const { mutate: CreateOrUpdateActivity } = useMutation({
     mutationFn: async (data: any) => {
       try {
-        const { id, title, description, date, link } = formik.values;
+        const { id, title, description, date, link, image } = formik.values;
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("date", date);
+        formData.append("link", link);
+        if (image !== null) {
+          formData.append("image", image);
+        }
+
         let scholarshipsRes;
 
         if (id) {
-          scholarshipsRes = await axiosInstance.patch(`/scholarships/${id}`, {
-            title,
-            description,
-            date,
-            // image,
-            link,
-          });
+          scholarshipsRes = await axiosInstance.patch(
+            `/scholarships/${id}`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
         } else {
-          scholarshipsRes = await axiosInstance.post("/scholarships", {
-            title,
-            description,
-            date,
-            // image,
-            link,
-          });
+          scholarshipsRes = await axiosInstance.post(
+            "/scholarships",
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
         }
         return scholarshipsRes;
       } catch (error) {
@@ -177,16 +193,17 @@ export default function TableSholarships() {
     },
   });
   // Submit handler function
+  const [preview, setPreview] = useState<string | null>(null);
   const hendlerSubmit = async (values: any) => {
     try {
       await CreateOrUpdateActivity(values);
       refetchData();
+      formik.resetForm(); // Reset the form after successful mutation
       toast({
         title: "Success",
         description: "Data has been successfully posted",
         className: "w-[400px] md:w-[300px]",
       });
-      formik.resetForm(); // Reset the form after successful mutation
     } catch (error) {
       toast({
         title: "Error",
@@ -204,7 +221,7 @@ export default function TableSholarships() {
       description: "",
       date: "",
       link: "",
-      // image: "",
+      image: "",
       id: "",
     },
     validationSchema: validationSchema,
@@ -228,7 +245,6 @@ export default function TableSholarships() {
           scholarships.date,
           scholarships.description,
           scholarships.link,
-          // activity.image,
         ];
         return fieldsToSearch.some((field) =>
           field.toLowerCase().includes(searchTermLower)
@@ -245,11 +261,39 @@ export default function TableSholarships() {
             {scholarships.id}
           </TableCell>
           <TableCell className="w-[50px]">{currentOrderNumber}</TableCell>
-          <TableCell>{scholarships.title}</TableCell>
+          <TableCell style={{ maxWidth: "200px" }}>
+            {scholarships.title.length > 50
+              ? scholarships.title.substring(0, 50) + "..."
+              : scholarships.title}
+          </TableCell>
+
           <TableCell>{scholarships.date}</TableCell>
-          <TableCell>{scholarships.description}</TableCell>
-          {/* <TableCell>{activity.image}</TableCell> */}
-          <TableCell>{scholarships.link}</TableCell>
+
+          <TableCell>
+            {scholarships.description.length > 50
+              ? scholarships.description.substring(0, 50) + "..."
+              : scholarships.description}
+          </TableCell>
+
+          <TableCell>
+            {scholarships.image && (
+              <img
+                src={
+                  process.env.NODE_ENV === "production"
+                    ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD +
+                      scholarships.image
+                    : process.env.NEXT_PUBLIC_URL_IMAGE_DEV + scholarships.image
+                }
+                alt="Activity Image"
+                className="w-[50px] h-[50px] object-cover"
+              />
+            )}
+          </TableCell>
+          <TableCell className="w-[10px]">
+            {scholarships.link.length > 50
+              ? scholarships.link.substring(0, 50) + "..."
+              : scholarships.link}
+          </TableCell>
           <TableCell className="flex gap-2">
             <Dialog>
               <DialogTrigger asChild>
@@ -267,6 +311,7 @@ export default function TableSholarships() {
                         description: scholarships.description,
                         date: scholarships.date,
                         link: scholarships.link,
+                        image: scholarships.image,
                       });
                     }}
                   >
@@ -366,7 +411,52 @@ export default function TableSholarships() {
                               </div>
                             ) : null}
                           </div>
-                          <div className="flex flex-col mb-4"></div>
+                          <div className="flex flex-col mb-4">
+                            <Label htmlFor="image">Picture</Label>
+                            <Input
+                              id="image"
+                              name="image"
+                              type="file"
+                              className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              onChange={(e) => {
+                                if (
+                                  e.target.files &&
+                                  e.target.files.length > 0
+                                ) {
+                                  const reader = new FileReader();
+                                  reader.onload = (event) => {
+                                    if (reader.readyState === 2) {
+                                      const file = e.target.files![0];
+                                      if (file) {
+                                        formik.setFieldValue("image", file);
+                                        setPreview(reader.result as string);
+                                      }
+                                    }
+                                  };
+                                  reader.readAsDataURL(e.target.files[0]);
+                                }
+                              }}
+                              onBlur={formik.handleBlur}
+                            />
+                            {formik.touched.image && formik.errors.image && (
+                              <div className="text-red-500">
+                                {formik.errors.image}
+                              </div>
+                            )}
+                            {preview && ( // Tampilkan pratinjau gambar jika ada
+                              <img
+                                src={preview}
+                                alt="Selected"
+                                className="mt-2 max-w-full h-auto"
+                              />
+                            )}
+
+                            <ErrorMessage
+                              name="image"
+                              component="div"
+                              className="text-red-500"
+                            />
+                          </div>
                           {/* Add other form fields similarly */}
                           <Button type="submit" className="w-full">
                             Submit
@@ -518,23 +608,49 @@ export default function TableSholarships() {
                             </div>
                           ) : null}
                         </div>
-                        {/* <div className="flex flex-col mb-4">
-                <Label htmlFor="picture">Picture</Label>
-                <Input
-                  id="picture"
-                  name="image"
-                  type="file"
-                  className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  onChange={(event) => {
-                    if (event.currentTarget.files) {
-                      formik.setFieldValue('image', event.currentTarget.files[0]);
-                    }
-                  }}
-                  onBlur={formik.handleBlur}
-                  accept="image/*" // Hanya izinkan file gambar
-                />
-                <ErrorMessage name="image" component="div" className="text-red-500" />
-              </div> */}
+                        <div className="flex flex-col mb-4">
+                          <Label htmlFor="image">Picture</Label>
+                          <Input
+                            id="image"
+                            name="image"
+                            type="file"
+                            className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            onChange={(e) => {
+                              if (e.target.files && e.target.files.length > 0) {
+                                const reader = new FileReader();
+                                reader.onload = (event) => {
+                                  if (reader.readyState === 2) {
+                                    const file = e.target.files![0];
+                                    if (file) {
+                                      formik.setFieldValue("image", file);
+                                      setPreview(reader.result as string);
+                                    }
+                                  }
+                                };
+                                reader.readAsDataURL(e.target.files[0]);
+                              }
+                            }}
+                            onBlur={formik.handleBlur}
+                          />
+                          {formik.touched.image && formik.errors.image && (
+                            <div className="text-red-500">
+                              {formik.errors.image}
+                            </div>
+                          )}
+                          {preview && ( // Tampilkan pratinjau gambar jika ada
+                            <img
+                              src={preview}
+                              alt="Selected"
+                              className="mt-2 max-w-full h-auto"
+                            />
+                          )}
+
+                          <ErrorMessage
+                            name="image"
+                            component="div"
+                            className="text-red-500"
+                          />
+                        </div>
                         {/* Add other form fields similarly */}
                         <Button type="submit" className="w-full">
                           Submit
@@ -558,31 +674,23 @@ export default function TableSholarships() {
           />
         </div>
       </div>
-      <div className="rounded-md shadow py-2 mb-4">
-        <Table className="">
+      <div className="rounded-md shadow py-2 mb-4 px-4">
+        <Table className="shadow-md border-2">
           <TableCaption className="">Total Data : {totalStudents}</TableCaption>
-          <TableHeader className=" rounded-md">
+          <TableHeader className=" rounded-md bg-primary">
             <TableRow>
               <TableHead className="w-[100px] text-white" hidden>
                 Id
               </TableHead>
-              <TableHead className="text-gray-600 font-semibold">No</TableHead>
-              <TableHead className="text-gray-600 font-semibold">
-                Title
-              </TableHead>
-              <TableHead className="text-gray-600 font-semibold">
-                Date
-              </TableHead>
-              <TableHead className="text-gray-600 font-semibold">
+              <TableHead className="text-white font-semibold">No</TableHead>
+              <TableHead className="text-white font-semibold">Title</TableHead>
+              <TableHead className="text-white font-semibold">Date</TableHead>
+              <TableHead className="text-white font-semibold">
                 Description
               </TableHead>
-              {/* <TableHead className="text-gray-600 font-semibold">
-                Image
-              </TableHead> */}
-              <TableHead className="text-gray-600 font-semibold">
-                Link
-              </TableHead>
-              <TableHead className="text-gray-600 font-semibold justify-center content-center ">
+              <TableHead className="text-white font-semibold">Image</TableHead>
+              <TableHead className="text-white font-semibold">Link</TableHead>
+              <TableHead className="text-white font-semibold justify-center content-center ">
                 Action
               </TableHead>
             </TableRow>

@@ -16,53 +16,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDownIcon } from "lucide-react";
 import Link from "next/link";
+import { CustomBreadcrumb } from "@/components/breadcrumb/Breadcrumb";
+import { PageWrapper } from "@/components/animate/page-wrapper";
+const menu = [
+  { label: "Dashboard", href: "/dashboard" },
+ { label: "Activities", href: "/dashboard/activities" },
+];
 const Activities: React.FC = () => {
 
     return (
-        <AuthGuard>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink>
-                <Link href="/dashboard">Admin</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbItem>
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center gap-1">
-                    Dashboard
-                    <ChevronDownIcon height={18} width={18}/>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start">
-                    <DropdownMenuItem>
-                      <Link href="/dashboard/academics">Akademic</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href="/dashboard/scholarships">Scholarship</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href="/dashboard/activities">Activities</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href="/dashboard/students">Students</Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </BreadcrumbItem>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Activities</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+      <AuthGuard>
+        <div className="w-full shadow-md rounded-lg px-4 py-4 mx-auto bg-primary">
+          <CustomBreadcrumb menu={menu} />
+        </div>
+        <PageWrapper>
+
         <section className="mt-32 px-4 py-4 contaiter shadow-inner">
-            <TableActivies/>
+          <TableActivies />
         </section>
-        </AuthGuard>
-    )
+        </PageWrapper>
+      </AuthGuard>
+    );
 }
 
 export default Activities

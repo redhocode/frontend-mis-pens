@@ -2,15 +2,6 @@
 import React, { useState } from "react";
 import { useFetchAcademic, useFetchActivity } from "@/features";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Card,
   CardContent,
   CardDescription,
@@ -20,19 +11,7 @@ import {
 } from "@/components/ui/card";
 import type { Academic, Activity, Student } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-  SelectLabel,
-  SelectSeparator,
-  SelectGroup,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import { LoaderIcon } from "lucide-react";
 import {
   Pagination,
@@ -45,8 +24,9 @@ import {
 } from "@/components/ui/pagination";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ScrollArea } from "@/components/ui/scroll-area";
 export const CradActivities = () => {
-  const pageSize = 5;
+  const pageSize = 2;
   const [page, setPage] = useState(1);
   const [filterValue, setFilterValue] = useState("");
   const {
@@ -68,11 +48,6 @@ export const CradActivities = () => {
     setPage(newPage);
   };
 
-  //   const handleFilterChange = (value: string) => {
-  //     console.log("New Filter Value:", value); // Tambahkan logging di sini
-  //     setFilterValue(value);
-  //   };
-
   const renderStudent = (
     page: number,
     pageSize: number,
@@ -80,24 +55,9 @@ export const CradActivities = () => {
     searchTerm: string,
     filterValue: string
   ) => {
-    // console.log("Data Mahasiswa:", data);
     const startIndex = (page - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize, data?.length);
-    // Filter berdasarkan filterValue
     let filteredData = data;
-    // if (filterValue === "Belum Lulus") {
-    //   filteredData = filteredData?.filter(
-    //     (academic: Academic) => student.status === "Belum Lulus"
-    //   );
-    // } else if (filterValue === "2") {
-    //   filteredData = filteredData?.filter((student) => student.ipk < 2);
-    // } else if (filterValue === "Cuti") {
-    //   filteredData = filteredData?.filter(
-    //     (student) => student.status === "Cuti"
-    //   );
-    // }
-
-    // Filter berdasarkan searchTerm
     if (searchTerm) {
       filteredData = filteredData?.filter((data: Activity) => {
         const searchTermLower = searchTerm.toLowerCase();
@@ -120,10 +80,7 @@ export const CradActivities = () => {
     const dataToRender = filteredData?.slice(startIndex, endIndex);
     return dataToRender?.map((data: Activity) => {
       return (
-        <Card
-          className="w-[400px] md:w-full outline outline-primary"
-          key={data.id}
-        >
+        <Card className="w-[400px] md:w-full outline-1" key={data.id}>
           <CardHeader>
             <CardTitle>
               <span>{data.title}</span>
@@ -132,12 +89,26 @@ export const CradActivities = () => {
               <span>{data.date}</span>
               <br />
               <div className="flex flex-col space-y-3 mt-2">
-                <Skeleton className="h-[100px] w-full rounded-xl" />
+                {!data.image ? ( // Periksa jika tidak ada gambar
+                  <Skeleton className="h-[295px] w-full rounded-xl" />
+                ) : (
+                  <img
+                    src={
+                      process.env.NODE_ENV === "production"
+                        ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD + data.image
+                        : process.env.NEXT_PUBLIC_URL_IMAGE_DEV + data.image
+                    }
+                    alt="Activity Image "
+                    className="object-cover h-[200px]"
+                  />
+                )}
               </div>
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p>{data.description}</p>
+            <ScrollArea className="h-[150px] w-[300px] rounded-md border p-4">
+              <p>{data.description}</p>
+            </ScrollArea>
           </CardContent>
           <CardFooter className="flex justify-between">
             <Link href={data.link} target="_blank" rel="noopener noreferrer">
@@ -155,31 +126,24 @@ export const CradActivities = () => {
     <>
       <div className="flex justify-center flex-col mx-auto mb-12">
         <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl">
-          
-           
           <h1 className="text-4xl font-bold justify-center mb-4 mx-auto uppercase">
             Informasi Kegiatan
-          </h1>
-              {" "}
-              <p className="mb-4 text-justify">
-                Selamat datang di halaman informasi kegiatan untuk Program
-                Pendidikan Jarak Jauh (PJJ) D3 Teknik Informatika di Politeknik
-                Elektronika Negeri Surabaya (PENS). Di sini Anda dapat menemukan
-                informasi tentang berbagai kegiatan di luar jam kuliah atau
-                kegiatan yang bersifat ekstrakurikuler, seperti kegiatan UKM,
-                seminar, workshop, dan lain sebagainya.
-              </p>
-              <p className="mb-4 text-justify">
-                Jika Anda tertarik untuk mengikuti kegiatan di luar jam kuliah,
-                silakan hubungi bagian kemahasiswaan atau kunjungi situs web
-                resmi PENS untuk informasi lebih lanjut mengenai kegiatan yang
-                tersedia dan cara untuk bergabung.
-              </p>
-             
-            
-
-            <hr className="mt-4 ouline" />
-         
+          </h1>{" "}
+          <p className="mb-4 text-justify">
+            Selamat datang di halaman informasi kegiatan untuk Program
+            Pendidikan Jarak Jauh (PJJ) D3 Teknik Informatika di Politeknik
+            Elektronika Negeri Surabaya (PENS). Di sini Anda dapat menemukan
+            informasi tentang berbagai kegiatan di luar jam kuliah atau kegiatan
+            yang bersifat ekstrakurikuler, seperti kegiatan UKM, seminar,
+            workshop, dan lain sebagainya.
+          </p>
+          <p className="mb-4 text-justify">
+            Jika Anda tertarik untuk mengikuti kegiatan di luar jam kuliah,
+            silakan hubungi bagian kemahasiswaan atau kunjungi situs web resmi
+            PENS untuk informasi lebih lanjut mengenai kegiatan yang tersedia
+            dan cara untuk bergabung.
+          </p>
+          <hr className="mt-4 ouline" />
         </div>
         <div className="flex justify-center flex-wrap">
           <Input

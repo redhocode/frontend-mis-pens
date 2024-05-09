@@ -1,24 +1,16 @@
 import { axiosInstance } from "@/lib/axios";
 import { useRouter } from "next/navigation";
 
-const logoutUser = async () => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const router = useRouter(); // Menggunakan useRouter untuk mendapatkan router
-
+const logoutUser = async (router:any) => {
   try {
-    // Kirim permintaan POST ke endpoint /logout di backend
-    await axiosInstance.post("/logout");
-
-    // Hapus token dari local storage atau cookie jika perlu
-    localStorage.removeItem("accessToken");
-
-    // Redirect pengguna ke halaman login atau halaman lainnya
+    sessionStorage.removeItem("accessToken");
+    console.log("User logged out successfully");
     router.push("/"); // Ubah '/login' dengan rute halaman login Anda
-  } catch (error) {
-    // Handle error jika terjadi
-    console.error("Error during logout:", error);
-    // Tampilkan pesan kesalahan kepada pengguna jika perlu
+  } catch (error: any) {
+    console.error("Logout error:", error); // Log kesalahan
+    throw error.message || "An error occurred while logging out";
   }
 };
 
 export default logoutUser;
+

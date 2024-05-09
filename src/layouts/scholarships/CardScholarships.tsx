@@ -50,6 +50,8 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 export const CradScholarships = () => {
   const pageSize = 5;
   const [page, setPage] = useState(1);
@@ -77,9 +79,9 @@ export const CradScholarships = () => {
   //     console.log("New Filter Value:", value); // Tambahkan logging di sini
   //     setFilterValue(value);
   //   };
-// const imageLoader = ({ src, width, quality }: { src: string, width: number, quality?: number }) => {
-//   return `https://unsplash.com/photos/shallow-focus-photography-of-books-lUaaKCUANVI/`
-// }
+  // const imageLoader = ({ src, width, quality }: { src: string, width: number, quality?: number }) => {
+  //   return `https://unsplash.com/photos/shallow-focus-photography-of-books-lUaaKCUANVI/`
+  // }
   const renderStudent = (
     page: number,
     pageSize: number,
@@ -127,31 +129,37 @@ export const CradScholarships = () => {
     const dataToRender = filteredData?.slice(startIndex, endIndex);
     return dataToRender?.map((data: Scholarship) => {
       return (
-
-        <Card
-          className="w-[500px] md:w-full "
-          key={data.id}
-          >
+        <Card className="w-[500px] md:w-full" key={data.id}>
           <CardHeader>
             <CardTitle>
               <span>{data.title}</span>
             </CardTitle>
             <CardDescription>
               <span>{data.date}</span>
-            {/* <Avatar className="w-[200px] h-[100px] mb-5 rounded-none">
-              <AvatarImage src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-              <AvatarFallback>Uhuy</AvatarFallback>
-            </Avatar> */}
-                <div className="flex flex-col space-y-3 mt-2">
-      <Skeleton className="h-[125px] w-full rounded-xl" />
 
-    </div>
+              <div className="flex flex-col space-y-3 mt-2">
+                {!data.image ? ( // Periksa jika tidak ada gambar
+                  <Skeleton className="h-[200px] w-full rounded-xl" />
+                ) : (
+                  <img
+                    src={
+                      process.env.NODE_ENV === "production"
+                        ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD + data.image
+                        : process.env.NEXT_PUBLIC_URL_IMAGE_DEV + data.image
+                    }
+                    alt="Activity Image h-[200px]"
+                    className="object-cover"
+                  />
+                )}
+              </div>
               <br />
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Label>Keterangan</Label>
-            <p>{data.description}</p>
+            <ScrollArea className="h-[150px] w-full rounded-md border p-4">
+              <p>{data.description}</p>
+            </ScrollArea>
           </CardContent>
           <CardFooter className="flex justify-between">
             <Link href={data.link} target="_blank" rel="noopener noreferrer">
@@ -161,43 +169,35 @@ export const CradScholarships = () => {
             </Link>
           </CardFooter>
         </Card>
-            
       );
     });
   };
 
   return (
     <>
-     <div className="flex justify-center flex-col mx-auto mb-12">
-         
+      <div className="flex justify-center flex-col mx-auto mb-12">
         <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl">
-         
-           
-              {" "}
+          {" "}
           <h1 className="text-4xl font-bold justify-center mb-4 mx-auto uppercase">
             Informasi Beasiswa
           </h1>
-              <p className="mb-4 text-justify">
-                Selamat datang di halaman informasi mahasiswa untuk Program
-                Pendidikan Jarak Jauh (PJJ) D3 Teknik Informatika di Politeknik
-                Elektronika Negeri Surabaya (PENS). Di sini Anda dapat menemukan
-                informasi tentang berbagai fasilitas dan layanan yang tersedia
-                untuk mahasiswa PJJ, serta tips dan saran untuk menyelesaikan
-                studi secara efektif dalam lingkungan pembelajaran jarak jauh.
-              </p>
-              <p className="mb-4 text-justify">
-                Jika Anda adalah mahasiswa PJJ D3 Teknik Informatika di PENS,
-                pastikan Anda memanfaatkan semua fasilitas yang tersedia,
-                termasuk platform pembelajaran daring, perpustakaan online, dan
-                layanan konseling akademik. Anda juga dapat bergabung dalam
-                forum diskusi atau grup studi online untuk berinteraksi dengan
-                sesama mahasiswa dan mendukung proses belajar Anda.
-              </p>
-
-            
-
-            <hr className="mt-4 ouline" />
-        
+          <p className="mb-4 text-justify">
+            Selamat datang di halaman informasi mahasiswa untuk Program
+            Pendidikan Jarak Jauh (PJJ) D3 Teknik Informatika di Politeknik
+            Elektronika Negeri Surabaya (PENS). Di sini Anda dapat menemukan
+            informasi tentang berbagai fasilitas dan layanan yang tersedia untuk
+            mahasiswa PJJ, serta tips dan saran untuk menyelesaikan studi secara
+            efektif dalam lingkungan pembelajaran jarak jauh.
+          </p>
+          <p className="mb-4 text-justify">
+            Jika Anda adalah mahasiswa PJJ D3 Teknik Informatika di PENS,
+            pastikan Anda memanfaatkan semua fasilitas yang tersedia, termasuk
+            platform pembelajaran daring, perpustakaan online, dan layanan
+            konseling akademik. Anda juga dapat bergabung dalam forum diskusi
+            atau grup studi online untuk berinteraksi dengan sesama mahasiswa
+            dan mendukung proses belajar Anda.
+          </p>
+          <hr className="mt-4 ouline" />
         </div>
         <div className="flex justify-center flex-wrap">
           <Input
@@ -208,9 +208,7 @@ export const CradScholarships = () => {
             className="md:w-full mt-2 mb-2 w-[700px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 border border-gray-300"
           />
         </div>
-        <div className="flex justify-center flex-wrap mb-6">
-             
-        </div>
+        <div className="flex justify-center flex-wrap mb-6"></div>
       </div>
       <div className="flex gap-4 mb-5 justify-center md:flex-col">
         {renderStudent(page, pageSize, data, searchTerm, filterValue)}
@@ -221,7 +219,7 @@ export const CradScholarships = () => {
           </div>
         )}
       </div>
-     
+
       <Pagination>
         <PaginationContent>
           <PaginationItem>

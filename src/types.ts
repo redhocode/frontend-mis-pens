@@ -27,19 +27,23 @@ export interface NavbarItems{
     ipk: number;
     semester: number;
     status: string;
+    image: string;
   }
 
   export interface Academic {
+    username: ReactNode;
     id: string;
     title: string;
     description: string;
     date: string;
     link: string;
+   
   }
   export interface User {
     id: string;
     username: string;
     password: string;
+    role: string;
   }
   export interface Activity {
     id: string;
@@ -47,11 +51,15 @@ export interface NavbarItems{
     description: string;
     date: string;
     link: string;
+    image: string;
   }
    export interface Scholarship {
+    username: ReactNode;
     id: string;
     title: string;
     description: string;
     date: string;
     link: string;
+    image: string;
+    
   }

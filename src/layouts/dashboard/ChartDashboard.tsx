@@ -8,7 +8,7 @@ import Chart_1 from '@/components/chart/chart_1';
 import Chart_2 from '@/components/chart/chart_2';
 import Chart_3 from '@/components/chart/chart_3';
 import Chart_4 from '@/components/chart/chart_4';
-
+import Welcome from '@/components/welcome';
 const ChartDashboard = () => {
 
   return (
@@ -53,6 +53,7 @@ const ChartDashboard = () => {
       </div>
       <div className="flex flex-warp gap-4 w-full md:flex-col">
         <div className="flex">
+        
           {/* <Card className="w-full shadow-md">
             <CardHeader>
               <CardTitle>Card Title</CardTitle>

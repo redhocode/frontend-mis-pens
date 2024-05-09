@@ -39,8 +39,7 @@ export function Sidebar() {
   const isDesktop = useMediaQuery("(min-width: 640px)");
   if (isDesktop) {
     return (
-      <SidebarDesktop sidebarItems={sidebarItems}
-      />
+      <SidebarDesktop sidebarItems={sidebarItems}       />
     )
   }
 return <SidebarMobile sidebarItems={sidebarItems} />

@@ -44,6 +44,8 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import Link from "next/link";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { PageWrapper } from "@/components/animate/page-wrapper";
 export const CradAcademics = () => {
   const pageSize = 5;
   const [page, setPage] = useState(1);
@@ -84,19 +86,6 @@ export const CradAcademics = () => {
     const endIndex = Math.min(startIndex + pageSize, data?.length);
     // Filter berdasarkan filterValue
     let filteredData = data;
-    // if (filterValue === "Belum Lulus") {
-    //   filteredData = filteredData?.filter(
-    //     (academic: Academic) => student.status === "Belum Lulus"
-    //   );
-    // } else if (filterValue === "2") {
-    //   filteredData = filteredData?.filter((student) => student.ipk < 2);
-    // } else if (filterValue === "Cuti") {
-    //   filteredData = filteredData?.filter(
-    //     (student) => student.status === "Cuti"
-    //   );
-    // }
-
-    // Filter berdasarkan searchTerm
     if (searchTerm) {
       filteredData = filteredData?.filter((data: Academic) => {
         const searchTermLower = searchTerm.toLowerCase();
@@ -119,10 +108,7 @@ export const CradAcademics = () => {
     const dataToRender = filteredData?.slice(startIndex, endIndex);
     return dataToRender?.map((data: Academic) => {
       return (
-        <Card
-          className="w-[400px] md:w-full outline outline-primary"
-          key={data.id}
-        >
+        <Card className="w-full md:w-full outline-1" key={data.id}>
           <CardHeader>
             <CardTitle>
               <span>{data.title}</span>
@@ -133,11 +119,20 @@ export const CradAcademics = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p>{data.description}</p>
+            <Label>Keterangan</Label>
+            <ScrollArea className="h-[150px] w-full rounded-md border p-4">
+              <p>{data.description}</p>
+            </ScrollArea>
           </CardContent>
-          <CardFooter className="flex justify-between">
+          <CardFooter className="flex justify-between ">
+            <Button variant="outline" className="uppercase font-thin">
+              by: {data.username}
+            </Button>
             <Link href={data.link} target="_blank" rel="noopener noreferrer">
-              <Button variant="ghost" className="ml-2 bg-primary text-white rounded-lg">
+              <Button
+                variant="ghost"
+                className="ml-2 bg-primary text-white rounded-lg "
+              >
                 <span>Lebih Lanjut</span>
               </Button>
             </Link>
@@ -149,13 +144,12 @@ export const CradAcademics = () => {
 
   return (
     <>
-      <div className="flex justify-center flex-col mx-auto mb-12">
-         
-        <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl">
-          
-          <h1 className="text-4xl font-bold justify-center mb-4 mx-auto uppercase">
-            Informasi Akademik
-          </h1>
+      <PageWrapper>
+        <div className="flex justify-center flex-col mx-auto mb-12">
+          <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl">
+            <h1 className="text-4xl font-bold justify-center mb-4 mx-auto uppercase">
+              Informasi Akademik
+            </h1>
             <article className="block mx-auto  max-w-4xl text-justify">
               <p className="mb-4">
                 Selamat datang di halaman informasi akademik untuk Program
@@ -174,68 +168,70 @@ export const CradAcademics = () => {
                 informasi lebih lanjut mengenai persyaratan pendaftaran dan
                 jadwal kuliah.
               </p>
-
             </article>
-                 <div className="flex justify-center mt-5">
- <embed src="https://pjj.pens.ac.id/wp-content/uploads/2017/03/Final-Kurikulum-2022-2.pdf" width="100%" height="" className="max-w-4xl mb-5 h-[400px] md:h-[300px]" />
-     
-      </div>
-            <hr className="mt-4 ouline" />
-        
-        </div>
-        <div className="flex justify-center flex-wrap">
-          <Input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            placeholder="Cari data."
-            className="md:w-full mt-2 mb-2 w-[700px]"
-          />
-        </div>
-        <div className="flex justify-center flex-wrap mb-6"></div>
-      </div>
-      <div className="flex flex-wrap mx-auto gap-4 justify-center mb-5">
-        {renderStudent(page, pageSize, data, searchTerm, filterValue)}
-        {isLoading && (
-          <div className="flex items-center justify-center mt-4">
-            <p className="font-semibold mr-1">Loading</p>
-            <LoaderIcon className="animate-spin h-10 w-10" />
+            <div className="flex justify-center mt-5">
+              <embed
+                src="https://pjj.pens.ac.id/wp-content/uploads/2017/03/Final-Kurikulum-2022-2.pdf"
+                width="100%"
+                height=""
+                className="max-w-4xl mb-5 h-[400px] md:h-[300px]"
+              />
+            </div>
           </div>
-        )}
-      </div>
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => handlePageChange(Math.max(page - 1, 1))}
+          <hr className="my-4" />
+          <div className="flex justify-center flex-wrap">
+            <Input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              placeholder="Cari data."
+              className="md:w-full mt-2 mb-2 w-[700px]"
             />
-          </PaginationItem>
-          {Array.from({ length: totalPages }, (_, index) => {
-            if (index < 2 || index >= totalPages - 2) {
-              return (
-                <PaginationItem key={index}>
-                  <PaginationLink
-                    href="#"
-                    isActive={index + 1 === page}
-                    onClick={() => handlePageChange(index + 1)}
-                  >
-                    {index + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              );
-            }
-            if (index === 2) {
-              return <PaginationEllipsis key={index} />;
-            }
-          })}
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => handlePageChange(Math.min(page + 1, totalPages))}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
- 
+          </div>
+          <div className="flex justify-center flex-wrap mb-6"></div>
+        </div>
+        <div className="flex flex-col mx-auto gap-4 justify-center mb-5 max-w-4xl">
+          {renderStudent(page, pageSize, data, searchTerm, filterValue)}
+          {isLoading && (
+            <div className="flex items-center justify-center mt-4">
+              <p className="font-semibold mr-1">Loading</p>
+              <LoaderIcon className="animate-spin h-10 w-10" />
+            </div>
+          )}
+        </div>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => handlePageChange(Math.max(page - 1, 1))}
+              />
+            </PaginationItem>
+            {Array.from({ length: totalPages }, (_, index) => {
+              if (index < 2 || index >= totalPages - 2) {
+                return (
+                  <PaginationItem key={index}>
+                    <PaginationLink
+                      href="#"
+                      isActive={index + 1 === page}
+                      onClick={() => handlePageChange(index + 1)}
+                    >
+                      {index + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                );
+              }
+              if (index === 2) {
+                return <PaginationEllipsis key={index} />;
+              }
+            })}
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => handlePageChange(Math.min(page + 1, totalPages))}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </PageWrapper>
     </>
   );
 };

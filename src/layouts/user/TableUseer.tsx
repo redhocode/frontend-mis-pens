@@ -98,22 +98,25 @@ export default function TableUser() {
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Username is required"),
     password: Yup.string().required("Password is required"),
+    role: Yup.string().required("Role is required"),
   });
   const { mutate: CreateOrUpdateUsers } = useMutation({
     mutationFn: async (data: any) => {
       try {
-        const { id, username, password } = formik.values;
+        const { id, username, password, role } = formik.values;
         let userRes;
 
         if (id) {
           userRes = await axiosInstance.patch(`/users/${id}`, {
             username,
             password,
+            role,
           });
         } else {
-          userRes = await axiosInstance.post("/users", {
+          userRes = await axiosInstance.post("/users/register", {
           username,
           password,
+          role,
           });
         }
         return userRes;
@@ -185,6 +188,7 @@ export default function TableUser() {
     initialValues: {
       username: "",
       password: "",
+      role: "",
       id: "",
     },
     validationSchema: validationSchema,
@@ -226,6 +230,7 @@ export default function TableUser() {
           </TableCell>
           <TableCell className="w-[50px]">{currentOrderNumber}</TableCell>
           <TableCell>{user.username}</TableCell>
+          <TableCell>{user.role}</TableCell>
           {/* <TableCell>{user.password}</TableCell> */}
           <TableCell className="flex gap-2">
             <Dialog>
@@ -242,6 +247,7 @@ export default function TableUser() {
                         id: user.id,
                         username: user.username,
                         password: user.password,
+                        role: user.role,
                       });
                     }}
                   >
@@ -287,7 +293,7 @@ export default function TableUser() {
                               </div>
                             ) : null}
                           </div>
-                          <div className="mb-4 flex flex-col">
+                          {/* <div className="mb-4 flex flex-col">
                             <Label htmlFor="password">Password</Label>
                             <span>{formik.values.password}</span>
                             <Input
@@ -304,6 +310,51 @@ export default function TableUser() {
                             formik.errors.password ? (
                               <div className="text-red-500">
                                 {formik.errors.password}
+                              </div>
+                            ) : null}
+                          </div> */}
+                          <div className="mb-4 flex-col flex">
+                            <Label htmlFor="role">Role</Label>
+                            <span>{formik.values.role}</span>
+                            <Field name="role" as="select">
+                              {({
+                                field,
+                              }: {
+                                field: {
+                                  value: string;
+                                  onChange: (
+                                    e: React.ChangeEvent<HTMLSelectElement>
+                                  ) => void;
+                                  onBlur: (
+                                    e: React.FocusEvent<HTMLSelectElement>
+                                  ) => void;
+                                };
+                              }) => (
+                                <>
+                                  <select
+                                    {...field}
+                                    value={formik.values.role}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                  >
+                                    <option value="" disabled>
+                                      role
+                                    </option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="Akademik">Akademik</option>
+                                    <option value="Administrasi">
+                                      Administrasi
+                                    </option>
+
+                                    {/* Tambahkan pilihan semester lainnya sesuai kebutuhan */}
+                                  </select>
+                                </>
+                              )}
+                            </Field>
+                            {formik.touched.role && formik.errors.role ? (
+                              <div className="text-red-500">
+                                {formik.errors.role}
                               </div>
                             ) : null}
                           </div>
@@ -438,6 +489,51 @@ export default function TableUser() {
                 <ErrorMessage name="image" component="div" className="text-red-500" />
               </div> */}
                         {/* Add other form fields similarly */}
+                        <div className="mb-4 flex-col flex">
+                          <Label htmlFor="role">Role</Label>
+                          <span>{formik.values.role}</span>
+                          <Field name="role" as="select">
+                            {({
+                              field,
+                            }: {
+                              field: {
+                                value: string;
+                                onChange: (
+                                  e: React.ChangeEvent<HTMLSelectElement>
+                                ) => void;
+                                onBlur: (
+                                  e: React.FocusEvent<HTMLSelectElement>
+                                ) => void;
+                              };
+                            }) => (
+                              <>
+                                <select
+                                  {...field}
+                                  value={formik.values.role}
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                >
+                                  <option value="" disabled>
+                                    role
+                                  </option>
+                                  <option value="Admin">Admin</option>
+                                  <option value="Akademik">Akademik</option>
+                                  <option value="Administrasi">
+                                    Administrasi
+                                  </option>
+
+                                  {/* Tambahkan pilihan semester lainnya sesuai kebutuhan */}
+                                </select>
+                              </>
+                            )}
+                          </Field>
+                          {formik.touched.role && formik.errors.role ? (
+                            <div className="text-red-500">
+                              {formik.errors.role}
+                            </div>
+                          ) : null}
+                        </div>
                         <Button type="submit" className="w-full">
                           Submit
                         </Button>
@@ -460,20 +556,21 @@ export default function TableUser() {
           />
         </div>
       </div>
-      <div className="rounded-md shadow py-2 mb-4">
-        <Table className="">
+      <div className="rounded-md shadow py-2 mb-4 px-4">
+        <Table className="shadow-md border">
           <TableCaption className="">Total Data : {totalUsers}</TableCaption>
-          <TableHeader className=" rounded-md">
+          <TableHeader className=" rounded-md bg-primary">
             <TableRow>
               <TableHead className="w-[100px] text-white" hidden>
                 Id
               </TableHead>
-              <TableHead className="text-gray-600 font-semibold">No</TableHead>
-              <TableHead className="text-gray-600 font-semibold">
-            Username
+              <TableHead className="text-white font-semibold">No</TableHead>
+              <TableHead className="text-white font-semibold">
+                Username
               </TableHead>
+              <TableHead className="text-white font-semibold">Role</TableHead>
 
-              <TableHead className="text-gray-600 font-semibold justify-center content-center ">
+              <TableHead className="text-white font-semibold justify-center content-center ">
                 Action
               </TableHead>
             </TableRow>

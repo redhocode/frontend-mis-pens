@@ -9,34 +9,58 @@ import loginUser from '../../features/user/loginUser';
 import { useToast } from '../ui/use-toast';
 import { Button } from '../ui/button';
 import { axiosInstance } from '@/lib/axios';
+import { jwtDecode } from "jwt-decode";
+import { JwtPayload } from "jsonwebtoken";
 const LoginForm = () => {
   const router = useRouter();
   const { toast } = useToast();
-  const handleLogin = async (
-    values: any,
-    { setSubmitting, setErrors }: any
-  ) => {
-    try {
-      const response = await loginUser(values);
-      const accessToken = response.data.accessToken;
-      localStorage.setItem("accessToken", accessToken);
+const handleLogin = async (values: any, { setSubmitting, setErrors }: any) => {
+  try {
+    const response = await loginUser(values);
+    // console.log("Respon login:", response); // Log seluruh objek respon
+    const data = response?.data; // Akses data respon dengan aman
+    // console.log("Data respon:", data); // Log properti data dari respon
 
-      // Tambahkan token auth ke header Axios secara default
-      axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-
-      // Redirect to dashboard after successful login
-      router.push("/dashboard");
-    } catch (error) {
-      // Handle login errors
-      toast({
-        title: "Login failed",
-        description: "Invalid username or password",
-        variant: "destructive",
-        className: "w-[400px] md:w-[300px]",
-      });
-      setSubmitting(false);
+    if (!data || !data.accessToken) {
+      throw new Error("Token akses tidak ditemukan dalam respon");
     }
-  };
+
+    const { accessToken } = data;
+    // Decode JWT untuk mendapatkan informasi peran pengguna
+    const decodedToken: JwtPayload = jwtDecode(
+      data.accessToken
+    ) as JwtPayload;
+
+    // Mendapatkan peran pengguna dari JWT
+    const userRole = decodedToken.role;
+
+    //  console.log("Token akses:", accessToken); // Pastikan token akses sudah ada
+
+    // Simpan token dalam penyimpanan lokal
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("username", values.username); // Misalnya, menyimpan nama pengguna
+    localStorage.setItem("role", userRole); // Misalnya, menyimpan peran pengguna
+    // Tambahkan token otorisasi ke header Axios default
+    axiosInstance.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${accessToken}`;
+
+    // Redirect ke dashboard setelah login berhasil
+    router.push("/dashboard");
+  } catch (error) {
+    // Tangani kesalahan login
+   // console.error("Kesalahan login:", error); // Log kesalahan untuk debugging
+    toast({
+      title: "Login gagal",
+      description: "Nama pengguna atau kata sandi salah",
+      variant: "destructive",
+      className: "w-[400px] md:w-[300px]",
+    });
+    setSubmitting(false);
+  }
+};
+
+
 
   return (
     <section>

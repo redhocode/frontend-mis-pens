@@ -41,7 +41,7 @@ import * as Yup from "yup";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   Pagination,
   PaginationContent,
@@ -53,24 +53,13 @@ import {
 } from "@/components/ui/pagination";
 import { Edit, Trash } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { title } from "process";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import React from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { Textarea } from "@/components/ui/textarea";
 import { link } from "fs";
+import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function TableActivies() {
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const pageSize = 3; // Tentukan nilai pageSize
   const [page, setPage] = useState(1); // Tentukan nilai awal page
   const {
@@ -95,45 +84,60 @@ export default function TableActivies() {
     setPage(newPage);
   };
   const { toast } = useToast();
-const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
+  const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
     description: Yup.string().required("Description is required"),
     date: Yup.date().required("Date is required"),
     link: Yup.string().optional(),
-// image: Yup.mixed()
-//   .test('fileSize', 'File size too large', (value: any) => {
-//     const file = value as File | undefined;
-//     return !file || (file && file.size <= MAX_FILE_SIZE);
-//   })
-//   .test('fileType', 'Invalid file type', (value: any) => {
-//     const file = value as File | undefined;
-//     return !file || (file && file.type.includes('image'));
-//   }),
+    image: Yup.mixed()
+      .test("fileSize", "File size too large", (value: any) => {
+        const file = value as File | undefined;
+        return !file || file.size <= MAX_FILE_SIZE;
+      })
+      .test("fileType", "Invalid file type", (value: any) => {
+        const file = value as File | undefined;
+        return (
+          !file ||
+          (typeof file.type === "string" && file.type.includes("image"))
+        );
+      }),
   });
+
   const { mutate: CreateOrUpdateActivity } = useMutation({
     mutationFn: async (data: any) => {
       try {
-        const { id, title, description, date, link } = formik.values;
+        const { id, title, description, date, link, image } = formik.values;
+        // Create FormData object
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("date", date);
+        formData.append("link", link);
+        if (image !== null) {
+          formData.append("image", image);
+        }
+
         let activityRes;
 
         if (id) {
-          activityRes = await axiosInstance.patch(`/activitys/${id}`, {
-            title,
-            description,
-            date,
-            // image,
-            link,
-          });
+          activityRes = await axiosInstance.patch(
+            `/activitys/${id}`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
         } else {
-          activityRes = await axiosInstance.post("/activitys", {
-            title,
-            description,
-            date,
-            // image,
-            link,
+          activityRes = await axiosInstance.post("/activitys", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           });
         }
+
         return activityRes;
       } catch (error) {
         console.error(error);
@@ -155,6 +159,7 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
       refetchActivity();
     },
   });
+
   //Delete handler function
   const { mutate: DeleteActivity } = useMutation({
     mutationFn: async (id: string) => {
@@ -179,17 +184,25 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
     },
   });
   // Submit handler function
+
+  const [preview, setPreview] = useState<string | null>(null);
   const hendlerSubmit = async (values: any) => {
     try {
+      // Kirim data ke fungsi CreateOrUpdateActivity
       await CreateOrUpdateActivity(values);
       refetchActivity();
+      formik.resetForm();
+
+      // Tampilkan pemberitahuan sukses
       toast({
         title: "Success",
         description: "Data has been successfully posted",
         className: "w-[400px] md:w-[300px]",
       });
-      formik.resetForm(); // Reset the form after successful mutation
+
+      // Atur ulang formulir setelah mutasi berhasil
     } catch (error) {
+      // Tampilkan pemberitahuan kesalahan
       toast({
         title: "Error",
         className: "w-[400px] md:w-[300px]",
@@ -198,8 +211,8 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
       });
     }
   };
-//hedler submit image
 
+  //hedler submit image
 
   const formik = useFormik({
     initialValues: {
@@ -207,7 +220,7 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
       description: "",
       date: "",
       link: "",
-      // image: "",
+      image: "",
       id: "",
     },
     validationSchema: validationSchema,
@@ -243,16 +256,47 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
     return activityToRender?.map((activity: Activity) => {
       const currentOrderNumber = orderNumber++;
       return (
-        <TableRow key={activity.id}>
+        <TableRow key={activity.id} className="hover:bg-slate-100">
           <TableCell className="w-[100px]" hidden>
             {activity.id}
           </TableCell>
           <TableCell className="w-[50px]">{currentOrderNumber}</TableCell>
-          <TableCell>{activity.title}</TableCell>
+
+          <TableCell style={{ maxWidth: "200px" }}>
+            {activity.title.length > 50
+              ? activity.title.substring(0, 50) + "..."
+              : activity.title}
+          </TableCell>
+
           <TableCell>{activity.date}</TableCell>
-          <TableCell>{activity.description}</TableCell>
-          {/* <TableCell>{activity.image}</TableCell> */}
-          <TableCell>{activity.link}</TableCell>
+
+          <TableCell>
+            {activity.description.length > 100
+              ? activity.description.substring(0, 100) + "..."
+              : activity.description}
+          </TableCell>
+          <TableCell>
+            {!activity.image ? ( // Periksa jika tidak ada gambar
+              <Skeleton className="h-[40px] w-full rounded-xl" />
+            ) : (
+              <img
+                src={
+                  process.env.NODE_ENV === "production"
+                    ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD + activity.image
+                    : process.env.NEXT_PUBLIC_URL_IMAGE_DEV + activity.image
+                }
+                alt="Activity Image "
+                className="object-cover h-[40px]"
+              />
+            )}
+          </TableCell>
+
+          <TableCell className="w-[10px]">
+            {activity.link && activity.link.length > 100
+              ? activity.link.substring(0, 100) + "..."
+              : activity.link}
+          </TableCell>
+
           <TableCell className="flex gap-2">
             <Dialog>
               <DialogTrigger asChild>
@@ -270,6 +314,7 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
                         description: activity.description,
                         date: activity.date,
                         link: activity.link,
+                        image: activity.image,
                       });
                     }}
                   >
@@ -288,7 +333,7 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
                   validationSchema={validationSchema}
                   onSubmit={hendlerSubmit}
                 >
-                  <ScrollArea className="h-full w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
+                  <ScrollArea className="h-[700px] w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
                     <Form
                       className="flex flex-wrap "
                       onSubmit={formik.handleSubmit}
@@ -369,7 +414,52 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
                               </div>
                             ) : null}
                           </div>
-                          <div className="flex flex-col mb-4"></div>
+                          <div className="flex flex-col mb-4">
+                            <Label htmlFor="image">Picture</Label>
+                            <Input
+                              id="image"
+                              name="image"
+                              type="file"
+                              className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              onChange={(e) => {
+                                if (
+                                  e.target.files &&
+                                  e.target.files.length > 0
+                                ) {
+                                  const reader = new FileReader();
+                                  reader.onload = (event) => {
+                                    if (reader.readyState === 2) {
+                                      const file = e.target.files![0];
+                                      if (file) {
+                                        formik.setFieldValue("image", file);
+                                        setPreview(reader.result as string);
+                                      }
+                                    }
+                                  };
+                                  reader.readAsDataURL(e.target.files[0]);
+                                }
+                              }}
+                              onBlur={formik.handleBlur}
+                            />
+                            {formik.touched.image && formik.errors.image && (
+                              <div className="text-red-500">
+                                {formik.errors.image}
+                              </div>
+                            )}
+                            {preview && ( // Tampilkan pratinjau gambar jika ada
+                              <img
+                                src={preview}
+                                alt="Selected"
+                                className="mt-2 max-w-full h-auto"
+                              />
+                            )}
+
+                            <ErrorMessage
+                              name="image"
+                              component="div"
+                              className="text-red-500"
+                            />
+                          </div>
                           {/* Add other form fields similarly */}
                           <Button type="submit" className="w-full">
                             Submit
@@ -402,7 +492,9 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => DeleteActivity(activity.id)}>
+                  <AlertDialogAction
+                    onClick={() => DeleteActivity(activity.id)}
+                  >
                     Continue
                   </AlertDialogAction>
                 </AlertDialogFooter>
@@ -438,7 +530,7 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
                 validationSchema={validationSchema}
                 onSubmit={hendlerSubmit}
               >
-                <ScrollArea className="h-full w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
+                <ScrollArea className="h-[700px] w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
                   <Form
                     className="flex flex-wrap "
                     onSubmit={formik.handleSubmit}
@@ -519,23 +611,50 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
                             </div>
                           ) : null}
                         </div>
-               {/* <div className="flex flex-col mb-4">
-                <Label htmlFor="picture">Picture</Label>
-                <Input
-                  id="picture"
-                  name="image"
-                  type="file"
-                  className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  onChange={(event) => {
-                    if (event.currentTarget.files) {
-                      formik.setFieldValue('image', event.currentTarget.files[0]);
-                    }
-                  }}
-                  onBlur={formik.handleBlur}
-                  accept="image/*" // Hanya izinkan file gambar
-                />
-                <ErrorMessage name="image" component="div" className="text-red-500" />
-              </div> */}
+                        <div className="flex flex-col mb-4">
+                          <Label htmlFor="image">Picture</Label>
+                          <Input
+                            id="image"
+                            name="image"
+                            type="file"
+                            className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            onChange={(e) => {
+                              if (e.target.files && e.target.files.length > 0) {
+                                const reader = new FileReader();
+                                reader.onload = (event) => {
+                                  if (reader.readyState === 2) {
+                                    const file = e.target.files![0];
+                                    if (file) {
+                                      formik.setFieldValue("image", file);
+                                      setPreview(reader.result as string);
+                                    }
+                                  }
+                                };
+                                reader.readAsDataURL(e.target.files[0]);
+                              }
+                            }}
+                            onBlur={formik.handleBlur}
+                          />
+                          {formik.touched.image && formik.errors.image && (
+                            <div className="text-red-500">
+                              {formik.errors.image}
+                            </div>
+                          )}
+                          {preview && ( // Tampilkan pratinjau gambar jika ada
+                            <img
+                              src={preview}
+                              alt="Selected"
+                              className="mt-2 max-w-full h-auto"
+                            />
+                          )}
+
+                          <ErrorMessage
+                            name="image"
+                            component="div"
+                            className="text-red-500"
+                          />
+                        </div>
+
                         {/* Add other form fields similarly */}
                         <Button type="submit" className="w-full">
                           Submit
@@ -559,31 +678,23 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5 MB (dalam byt
           />
         </div>
       </div>
-      <div className="rounded-md shadow py-2 mb-4">
-        <Table className="">
+      <div className="rounded-md shadow py-2 mb-4 px-4">
+        <Table className="shadow-md border-2">
           <TableCaption className="">Total Data : {totalStudents}</TableCaption>
-          <TableHeader className=" rounded-md">
+          <TableHeader className=" rounded-md bg-primary">
             <TableRow>
               <TableHead className="w-[100px] text-white" hidden>
                 Id
               </TableHead>
-              <TableHead className="text-gray-600 font-semibold">No</TableHead>
-              <TableHead className="text-gray-600 font-semibold">
-                Title
-              </TableHead>
-              <TableHead className="text-gray-600 font-semibold">
-                Date
-              </TableHead>
-              <TableHead className="text-gray-600 font-semibold">
+              <TableHead className="text-white font-semibold">No</TableHead>
+              <TableHead className="text-white font-semibold">Title</TableHead>
+              <TableHead className="text-white font-semibold">Date</TableHead>
+              <TableHead className="text-white font-semibold">
                 Description
               </TableHead>
-              {/* <TableHead className="text-gray-600 font-semibold">
-                Image
-              </TableHead> */}
-              <TableHead className="text-gray-600 font-semibold">
-                Link
-              </TableHead>
-              <TableHead className="text-gray-600 font-semibold justify-center content-center ">
+              <TableHead className="text-white font-semibold">Image</TableHead>
+              <TableHead className="text-white font-semibold">Link</TableHead>
+              <TableHead className="text-white font-semibold justify-center content-center ">
                 Action
               </TableHead>
             </TableRow>

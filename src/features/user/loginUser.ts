@@ -1,32 +1,33 @@
-import { axiosInstance } from '../../lib/axios';
+import { axiosInstance } from "../../lib/axios";
 
 interface UserData {
   username: string;
   password: string;
+  role: string;
   userId: string;
 }
 
 const loginUser = async (userData: UserData) => {
   try {
-    // Make the POST request to the backend
-    const response = await axiosInstance.post('/users/login', userData);
-    
-    // Ensure that the response structure matches what you expect
-    const { accessToken } = response.data;
+    const response = await axiosInstance.post("/users/login", userData);
+  //  console.log("Response from server:", response.data); // Log respons dari server
+    const { accessToken } = response.data.data;
+   // console.log("Access token:", accessToken); // Log token JWT
 
     if (!accessToken) {
-      throw new Error('Access token is missing');
+      throw new Error("Access token is missing");
     }
-    
-    // Store tokens and username in both localStorage and cookies
-    localStorage.setItem('accessToken', accessToken);
-    // document.cookie = `accessToken=${accessToken}; path=/`; // Store in a cookie with path set to root
-    
-    // Return response data
+
+    sessionStorage.setItem("accessToken", accessToken);
+
     return response.data;
-  } catch (error:any) {
-    // Handle errors and throw custom error message
-    throw error.response?.data?.message || error.message || 'An error occurred while logging in';
+  } catch (error: any) {
+    console.error("Login error:", error); // Log kesalahan
+    throw (
+      error.response?.data?.message ||
+      error.message ||
+      "An error occurred while logging in"
+    );
   }
 };
 

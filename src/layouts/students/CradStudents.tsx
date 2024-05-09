@@ -44,9 +44,12 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PageWrapper } from "@/components/animate/page-wrapper";
 
 const CradStudentsUser = () => {
-  const [totalFilteredData, setTotalFilteredData] = useState<number | null>(null);
+  const [totalFilteredData, setTotalFilteredData] = useState<number | null>(
+    null
+  );
 
   const pageSize = 5;
   const [page, setPage] = useState(1);
@@ -70,29 +73,28 @@ const CradStudentsUser = () => {
     setPage(newPage);
   };
 
- const handleFilterChange = (value: string) => {
-  //console.log("New Filter Value:", value); // Tambahkan logging di sini
-  setFilterValue(value);
-  
-  // Setelah Anda melakukan pemfilteran data, update totalFilteredData di sini
-  const filteredData = data.filter((student: Student) => {
-    // Logika pemfilteran data sesuai dengan value dari filter
-    if (value === "Aktif") {
-      return student.status === "Aktif";
-    } else if (value === "1.8") {
-      return student.ipk < 1.8;
-    } else if (value === "Cuti") {
-      return student.status === "Cuti";
-    } else {
-      // Jika tidak ada filter yang sesuai, maka data tidak difilter
-      return true;
-    }
-  });
-  
-  setTotalFilteredData(filteredData.length);
-};
+  const handleFilterChange = (value: string) => {
+    //console.log("New Filter Value:", value); // Tambahkan logging di sini
+    setFilterValue(value);
 
+    // Setelah Anda melakukan pemfilteran data, update totalFilteredData di sini
+    const filteredData = data.filter((student: Student) => {
+      // Logika pemfilteran data sesuai dengan value dari filter
+      if (value === "Aktif") {
+        return student.status === "Aktif";
+      } else if (value === "1.8") {
+        return student.ipk < 1.8;
+      } else if (value === "Cuti") {
+        return student.status === "Cuti";
+      } else {
+        // Jika tidak ada filter yang sesuai, maka data tidak difilter
+        return true;
+      }
+    });
 
+    //Set totalFilteredData setelah filter diterapkan
+    setTotalFilteredData(filteredData?.length ?? 0);
+  };
 
   const renderStudent = (
     page: number,
@@ -116,9 +118,15 @@ const CradStudentsUser = () => {
       filteredData = filteredData?.filter(
         (student) => student.status === "Cuti"
       );
+    } else if (filterValue === "Lulus") {
+      filteredData = filteredData?.filter(
+        (student) => student.status === "Lulus"
+      );
+    } else if (filterValue === "Semua Data") {
+      filteredData = filteredData?.filter((student) => true);
     }
     // Hitung jumlah data setelah filter
-const totalFilteredData = filteredData?.length || 0;
+    const totalFilteredData = filteredData?.length || 0;
 
     // Filter berdasarkan searchTerm
     if (searchTerm) {
@@ -156,13 +164,21 @@ const totalFilteredData = filteredData?.length || 0;
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {/* <Avatar className="w-[200px] h-[200px] justify-center mx-auto mb-5 rounded-none">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>Uhuy</AvatarFallback>
-            </Avatar> */}
-                  <div className="flex flex-col space-y-3 mt-2 pb-4">
-      <Skeleton className="h-[125px] w-full rounded-xl" />
-    </div>
+            <div className="flex flex-col space-y-3 mt-2 pb-4 justify-center mx-auto">
+              {!student.image ? ( // Periksa jika tidak ada gambar
+                <Skeleton className="h-[294px] w-full rounded-xl" />
+              ) : (
+                <img
+                  src={
+                    process.env.NODE_ENV === "production"
+                      ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD + student.image
+                      : process.env.NEXT_PUBLIC_URL_IMAGE_DEV + student.image
+                  }
+                  alt="Activity Image"
+                  className="object-cover h-[294px]"
+                />
+              )}
+            </div>
             <div className="flex justify-between flex-col gap-3 outline outline-1 py-4 px-4 outline-slate-100 rounded-md shadow-sm">
               <div className="flex justify-between gap-3">
                 <div className="flex flex-col font-semibold">
@@ -187,7 +203,6 @@ const totalFilteredData = filteredData?.length || 0;
             </div>
           </CardContent>
           <CardFooter className="flex justify-between"></CardFooter>
-  
         </Card>
       );
     });
@@ -196,7 +211,6 @@ const totalFilteredData = filteredData?.length || 0;
   return (
     <>
       <div className="flex justify-center flex-col mx-auto">
-       
         <div className="flex flex-col justify-center mb-12  ">
           <h1 className="text-2xl font-bold justify-center mb-4 mx-auto uppercase">
             - Data Mahasiswa -
@@ -216,7 +230,6 @@ const totalFilteredData = filteredData?.length || 0;
               </p>
             </section>
           </div>
-     
         </div>
         <div className="flex justify-center flex-wrap">
           <Input
@@ -236,12 +249,21 @@ const totalFilteredData = filteredData?.length || 0;
               <SelectGroup>
                 <SelectLabel>Filter Data Mahasiswa</SelectLabel>
                 <SelectItem
+                  value="Semua Data"
+                  onClick={() => handleFilterChange("Semua Data")}
+                >
+                  Semua Data
+                </SelectItem>
+                <SelectItem
                   value="Aktif"
                   onClick={() => handleFilterChange("Aktif")}
                 >
                   Aktif
                 </SelectItem>
-                <SelectItem value="1.8" onClick={() => handleFilterChange("1.8")}>
+                <SelectItem
+                  value="1.8"
+                  onClick={() => handleFilterChange("1.8")}
+                >
                   IPK Dibawah 1.8
                 </SelectItem>
                 <SelectItem
@@ -250,19 +272,27 @@ const totalFilteredData = filteredData?.length || 0;
                 >
                   Cuti
                 </SelectItem>
+                {/* <SelectItem
+                  value="Lulus"
+                  onClick={() => handleFilterChange("Lulus")}
+                >
+                  Lulus
+                </SelectItem> */}
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
         <hr className="mb-4" />
       </div>
-      <div className="flex justify-center mx-auto mb-4 font-bold
-      ">
-
+      <div
+        className="flex justify-center mx-auto mb-4 font-bold
+      "
+      >
         {totalFilteredData !== null && (
-  <p>Jumlah data Mahasiswa yang ditampilkan: {totalFilteredData}</p>
-)}
+          <p>Jumlah data Mahasiswa yang ditampilkan: {totalFilteredData}</p>
+        )}
       </div>
+
       <div className="flex flex-wrap mx-auto gap-4 justify-center mb-5">
         {renderStudent(page, pageSize, data, searchTerm, filterValue)}
         {isLoading && (
@@ -272,6 +302,7 @@ const totalFilteredData = filteredData?.length || 0;
           </div>
         )}
       </div>
+
       <Pagination>
         <PaginationContent>
           <PaginationItem>
@@ -304,7 +335,6 @@ const totalFilteredData = filteredData?.length || 0;
           </PaginationItem>
         </PaginationContent>
       </Pagination>
-      
     </>
   );
 };

@@ -472,7 +472,7 @@ export default function TableAcademic() {
                         </div>
                         <div className="mb-4 flex flex-col">
                           <Label htmlFor="description">Description</Label>
-                            <Textarea
+                          <Textarea
                             id="description"
                             name="description"
                             placeholder="Enter your description"
@@ -480,13 +480,13 @@ export default function TableAcademic() {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.description}
-                            />
-                            {formik.touched.description && formik.errors.description ? (
+                          />
+                          {formik.touched.description &&
+                          formik.errors.description ? (
                             <div className="text-red-500">
                               {formik.errors.description}
                             </div>
                           ) : null}
-                       
                         </div>
                         <div className="flex flex-col mb-4">
                           <Label htmlFor="link">Link</Label>
@@ -511,7 +511,6 @@ export default function TableAcademic() {
                           Submit
                         </Button>
                       </div>
-
                     </div>
                   </Form>
                 </ScrollArea>
@@ -530,28 +529,28 @@ export default function TableAcademic() {
           />
         </div>
       </div>
-      <div className="rounded-md shadow py-2 mb-4">
-        <Table className="">
+      <div className="rounded-md shadow py-2 mb-4 px-4">
+        <Table className="shadow-md border-2">
           <TableCaption className="">Total Data : {totalStudents}</TableCaption>
-          <TableHeader className=" rounded-md">
-            <TableRow>
+          <TableHeader className="rounded-md bg-primary">
+            <TableRow >
               <TableHead className="w-[100px] text-white" hidden>
                 Id
               </TableHead>
-              <TableHead className="text-gray-600 font-semibold">No</TableHead>
-              <TableHead className="text-gray-600 font-semibold">
+              <TableHead className="text-white font-semibold">No</TableHead>
+              <TableHead className="text-white font-semibold">
                 Title
               </TableHead>
-              <TableHead className="text-gray-600 font-semibold">
+              <TableHead className="text-white font-semibold">
                 Date
               </TableHead>
-              <TableHead className="text-gray-600 font-semibold">
+              <TableHead className="text-white font-semibold">
                 Description
               </TableHead>
-              <TableHead className="text-gray-600 font-semibold">
+              <TableHead className="text-white font-semibold">
                 Link
               </TableHead>
-              <TableHead className="text-gray-600 font-semibold justify-center content-center ">
+              <TableHead className="text-white font-semibold justify-center content-center ">
                 Action
               </TableHead>
             </TableRow>

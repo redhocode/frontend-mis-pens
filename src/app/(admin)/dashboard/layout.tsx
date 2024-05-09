@@ -6,6 +6,27 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  metadataBase: new URL("https://pjj.pens.ac.id"),
+  icons: {
+    icon: [
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/public/images/pens.png",
+        href: "/public/images/pens.png",
+      },
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/public/images/pens.png",
+        href: "/public/images/pens.png",
+      },
+    ],
+  },
+  title: "Dashboard - D3 PJJ Teknik Informatika - Politeknik Elektro Negeri Surabaya",
+  description:
+    "Dashboard - SIM PJJ Teknik Informatika - Politeknik Elektro Negeri Surabaya",
+};
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <section>
