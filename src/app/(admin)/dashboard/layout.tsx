@@ -7,6 +7,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import { Metadata } from "next";
+import Script from "next/script";
 export const metadata: Metadata = {
   metadataBase: new URL("https://pjj.pens.ac.id"),
   icons: {
@@ -29,16 +30,19 @@ export const metadata: Metadata = {
 };
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <section>
-      <div className="ml-[270px] mt-3 mx-5 md:ml-4 ">
-        
-        {/* <Navbar /> */}
-        <Sidebar />
-        <Providers>
-          <div className="flex flex-col flex-1 mx-4 my-4 md:mx-8 md:pl-2">{children}</div>
-        </Providers>
-      </div>
-    </section>
+  
+        <section>
+          <div className="ml-[270px] mt-3 mx-5 md:ml-4 ">
+            {/* <Navbar /> */}
+            <Sidebar />
+            <Providers>
+              <div className="flex flex-col flex-1 mx-4 my-4 md:mx-8 md:pl-2">
+                {children}
+              </div>
+            </Providers>
+          </div>
+        </section>
+     
   );
 }
 
