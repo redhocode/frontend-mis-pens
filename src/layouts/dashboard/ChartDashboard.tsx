@@ -30,7 +30,7 @@ const ChartDashboard = () => {
   }, []);
 
   // Periksa apakah pengguna adalah admin
-  const isAdmin = role === "admin";
+  const isAdmin = role === "Admin";
 
   return (
     <div className="flex flex-col px-4 py-4 w-full justify-between gap-4">

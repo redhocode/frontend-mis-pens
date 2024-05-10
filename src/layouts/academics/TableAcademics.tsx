@@ -67,7 +67,6 @@ import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Textarea } from "@/components/ui/textarea";
-import Tiptap from "@/components/tiptap";
 export default function TableAcademic() {
 
   const pageSize = 3; // Tentukan nilai pageSize

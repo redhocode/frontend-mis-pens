@@ -122,8 +122,6 @@ const CradStudentsUser = () => {
       filteredData = filteredData?.filter(
         (student) => student.status === "Lulus"
       );
-    } else if (filterValue === "Semua Data") {
-      filteredData = filteredData?.filter((student) => true);
     }
     // Hitung jumlah data setelah filter
     const totalFilteredData = filteredData?.length || 0;
