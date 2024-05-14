@@ -1,5 +1,5 @@
 "use client";
-import { useFetchStudent } from "@/features";
+import { useFetchScholarship, useFetchStudent } from "@/features";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useState } from "react";
 import {
@@ -34,7 +34,7 @@ import {
 import { CirclePlus, LoaderIcon } from "lucide-react";
 import { axiosInstance } from "@/lib/axios";
 import { useQuery, useMutation, Mutation } from "@tanstack/react-query";
-import type { Student } from "@/types";
+import type { Scholarship, Student } from "@/types";
 import { Button } from "@/components/ui/button";
 import { ErrorMessage, useFormik, Formik, Field, Form } from "formik";
 import * as Yup from "yup";
@@ -55,13 +55,14 @@ import { Edit, Trash } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function TableStudent() {
-  const pageSize = 3; // Tentukan nilai pageSize
+  const pageSize = 10; // Tentukan nilai pageSize
   const [page, setPage] = useState(1); // Tentukan nilai awal page
   const {
     data,
     isLoading,
     refetch: refetchStudents,
   } = useFetchStudent(page, pageSize);
+  const {data: dataScholarship} = useFetchScholarship();
   // Mendapatkan total halaman dari data
   // Hitung total halaman berdasarkan jumlah data dan ukuran halaman
   const totalStudents = data?.length || 0; // Menggunakan data langsung, karena `useFetchStudent` sudah mengembalikan data, bukan respon lengkap
@@ -108,7 +109,7 @@ export default function TableStudent() {
   const { mutate: CreateOrUpdateStudent } = useMutation({
     mutationFn: async () => {
       try {
-        const { id, name, nrp, ipk, major, year, semester, status, image } =
+        const { id, name, nrp, ipk, major, year, semester, status, image ,receivedAwardId} =
           formik.values;
         let studentsRes;
         const formData = new FormData();
@@ -119,6 +120,8 @@ export default function TableStudent() {
         formData.append("year", year);
         formData.append("semester", semester);
         formData.append("status", status);
+        formData.append("receivedAwardId", receivedAwardId);
+
         if (image !== null) {
           formData.append("image", image);
         }
@@ -187,8 +190,15 @@ export default function TableStudent() {
   // Submit handler function
 
   const [preview, setPreview] = useState<string | null>(null);
+  //remove image
+  const handleRemoveImage = () => {
+    setPreview(null); // Hapus pratinjau gambar
+    formik.setFieldValue("image", ""); // Set nilai image ke string kosong
+  }
   const hendlerSubmit = async (values: any) => {
     try {
+       values.receivedAwardId = values.receivedAwardId;
+
       await CreateOrUpdateStudent(values);
       refetchStudents();
       toast({
@@ -220,6 +230,8 @@ export default function TableStudent() {
       status: "",
       id: "",
       image: "",
+      receivedAwardId: "",
+      receivedAwardName: "",
     },
     validationSchema: validationSchema,
     onSubmit: hendlerSubmit,
@@ -287,8 +299,15 @@ export default function TableStudent() {
                     : process.env.NEXT_PUBLIC_URL_IMAGE_DEV + student.image
                 }
                 alt="Image"
-                className="object-cover"
+                className="object-cover h-10 cursor-pointer transition-transform duration-300 hover:scale-110"
               />
+            )}
+          </TableCell>
+          <TableCell>
+            {!student.receivedAwardName ? (
+              <span>Not Receiving Scholarship</span>
+            ) : (
+              <span>{student.receivedAwardName}</span>
             )}
           </TableCell>
           <TableCell className="flex gap-2">
@@ -312,8 +331,17 @@ export default function TableStudent() {
                         year: student.year.toString(),
                         semester: student.semester.toString(),
                         status: student.status,
-                        image: student.image,
+                        // receivedAwardName: student.receivedAwardName,
                       });
+                      setPreview(
+                        student.image
+                          ? process.env.NODE_ENV === "production"
+                            ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD +
+                              student.image
+                            : process.env.NEXT_PUBLIC_URL_IMAGE_DEV +
+                              student.image
+                          : null
+                      );
                     }}
                   >
                     <Edit name="Edit" className="mr-2" />{" "}
@@ -377,7 +405,7 @@ export default function TableStudent() {
                             ) : null}
                           </div>
                           <div className="mb-4 flex flex-col">
-                            <Label htmlFor="major">Jurusan</Label>
+                            <Label htmlFor="major">Program Study</Label>
                             <span>{formik.values.major}</span>
                             <RadioGroup className="grid grid-cols-2 gap-2 mt-4">
                               <div className="flex items-center space-x-2">
@@ -424,7 +452,7 @@ export default function TableStudent() {
                             ) : null}
                           </div>
                           <div className="mb-4">
-                            <Label htmlFor="year">Tahun Angkatan</Label>
+                            <Label htmlFor="year">Class Year</Label>
                             <span className="ml-2">{formik.values.year}</span>
                             <Field name="year" as="select">
                               {({
@@ -585,6 +613,80 @@ export default function TableStudent() {
                               </div>
                             ) : null}
                           </div>
+                          <div className="mb-4 flex flex-col">
+                            <Label htmlFor="receivedAwardId">
+                              Scholarship of
+                            </Label>
+                            <Field name="receivedAwardId" as="select">
+                              {({
+                                field,
+                                form,
+                              }: {
+                                field: {
+                                  value: string;
+                                  onChange: (
+                                    e: React.ChangeEvent<HTMLSelectElement>
+                                  ) => void;
+                                  onBlur: (
+                                    e: React.FocusEvent<HTMLSelectElement>
+                                  ) => void;
+                                };
+                                form: {
+                                  values: { status: string };
+                                  setFieldValue: (
+                                    field: string,
+                                    value: any
+                                  ) => void;
+                                  errors: { receivedAwardId?: string };
+                                  touched: { receivedAwardId?: boolean };
+                                };
+                              }) => (
+                                <>
+                                  <select
+                                    {...field}
+                                    value={formik.values.receivedAwardId}
+                                    onChange={(e) => {
+                                      field.onChange(e);
+                                      formik.setFieldValue(
+                                        "receivedAwardId",
+                                        e.target.value
+                                      );
+                                    }}
+                                    onBlur={field.onBlur}
+                                    className={`w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                                      form.errors.receivedAwardId &&
+                                      form.touched.receivedAwardId
+                                        ? "border-red-500"
+                                        : ""
+                                    }`}
+                                  >
+                                    <option value="" disabled>
+                                      Pilih Beasiswa
+                                    </option>
+
+                                    {/* Mapping through scholarships data to render options */}
+                                    {dataScholarship &&
+                                      dataScholarship.map(
+                                        (scholarship: Scholarship) => (
+                                          <option
+                                            key={scholarship.id}
+                                            value={scholarship.id}
+                                          >
+                                            {scholarship.title}
+                                          </option>
+                                        )
+                                      )}
+                                  </select>
+                                  {form.errors.receivedAwardId &&
+                                    form.touched.receivedAwardId && (
+                                      <div className="text-red-500 text-sm mt-1">
+                                        {form.errors.receivedAwardId}
+                                      </div>
+                                    )}
+                                </>
+                              )}
+                            </Field>
+                          </div>
                           <div className="flex flex-col mb-4">
                             <Label htmlFor="image">Picture</Label>
                             <Input
@@ -618,11 +720,22 @@ export default function TableStudent() {
                               </div>
                             )}
                             {preview && ( // Tampilkan pratinjau gambar jika ada
-                              <img
-                                src={preview}
-                                alt="Selected"
-                                className="mt-2 max-w-full h-auto"
-                              />
+                              <div className="mt-2 flex items-center flex-col gap-2">
+                                <img
+                                  src={preview}
+                                  alt="Selected"
+                                  className="max-w-full h-auto"
+                                />
+
+                                {/* Tombol untuk menghapus gambar */}
+                                <Button
+                                  type="button"
+                                  className=" px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 w-full"
+                                  onClick={handleRemoveImage}
+                                >
+                                  Remove Image
+                                </Button>
+                              </div>
                             )}
 
                             <ErrorMessage
@@ -745,7 +858,7 @@ export default function TableStudent() {
                           ) : null}
                         </div>
                         <div className="mb-4 flex flex-col">
-                          <Label htmlFor="major">Jurusan</Label>
+                          <Label htmlFor="major">Program Study</Label>
                           <span>{formik.values.major}</span>
                           <RadioGroup className="grid grid-cols-2 gap-2 mt-4">
                             <div className="flex items-center space-x-2">
@@ -792,7 +905,7 @@ export default function TableStudent() {
                           ) : null}
                         </div>
                         <div className="mb-4 flex flex-col">
-                          <Label htmlFor="year">Tahun Angkatan</Label>
+                          <Label htmlFor="year">Class Year</Label>
                           <span>{formik.values.year}</span>
                           <Field name="year" as="select">
                             {({
@@ -940,8 +1053,7 @@ export default function TableStudent() {
                                   <option value="Lulus">Lulus</option>
                                   <option value="Aktif">Aktif</option>
                                   <option value="Cuti">Cuti</option>
-                                </select>
-                                {" "}
+                                </select>{" "}
                                 {formik.values.status === "Lulus" && (
                                   <select
                                     name="tahunLulus"
@@ -968,6 +1080,81 @@ export default function TableStudent() {
                             </div>
                           ) : null}
                         </div>
+                        <div className="mb-4 flex flex-col">
+                          <Label htmlFor="receivedAwardId">
+                            Scholarship of
+                          </Label>
+                          <Field name="receivedAwardId" as="select">
+                            {({
+                              field,
+                              form,
+                            }: {
+                              field: {
+                                value: string;
+                                onChange: (
+                                  e: React.ChangeEvent<HTMLSelectElement>
+                                ) => void;
+                                onBlur: (
+                                  e: React.FocusEvent<HTMLSelectElement>
+                                ) => void;
+                              };
+                              form: {
+                                values: { status: string };
+                                setFieldValue: (
+                                  field: string,
+                                  value: any
+                                ) => void;
+                                errors: { receivedAwardId?: string };
+                                touched: { receivedAwardId?: boolean };
+                              };
+                            }) => (
+                              <>
+                                <select
+                                  {...field}
+                                  value={formik.values.receivedAwardId}
+                                  onChange={(e) => {
+                                    field.onChange(e);
+                                    formik.setFieldValue(
+                                      "receivedAwardId",
+                                      e.target.value
+                                    );
+                                  }}
+                                  onBlur={field.onBlur}
+                                  className={`w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                                    form.errors.receivedAwardId &&
+                                    form.touched.receivedAwardId
+                                      ? "border-red-500"
+                                      : ""
+                                  }`}
+                                >
+                                  <option value="" disabled>
+                                    Pilih Beasiswa
+                                  </option>
+
+                                  {/* Mapping through scholarships data to render options */}
+                                  {dataScholarship &&
+                                    dataScholarship.map(
+                                      (scholarship: Scholarship) => (
+                                        <option
+                                          key={scholarship.id}
+                                          value={scholarship.id}
+                                        >
+                                          {scholarship.title}
+                                        </option>
+                                      )
+                                    )}
+                                </select>
+                                {form.errors.receivedAwardId &&
+                                  form.touched.receivedAwardId && (
+                                    <div className="text-red-500 text-sm mt-1">
+                                      {form.errors.receivedAwardId}
+                                    </div>
+                                  )}
+                              </>
+                            )}
+                          </Field>
+                        </div>
+
                         <div className="flex flex-col mb-4">
                           <Label htmlFor="image">Picture</Label>
                           <Input
@@ -1045,12 +1232,12 @@ export default function TableStudent() {
               </TableHead>
               <TableHead className="text-white font-semibold">No</TableHead>
               <TableHead className="text-white font-semibold">NRP</TableHead>
-              <TableHead className="text-white font-semibold">Nama</TableHead>
+              <TableHead className="text-white font-semibold">Name</TableHead>
               <TableHead className="text-white font-semibold">
-                Jurusan
+                Study Program
               </TableHead>
               <TableHead className="text-white font-semibold">
-                Angkatan
+                Class Year
               </TableHead>
               <TableHead className="text-white font-semibold">
                 Semester
@@ -1059,6 +1246,9 @@ export default function TableStudent() {
               <TableHead className="text-white font-semibold">Status</TableHead>
               <TableHead className="text-white font-semibold">
                 Picture
+              </TableHead>
+              <TableHead className="text-white font-semibold">
+                Scholarship Of
               </TableHead>
               <TableHead className="text-white font-semibold justify-center content-center ">
                 Action

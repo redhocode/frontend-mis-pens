@@ -68,7 +68,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Textarea } from "@/components/ui/textarea";
 export default function TableSholarships() {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const pageSize = 3; // Tentukan nilai pageSize
   const [page, setPage] = useState(1); // Tentukan nilai awal page
   const {
@@ -194,6 +193,29 @@ export default function TableSholarships() {
   });
   // Submit handler function
   const [preview, setPreview] = useState<string | null>(null);
+  //remove image
+  const handleRemoveImage = () => {
+    formik.setFieldValue("image", ""); // Set nilai image ke string kosong
+    setPreview(null); // Hapus pratinjau gambar
+  };
+  // Fungsi untuk menangani perubahan pada input gambar
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const reader = new FileReader();
+      const file = e.target.files[0];
+
+      // Setelah gambar selesai dimuat, atur nilai pratinjau dengan URL gambar yang dipilih
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+
+      // Membaca file gambar sebagai URL data
+      reader.readAsDataURL(file);
+
+      // Atur nilai formik untuk bidang gambar dengan file gambar yang dipilih
+      formik.setFieldValue("image", file);
+    }
+  };
   const hendlerSubmit = async (values: any) => {
     try {
       await CreateOrUpdateActivity(values);
@@ -311,9 +333,19 @@ export default function TableSholarships() {
                         description: scholarships.description,
                         date: scholarships.date,
                         link: scholarships.link,
-                        image: scholarships.image,
                       });
+                      setPreview(
+                        scholarships.image
+                          ? process.env.NODE_ENV === "production"
+                            ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD +
+                              scholarships.image
+                            : process.env.NEXT_PUBLIC_URL_IMAGE_DEV +
+                              scholarships.image
+                          : null // Jika tidak ada gambar, berikan nilai null
+                      );
+
                     }}
+
                   >
                     <Edit name="Edit" className="mr-2" />{" "}
                     {/* Tambahkan class mr-2 untuk memberikan margin kanan */}
@@ -330,7 +362,7 @@ export default function TableSholarships() {
                   validationSchema={validationSchema}
                   onSubmit={hendlerSubmit}
                 >
-                  <ScrollArea className="h-full w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
+                  <ScrollArea className="h-[700px] w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
                     <Form
                       className="flex flex-wrap "
                       onSubmit={formik.handleSubmit}
@@ -418,24 +450,7 @@ export default function TableSholarships() {
                               name="image"
                               type="file"
                               className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                              onChange={(e) => {
-                                if (
-                                  e.target.files &&
-                                  e.target.files.length > 0
-                                ) {
-                                  const reader = new FileReader();
-                                  reader.onload = (event) => {
-                                    if (reader.readyState === 2) {
-                                      const file = e.target.files![0];
-                                      if (file) {
-                                        formik.setFieldValue("image", file);
-                                        setPreview(reader.result as string);
-                                      }
-                                    }
-                                  };
-                                  reader.readAsDataURL(e.target.files[0]);
-                                }
-                              }}
+                              onChange={handleImageChange}
                               onBlur={formik.handleBlur}
                             />
                             {formik.touched.image && formik.errors.image && (
@@ -444,11 +459,22 @@ export default function TableSholarships() {
                               </div>
                             )}
                             {preview && ( // Tampilkan pratinjau gambar jika ada
-                              <img
-                                src={preview}
-                                alt="Selected"
-                                className="mt-2 max-w-full h-auto"
-                              />
+                              <div className="mt-2 flex items-center flex-col gap-2">
+                                <img
+                                  src={preview}
+                                  alt="Selected"
+                                  className="max-w-full h-auto"
+                                />
+                                
+                                {/* Tombol untuk menghapus gambar */}
+                                <Button
+                                  type="button"
+                                  className=" px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 w-full"
+                                  onClick={handleRemoveImage}
+                                >
+                                  Remove Image
+                                </Button>
+                              </div>
                             )}
 
                             <ErrorMessage

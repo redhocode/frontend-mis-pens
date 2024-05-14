@@ -71,7 +71,7 @@ export default function RootLayout({
       </head>
 
       <body className={`${inter.className}`} suppressHydrationWarning={true}>
-        <main className="">
+        <main className="bg-slate-100 dark:bg-zinc-900">
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

@@ -25,18 +25,7 @@ import {
 import type { Academic, Activity, Scholarship, Student } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-  SelectLabel,
-  SelectSeparator,
-  SelectGroup,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import { LoaderIcon } from "lucide-react";
 import {
   Pagination,
@@ -51,9 +40,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { useRouter } from "next/navigation";
+import DetailScholarship from "@/components/button/ButtonDetailScholarship";
 
 export const CradScholarships = () => {
-  const pageSize = 5;
+  const pageSize = 3;
   const [page, setPage] = useState(1);
   const [filterValue, setFilterValue] = useState("");
   const {
@@ -74,14 +66,13 @@ export const CradScholarships = () => {
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
+  
 
-  //   const handleFilterChange = (value: string) => {
-  //     console.log("New Filter Value:", value); // Tambahkan logging di sini
-  //     setFilterValue(value);
-  //   };
-  // const imageLoader = ({ src, width, quality }: { src: string, width: number, quality?: number }) => {
-  //   return `https://unsplash.com/photos/shallow-focus-photography-of-books-lUaaKCUANVI/`
-  // }
+
+
+
+  // Function to handle detail click
+
   const renderStudent = (
     page: number,
     pageSize: number,
@@ -94,19 +85,6 @@ export const CradScholarships = () => {
     const endIndex = Math.min(startIndex + pageSize, data?.length);
     // Filter berdasarkan filterValue
     let filteredData = data;
-    // if (filterValue === "Belum Lulus") {
-    //   filteredData = filteredData?.filter(
-    //     (academic: Academic) => student.status === "Belum Lulus"
-    //   );
-    // } else if (filterValue === "2") {
-    //   filteredData = filteredData?.filter((student) => student.ipk < 2);
-    // } else if (filterValue === "Cuti") {
-    //   filteredData = filteredData?.filter(
-    //     (student) => student.status === "Cuti"
-    //   );
-    // }
-
-    // Filter berdasarkan searchTerm
     if (searchTerm) {
       filteredData = filteredData?.filter((data: Scholarship) => {
         const searchTermLower = searchTerm.toLowerCase();
@@ -127,9 +105,13 @@ export const CradScholarships = () => {
     }
 
     const dataToRender = filteredData?.slice(startIndex, endIndex);
+
     return dataToRender?.map((data: Scholarship) => {
+    
       return (
-        <Card className="w-[500px] md:w-full" key={data.id}>
+        
+
+        <Card className="md:w-full w-[950px] max-h-screen" key={data.id}>
           <CardHeader>
             <CardTitle>
               <span>{data.title}</span>
@@ -147,8 +129,8 @@ export const CradScholarships = () => {
                         ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD + data.image
                         : process.env.NEXT_PUBLIC_URL_IMAGE_DEV + data.image
                     }
-                    alt="Activity Image h-[200px]"
-                    className="object-cover"
+                    alt="Activity Image"
+                    className="object-cover h-[200px] cursor-pointer w-full rounded-xl transasition hover:scale-105 duration-300"
                   />
                 )}
               </div>
@@ -162,21 +144,33 @@ export const CradScholarships = () => {
             </ScrollArea>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Link href={data.link} target="_blank" rel="noopener noreferrer">
-              <Button variant="ghost" className="ml-2 bg-primary text-white">
-                Lebih Lanjut
-              </Button>
-            </Link>
+            <Button variant="ghost" className="uppercase font-thin">
+              by: {data.username}
+            </Button>
+            {!data.link ? (
+              <span></span>
+            ) : (
+              <Link href={data.link} target="_blank" rel="noopener noreferrer">
+                <Button
+                  variant="ghost"
+                  className="ml-2 bg-primary text-white rounded-lg "
+                  >
+                  <span>Lebih Lanjut</span>
+                </Button>
+              </Link>
+            )}
+            <DetailScholarship id={data.id} key={data.id}/>
           </CardFooter>
         </Card>
+                
       );
     });
   };
-
+ 
   return (
     <>
       <div className="flex justify-center flex-col mx-auto mb-12">
-        <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl">
+        <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl bg-white text-zinc-900 px-4 py-4 rounded-lg shadow-md dark:bg-neutral-800 dark:text-white">
           {" "}
           <h1 className="text-4xl font-bold justify-center mb-4 mx-auto uppercase">
             Informasi Beasiswa
@@ -197,20 +191,21 @@ export const CradScholarships = () => {
             atau grup studi online untuk berinteraksi dengan sesama mahasiswa
             dan mendukung proses belajar Anda.
           </p>
-          <hr className="mt-4 ouline" />
         </div>
+
+        <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto" />
         <div className="flex justify-center flex-wrap">
           <Input
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
             placeholder="Cari data."
-            className="md:w-full mt-2 mb-2 w-[700px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 border border-gray-300"
+            className="md:w-full mt-2 mb-2 w-[700px] focus:outline-none border-gray-300 h-[50px]"
           />
         </div>
         <div className="flex justify-center flex-wrap mb-6"></div>
       </div>
-      <div className="flex gap-4 mb-5 justify-center md:flex-col">
+      <div className="flex gap-4 mb-5 justify-center md:flex-col flex-col mx-auto items-center">
         {renderStudent(page, pageSize, data, searchTerm, filterValue)}
         {isLoading && (
           <div className="flex items-center justify-center mt-4">

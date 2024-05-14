@@ -45,13 +45,14 @@ import {
 } from "@/components/ui/pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PageWrapper } from "@/components/animate/page-wrapper";
+import { Separator } from "@/components/ui/separator";
 
 const CradStudentsUser = () => {
   const [totalFilteredData, setTotalFilteredData] = useState<number | null>(
     null
   );
 
-  const pageSize = 5;
+  const pageSize = 3;
   const [page, setPage] = useState(1);
   const [filterValue, setFilterValue] = useState("");
   const {
@@ -152,7 +153,7 @@ const CradStudentsUser = () => {
     const studentsToRender = filteredData?.slice(startIndex, endIndex);
     return studentsToRender?.map((student: Student) => {
       return (
-        <Card className="w-[270px] md:w-full" key={student.id}>
+        <Card className="w-[270px] md:w-full dark:bg-zinc-800 " key={student.id}>
           <CardHeader>
             <CardTitle>
               <span>{student.name}</span>
@@ -173,7 +174,7 @@ const CradStudentsUser = () => {
                       : process.env.NEXT_PUBLIC_URL_IMAGE_DEV + student.image
                   }
                   alt="Activity Image"
-                  className="object-cover h-[294px]"
+                  className="object-cover h-[294px] transition duration-300 ease-in-out rounded-xl hover:scale-105 cursor-pointer"
                 />
               )}
             </div>
@@ -184,8 +185,10 @@ const CradStudentsUser = () => {
                   <span>Angkatan</span>
                   <span>Semester</span>
                   <span>IPK</span>
+                  <span>Beasiswa</span>
                 </div>
                 <div className="flex flex-col">
+                  <span>:</span>
                   <span>:</span>
                   <span>:</span>
                   <span>:</span>
@@ -196,6 +199,7 @@ const CradStudentsUser = () => {
                   <span>{student.year}</span>
                   <span>{student.semester}</span>
                   <span>{student.ipk}</span>
+                  <span>{student.receivedAwardName}</span>
                 </div>
               </div>
             </div>
@@ -209,12 +213,12 @@ const CradStudentsUser = () => {
   return (
     <>
       <div className="flex justify-center flex-col mx-auto">
-        <div className="flex flex-col justify-center mb-12  ">
+        <div className="flex flex-col mb-12   bg-white text-zinc-900 px-4 py-4 rounded-lg shadow-md dark:bg-neutral-800 dark:text-white max-w-4xl mx-auto justify-center">
           <h1 className="text-2xl font-bold justify-center mb-4 mx-auto uppercase">
             - Data Mahasiswa -
           </h1>
           <div className="">
-            <section className="block mx-auto container max-w-4xl text-justif">
+            <section className="block mx-auto container max-w-4xl text-justify">
               <p className="mb-4">
                 Selamat datang di halaman informasi mahasiswa untuk Program
                 Pendidikan Jarak Jauh (PJJ) D3 Teknik Informatika di Politeknik
@@ -235,15 +239,15 @@ const CradStudentsUser = () => {
             value={searchTerm}
             onChange={handleSearchChange}
             placeholder="Cari Data Mahasiswa..."
-            className="md:w-full mt-2 mb-2 w-[700px]"
+            className="md:w-full mt-2 mb-2 w-[700px]  dark:bg-zinc-800"
           />
         </div>
         <div className="flex justify-center flex-wrap mb-6">
           <Select onValueChange={handleFilterChange}>
-            <SelectTrigger className="w-[700px]">
+            <SelectTrigger className="w-[700px] dark:bg-zinc-800">
               <SelectValue placeholder="Select a filter" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="dark:bg-zinc-800">
               <SelectGroup>
                 <SelectLabel>Filter Data Mahasiswa</SelectLabel>
                 <SelectItem
@@ -280,8 +284,8 @@ const CradStudentsUser = () => {
             </SelectContent>
           </Select>
         </div>
-        <hr className="mb-4" />
       </div>
+      <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto" />
       <div
         className="flex justify-center mx-auto mb-4 font-bold
       "

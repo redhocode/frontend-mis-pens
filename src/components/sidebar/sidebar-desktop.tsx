@@ -50,7 +50,7 @@ const handleLogout = async () => {
 
 
   return (
-    <aside className="w-[270px] max-w-xs h-screen fixed left-0 top-0 z-40 border-r bg-background">
+    <aside className="w-[250px] max-w-xs h-screen fixed left-0 top-0 z-40 border-r bg-background">
       <div className="w-full px-3 py-4">
         <h3 className="mx-3 text-lg font-semibold text-foreground">
           Dashboard

@@ -56,7 +56,10 @@ const Dashboard: React.FC = () => {
         <PageWrapper>
 
         <Welcome />
+        <div className="w-full">
+
         <Chart />
+        </div>
         </PageWrapper>
       </AuthGuard>
     </>

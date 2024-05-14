@@ -47,12 +47,18 @@ const handleLogin = async (values: any, { setSubmitting, setErrors }: any) => {
 
     // Redirect ke dashboard setelah login berhasil
     router.push("/dashboard");
+    toast({
+      title: "Login Success",
+      description: "You have successfully logged in",
+
+      className: "w-[400px] md:w-[300px]",
+    })
   } catch (error) {
     // Tangani kesalahan login
    // console.error("Kesalahan login:", error); // Log kesalahan untuk debugging
     toast({
-      title: "Login gagal",
-      description: "Nama pengguna atau kata sandi salah",
+      title: "Login Failed",
+      description: "Please check your username and password",
       variant: "destructive",
       className: "w-[400px] md:w-[300px]",
     });

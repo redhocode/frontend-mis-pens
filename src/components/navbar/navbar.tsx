@@ -3,28 +3,6 @@
 import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
-import {
-  ActivitySquare,
-  Banknote,
-  BookA,
-  GraduationCap,
-  Home,
-  Info,
-  LucideGraduationCap,
-  Newspaper,
-  NewspaperIcon,
-  School,
-  School2Icon,
-  SquareLibrary,
-} from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { NavbarButton } from "./navbar-button";
 import { usePathname } from "next/navigation";
 import { ModeToggle } from "../mode";
@@ -41,14 +19,6 @@ import {
 import React from "react";
 import dynamic from "next/dynamic";
 import { NavbarItems } from "@/types";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
@@ -368,7 +338,7 @@ function Navbar() {
             </div>
           </div>
         )}
-        <div className="w-full bg-secondarypens h-2"></div>
+        <div className="w-full bg-secondarypens h-3"></div>
       </nav>
     </>
   );

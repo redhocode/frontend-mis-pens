@@ -55,19 +55,20 @@ export const useFetchScholarship = (page, pageSize, filterValue) => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["scholarship", page, pageSize, filterValue],
     queryFn: async () => {
-      const response = await axiosInstance.get(`/scholarships`, {
+      const response = await axiosInstance.get(`/scholarships/`, {
         params: {
           filter: filterValue,
           page,
           pageSize,
         },
       });
-      // console.log("Response from API:", response.data);
+       console.log("Response from API:", response.data);
       return response.data;
     },
   });
 
   return {
+    
     data,
     isLoading,
     refetch,
@@ -116,6 +117,7 @@ export const useFetchUsers = (page, pageSize, filterValue) => {
     },
   });
   return {
+    
     data,
     isLoading,
     refetch,

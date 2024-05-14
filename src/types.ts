@@ -19,6 +19,7 @@ export interface NavbarItems{
 }
 
   export interface Student {
+    receivedAwardName: ReactNode;
     id: string;
     nrp: string;
     name: string;
@@ -46,6 +47,7 @@ export interface NavbarItems{
     role: string;
   }
   export interface Activity {
+    username: ReactNode;
     id: string;
     title: string;
     description: string;

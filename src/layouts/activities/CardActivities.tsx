@@ -25,6 +25,8 @@ import {
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import DetailActivity from "@/components/button/ButtonDetailActivity";
 export const CradActivities = () => {
   const pageSize = 2;
   const [page, setPage] = useState(1);
@@ -106,16 +108,27 @@ export const CradActivities = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ScrollArea className="h-[150px] w-[300px] rounded-md border p-4">
+            <ScrollArea className="h-[150px] w-full rounded-md border p-4">
               <p>{data.description}</p>
             </ScrollArea>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Link href={data.link} target="_blank" rel="noopener noreferrer">
-              <Button variant="ghost" className="ml-2 bg-primary text-white">
-                Lebih Lanjut
-              </Button>
-            </Link>
+            <Button variant="ghost" className="uppercase font-thin">
+              by: {data.username}
+            </Button>
+            {!data.link ? (
+              <span></span>
+            ) : (
+              <Link href={data.link} target="_blank" rel="noopener noreferrer">
+                <Button
+                  variant="ghost"
+                  className=""
+                >
+                  <span>Link</span>
+                </Button>
+              </Link>
+            )}
+            <DetailActivity id={data.id} />
           </CardFooter>
         </Card>
       );
@@ -125,7 +138,7 @@ export const CradActivities = () => {
   return (
     <>
       <div className="flex justify-center flex-col mx-auto mb-12">
-        <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl">
+        <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl bg-white text-zinc-900 px-4 py-4 rounded-lg shadow-md dark:bg-zinc-950 dark:text-white">
           <h1 className="text-4xl font-bold justify-center mb-4 mx-auto uppercase">
             Informasi Kegiatan
           </h1>{" "}
@@ -143,18 +156,17 @@ export const CradActivities = () => {
             PENS untuk informasi lebih lanjut mengenai kegiatan yang tersedia
             dan cara untuk bergabung.
           </p>
-          <hr className="mt-4 ouline" />
         </div>
+        <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto" />
         <div className="flex justify-center flex-wrap">
           <Input
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
             placeholder="Cari data."
-            className="md:w-full mt-2 mb-2 w-[700px]"
+            className="md:w-full mt-2 mb-2 w-[700px] h-[50px]"
           />
         </div>
-        <div className="flex justify-center flex-wrap mb-6"></div>
       </div>
       <div className="flex flex-wrap mx-auto gap-4 justify-center mb-5">
         {renderStudent(page, pageSize, data, searchTerm, filterValue)}

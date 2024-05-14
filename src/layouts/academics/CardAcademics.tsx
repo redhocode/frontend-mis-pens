@@ -46,6 +46,7 @@ import {
 import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { PageWrapper } from "@/components/animate/page-wrapper";
+import DetailAcademic from "@/components/button/ButtonDetailAcademic";
 export const CradAcademics = () => {
   const pageSize = 5;
   const [page, setPage] = useState(1);
@@ -125,17 +126,20 @@ export const CradAcademics = () => {
             </ScrollArea>
           </CardContent>
           <CardFooter className="flex justify-between ">
-            <Button variant="outline" className="uppercase font-thin">
+            <Button variant="ghost" className="uppercase font-thin">
               by: {data.username}
             </Button>
+            {!data.link? (<span></span>) : (
             <Link href={data.link} target="_blank" rel="noopener noreferrer">
               <Button
                 variant="ghost"
-                className="ml-2 bg-primary text-white rounded-lg "
+                className=""
               >
-                <span>Lebih Lanjut</span>
+                <span>Link</span>
               </Button>
             </Link>
+            )}
+            <DetailAcademic id={data.id} />
           </CardFooter>
         </Card>
       );
@@ -146,11 +150,11 @@ export const CradAcademics = () => {
     <>
       <PageWrapper>
         <div className="flex justify-center flex-col mx-auto mb-12">
-          <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl">
+          <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl bg-white text-zinc-900 px-4 py-4 rounded-lg shadow-md dark:bg-zinc-950 dark:text-white">
             <h1 className="text-4xl font-bold justify-center mb-4 mx-auto uppercase">
               Informasi Akademik
             </h1>
-            <article className="block mx-auto  max-w-4xl text-justify">
+            <article className="block mx-auto  max-w-4xl text-justify ">
               <p className="mb-4">
                 Selamat datang di halaman informasi akademik untuk Program
                 Pendidikan Jarak Jauh (PJJ) D3 Teknik Informatika di Politeknik
@@ -185,10 +189,9 @@ export const CradAcademics = () => {
               value={searchTerm}
               onChange={handleSearchChange}
               placeholder="Cari data."
-              className="md:w-full mt-2 mb-2 w-[700px]"
+              className="md:w-full max-w-4xl mt-2 w-[700px] h-[50px] focus:outline-none"
             />
           </div>
-          <div className="flex justify-center flex-wrap mb-6"></div>
         </div>
         <div className="flex flex-col mx-auto gap-4 justify-center mb-5 max-w-4xl">
           {renderStudent(page, pageSize, data, searchTerm, filterValue)}
