@@ -88,7 +88,9 @@ export const CradAcademics = () => {
     if (!data || data.length === 0) {
       // Tampilkan skeleton terus menerus
       return Array.from({ length: pageSize }).map((_, index) => (
-        <CardSkeleton key={index} />
+        <div className="flex items-center justify-center mt-4">
+          <CardSkeleton key={index} />
+            </div>
       ));
     }
     const startIndex = (page - 1) * pageSize;
@@ -204,7 +206,7 @@ export const CradAcademics = () => {
           {renderStudent(page, pageSize, data, searchTerm, filterValue)}
           {isLoading && (
             <div className="flex items-center justify-center mt-4">
-              <CradSkeleton />
+             
             </div>
           )}
         </div>
