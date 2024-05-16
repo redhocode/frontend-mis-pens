@@ -47,6 +47,8 @@ import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { PageWrapper } from "@/components/animate/page-wrapper";
 import DetailAcademic from "@/components/button/ButtonDetailAcademic";
+import CradSkeleton from "@/components/skeleton/card-skeleton";
+import CardSkeleton from "@/components/skeleton/card-skeleton";
 export const CradAcademics = () => {
   const pageSize = 5;
   const [page, setPage] = useState(1);
@@ -82,7 +84,13 @@ export const CradAcademics = () => {
     searchTerm: string,
     filterValue: string
   ) => {
-    // console.log("Data Mahasiswa:", data);
+    // Tambahkan pengecekan jika data kosong
+    if (!data || data.length === 0) {
+      // Tampilkan skeleton terus menerus
+      return Array.from({ length: pageSize }).map((_, index) => (
+        <CardSkeleton key={index} />
+      ));
+    }
     const startIndex = (page - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize, data?.length);
     // Filter berdasarkan filterValue
@@ -129,15 +137,14 @@ export const CradAcademics = () => {
             <Button variant="ghost" className="uppercase font-thin">
               by: {data.username}
             </Button>
-            {!data.link? (<span></span>) : (
-            <Link href={data.link} target="_blank" rel="noopener noreferrer">
-              <Button
-                variant="ghost"
-                className=""
-              >
-                <span>Link</span>
-              </Button>
-            </Link>
+            {!data.link ? (
+              <span></span>
+            ) : (
+              <Link href={data.link} target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" className="">
+                  <span>Link</span>
+                </Button>
+              </Link>
             )}
             <DetailAcademic id={data.id} />
           </CardFooter>
@@ -197,8 +204,7 @@ export const CradAcademics = () => {
           {renderStudent(page, pageSize, data, searchTerm, filterValue)}
           {isLoading && (
             <div className="flex items-center justify-center mt-4">
-              <p className="font-semibold mr-1">Loading</p>
-              <LoaderIcon className="animate-spin h-10 w-10" />
+              <CradSkeleton />
             </div>
           )}
         </div>

@@ -46,6 +46,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { PageWrapper } from "@/components/animate/page-wrapper";
 import { Separator } from "@/components/ui/separator";
+import CardSkeleton3 from "@/components/skeleton/card-skeleton3";
 
 const CradStudentsUser = () => {
   const [totalFilteredData, setTotalFilteredData] = useState<number | null>(
@@ -104,6 +105,12 @@ const CradStudentsUser = () => {
     searchTerm: string,
     filterValue: string
   ) => {
+      if (!data || data.length === 0) {
+        // Tampilkan skeleton terus menerus
+        return Array.from({ length: pageSize }).map((_, index) => (
+          <CardSkeleton3 key={index} />
+        ));
+      }
     // console.log("Data Mahasiswa:", data);
     const startIndex = (page - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize, data?.length);
@@ -299,8 +306,7 @@ const CradStudentsUser = () => {
         {renderStudent(page, pageSize, data, searchTerm, filterValue)}
         {isLoading && (
           <div className="flex items-center justify-center mt-4">
-            <p className="font-semibold mr-1">Loading</p>
-            <LoaderIcon className="animate-spin h-10 w-10" />
+            
           </div>
         )}
       </div>

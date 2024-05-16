@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useFetchAcademic,
   useFetchActivity,
@@ -43,6 +43,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import DetailScholarship from "@/components/button/ButtonDetailScholarship";
+import CardSkeleton from "@/components/skeleton/card-skeleton";
 
 export const CradScholarships = () => {
   const pageSize = 3;
@@ -67,10 +68,6 @@ export const CradScholarships = () => {
     setPage(newPage);
   };
   
-
-
-
-
   // Function to handle detail click
 
   const renderStudent = (
@@ -80,6 +77,13 @@ export const CradScholarships = () => {
     searchTerm: string,
     filterValue: string
   ) => {
+    // Tambahkan pengecekan jika data kosong
+    if (!data || data.length === 0) {
+      // Tampilkan skeleton terus menerus
+      return Array.from({ length: pageSize }).map((_, index) => (
+        <CardSkeleton key={index} />
+      ));
+    }
     // console.log("Data Mahasiswa:", data);
     const startIndex = (page - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize, data?.length);
@@ -107,10 +111,7 @@ export const CradScholarships = () => {
     const dataToRender = filteredData?.slice(startIndex, endIndex);
 
     return dataToRender?.map((data: Scholarship) => {
-    
       return (
-        
-
         <Card className="md:w-full w-[950px] max-h-screen" key={data.id}>
           <CardHeader>
             <CardTitle>
@@ -154,15 +155,14 @@ export const CradScholarships = () => {
                 <Button
                   variant="ghost"
                   className="ml-2 bg-primary text-white rounded-lg "
-                  >
+                >
                   <span>Lebih Lanjut</span>
                 </Button>
               </Link>
             )}
-            <DetailScholarship id={data.id} key={data.id}/>
+            <DetailScholarship id={data.id} key={data.id} />
           </CardFooter>
         </Card>
-                
       );
     });
   };
@@ -206,11 +206,11 @@ export const CradScholarships = () => {
         <div className="flex justify-center flex-wrap mb-6"></div>
       </div>
       <div className="flex gap-4 mb-5 justify-center md:flex-col flex-col mx-auto items-center">
+       
         {renderStudent(page, pageSize, data, searchTerm, filterValue)}
         {isLoading && (
           <div className="flex items-center justify-center mt-4">
-            <p className="font-semibold mr-1">Loading</p>
-            <LoaderIcon className="animate-spin h-10 w-10" />
+            <CardSkeleton />
           </div>
         )}
       </div>

@@ -27,6 +27,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import DetailActivity from "@/components/button/ButtonDetailActivity";
+import CardSkeleton2 from "@/components/skeleton/card-skeleton2";
 export const CradActivities = () => {
   const pageSize = 2;
   const [page, setPage] = useState(1);
@@ -57,6 +58,13 @@ export const CradActivities = () => {
     searchTerm: string,
     filterValue: string
   ) => {
+    // Tambahkan pengecekan jika data kosong
+    if (!data || data.length === 0) {
+      // Tampilkan skeleton terus menerus
+      return Array.from({ length: pageSize }).map((_, index) => (
+        <CardSkeleton2 key={index} />
+      ));
+    }
     const startIndex = (page - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize, data?.length);
     let filteredData = data;
@@ -120,10 +128,7 @@ export const CradActivities = () => {
               <span></span>
             ) : (
               <Link href={data.link} target="_blank" rel="noopener noreferrer">
-                <Button
-                  variant="ghost"
-                  className=""
-                >
+                <Button variant="ghost" className="">
                   <span>Link</span>
                 </Button>
               </Link>
@@ -172,8 +177,7 @@ export const CradActivities = () => {
         {renderStudent(page, pageSize, data, searchTerm, filterValue)}
         {isLoading && (
           <div className="flex items-center justify-center mt-4">
-            <p className="font-semibold mr-1">Loading</p>
-            <LoaderIcon className="animate-spin h-10 w-10" />
+         
           </div>
         )}
       </div>
