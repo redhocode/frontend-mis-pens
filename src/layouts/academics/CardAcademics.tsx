@@ -49,6 +49,7 @@ import { PageWrapper } from "@/components/animate/page-wrapper";
 import DetailAcademic from "@/components/button/ButtonDetailAcademic";
 import CradSkeleton from "@/components/skeleton/card-skeleton";
 import CardSkeleton from "@/components/skeleton/card-skeleton";
+import { Separator } from "@/components/ui/separator";
 export const CradAcademics = () => {
   const pageSize = 5;
   const [page, setPage] = useState(1);
@@ -191,7 +192,7 @@ export const CradAcademics = () => {
               />
             </div>
           </div>
-          <hr className="my-4" />
+          <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto" />
           <div className="flex justify-center flex-wrap">
             <Input
               type="text"
@@ -205,9 +206,7 @@ export const CradAcademics = () => {
         <div className="flex flex-col mx-auto gap-4 justify-center mb-5 max-w-4xl">
           {renderStudent(page, pageSize, data, searchTerm, filterValue)}
           {isLoading && (
-            <div className="flex items-center justify-center mt-4">
-             
-            </div>
+            <div className="flex items-center justify-center mt-4"></div>
           )}
         </div>
         <Pagination>
