@@ -19,7 +19,8 @@ export interface NavbarItems{
 }
 
   export interface Student {
-    receivedAwardName: ReactNode;
+    receivedAwardId: string;
+    receivedAwardName: string;
     id: string;
     nrp: string;
     name: string;
