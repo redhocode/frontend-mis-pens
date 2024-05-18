@@ -14,7 +14,10 @@ import {
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LoaderIcon } from "lucide-react";
-import { useFetchDataAcademicById, useFetchDataById } from "@/features/useFetchDataById";
+import {
+  useFetchDataAcademicById,
+  useFetchDataById,
+} from "@/features/useFetchDataById";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -34,17 +37,16 @@ const Page: React.FC<pageProps> = ({ params }) => {
     return (
       <>
         <div className="flex items-center justify-center mt-4">
-        <CardSkeleton />
+          <CardSkeleton />
         </div>
       </>
     );
   }
-  
 
   return (
     <>
       <section className="mt-32 px-4 py-4 container shadow-inner min-h-screen">
-        <Navbar />
+        
         <PageWrapper>
           <div className="flex gap-4 mb-5 justify-center md:flex-col flex-col mx-auto items-center">
             {data.data ? (
@@ -80,7 +82,7 @@ const Page: React.FC<pageProps> = ({ params }) => {
                     <ScrollArea className="min-h-screen w-full rounded-md border p-4">
                       <div
                         dangerouslySetInnerHTML={{
-                          __html:(data.data.description),
+                          __html: data.data.description,
                         }}
                         className="text-justify"
                       />
@@ -99,7 +101,6 @@ const Page: React.FC<pageProps> = ({ params }) => {
           </div>
         </PageWrapper>
       </section>
-      <Footer />
     </>
   );
 };
