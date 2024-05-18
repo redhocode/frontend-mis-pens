@@ -55,10 +55,9 @@ import { Edit, Trash } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import React from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { link } from "fs";
-import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
-
+import { Editor } from "primereact/editor";
+import DetailActivity from "@/components/button/ButtonDashDetailActiviy";
 export default function TableActivies() {
   const pageSize = 3; // Tentukan nilai pageSize
   const [page, setPage] = useState(1); // Tentukan nilai awal page
@@ -75,7 +74,49 @@ export default function TableActivies() {
   //seach
   const [searchTerm, setSearchTerm] = useState(""); // State untuk menyimpan kata kunci pencarian
 
-  // Fungsi penanganan perubahan input untuk memperbarui state kata kunci pencarian
+  //textarea function
+  const [text, setText] = useState<string>("");
+
+  // Fungsi untuk memotong teks HTML tanpa merusak tag
+  const truncateHTML = (html: string, maxLength: number) => {
+    if (html.length <= maxLength) return html;
+
+    let length = 0;
+    let result = "";
+    const regex = /(<([^>]+)>)/gi;
+    let tags: any[] = [];
+    let lastIndex = 0;
+
+    html.replace(regex, (match, p1, p2, offset) => {
+      if (length >= maxLength) return "";
+
+      const text = html.substring(lastIndex, offset);
+      if (length + text.length > maxLength) {
+        result += text.substring(0, maxLength - length);
+        length = maxLength;
+      } else {
+        result += text;
+        length += text.length;
+      }
+      result += match;
+      tags.push(p2.split(" ")[0]);
+      lastIndex = offset + match.length;
+
+      return "";
+    });
+
+    if (length < maxLength) {
+      result += html.substring(lastIndex, maxLength - length + lastIndex);
+    }
+
+    // Close any unclosed tags
+    while (tags.length) {
+      const tag = tags.pop();
+      result += `</${tag}>`;
+    }
+
+    return result + (html.length > maxLength ? "..." : "");
+  };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -186,6 +227,10 @@ export default function TableActivies() {
   // Submit handler function
 
   const [preview, setPreview] = useState<string | null>(null);
+  const handleRemoveImage = () => {
+    setPreview(null); // Hapus pratinjau gambar
+    formik.setFieldValue("image", ""); // Set nilai image ke string kosong
+  };
   const hendlerSubmit = async (values: any) => {
     try {
       // Kirim data ke fungsi CreateOrUpdateActivity
@@ -271,9 +316,11 @@ export default function TableActivies() {
           <TableCell>{activity.date}</TableCell>
 
           <TableCell>
-            {activity.description.length > 100
-              ? activity.description.substring(0, 100) + "..."
-              : activity.description}
+            <div
+              dangerouslySetInnerHTML={{
+                __html: truncateHTML(activity.description, 10),
+              }}
+            />
           </TableCell>
           <TableCell>
             {!activity.image ? ( // Periksa jika tidak ada gambar
@@ -298,6 +345,7 @@ export default function TableActivies() {
           </TableCell>
 
           <TableCell className="flex gap-2">
+            <DetailActivity id={activity.id} />
             <Dialog>
               <DialogTrigger asChild>
                 <div>
@@ -314,7 +362,6 @@ export default function TableActivies() {
                         description: activity.description,
                         date: activity.date,
                         link: activity.link,
-                        image: activity.image,
                       });
                     }}
                   >
@@ -324,7 +371,7 @@ export default function TableActivies() {
                   </Button>
                 </div>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
+              <DialogContent className="sm:max-w-[425px] min-w-[800px]">
                 <DialogHeader>
                   <DialogTitle>Edit Data</DialogTitle>
                 </DialogHeader>
@@ -380,14 +427,95 @@ export default function TableActivies() {
                           </div>
                           <div className="mb-4 flex flex-col">
                             <Label htmlFor="description">Description</Label>
-                            <Textarea
-                              id="description"
+                            <Editor
                               name="description"
-                              placeholder="Enter your description"
-                              className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                              onChange={formik.handleChange}
-                              onBlur={formik.handleBlur}
+                              id="description"
                               value={formik.values.description}
+                              style={{ height: "320px" }}
+                              onTextChange={(e: any) => {
+                                setText(e.htmlValue);
+                                formik.setFieldValue(
+                                  "description",
+                                  e.htmlValue
+                                );
+                              }}
+                              onBlur={formik.handleBlur}
+                              onChange={formik.handleChange}
+                              className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              headerTemplate={
+                                <>
+                                  <span className="ql-formats">
+                                    <select className="ql-font"></select>
+                                    <select className="ql-size"></select>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <button className="ql-bold"></button>
+                                    <button className="ql-italic"></button>
+                                    <button className="ql-underline"></button>
+                                    <button className="ql-strike"></button>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <select className="ql-color"></select>
+                                    <select className="ql-background"></select>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <button
+                                      className="ql-script"
+                                      value="sub"
+                                    ></button>
+                                    <button
+                                      className="ql-script"
+                                      value="super"
+                                    ></button>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <button
+                                      className="ql-header"
+                                      value="1"
+                                    ></button>
+                                    <button
+                                      className="ql-header"
+                                      value="2"
+                                    ></button>
+                                    <button className="ql-blockquote"></button>
+                                    <button className="ql-code-block"></button>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <button
+                                      className="ql-list"
+                                      value="ordered"
+                                    ></button>
+                                    <button
+                                      className="ql-list"
+                                      value="bullet"
+                                    ></button>
+                                    <button
+                                      className="ql-indent"
+                                      value="-1"
+                                    ></button>
+                                    <button
+                                      className="ql-indent"
+                                      value="+1"
+                                    ></button>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <button
+                                      className="ql-direction"
+                                      value="rtl"
+                                    ></button>
+                                    <select className="ql-align"></select>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <button className="ql-link"></button>
+                                    <button className="ql-image"></button>
+                                    <button className="ql-video"></button>
+                                    <button className="ql-formula"></button>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <button className="ql-clean"></button>
+                                  </span>
+                                </>
+                              }
                             />
                             {formik.touched.description &&
                             formik.errors.description ? (
@@ -447,11 +575,22 @@ export default function TableActivies() {
                               </div>
                             )}
                             {preview && ( // Tampilkan pratinjau gambar jika ada
-                              <img
-                                src={preview}
-                                alt="Selected"
-                                className="mt-2 max-w-full h-auto"
-                              />
+                              <div className="mt-2 flex items-center flex-col gap-2">
+                                <img
+                                  src={preview}
+                                  alt="Selected"
+                                  className="max-w-full h-auto"
+                                />
+
+                                {/* Tombol untuk menghapus gambar */}
+                                <Button
+                                  type="button"
+                                  className=" px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 w-full"
+                                  onClick={handleRemoveImage}
+                                >
+                                  Remove Image
+                                </Button>
+                              </div>
                             )}
 
                             <ErrorMessage
@@ -521,7 +660,7 @@ export default function TableActivies() {
                 Add Data
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] w-[800px] mx-auto">
+            <DialogContent className="sm:max-w-[425px] min-w-[800px] mx-auto">
               <DialogHeader>
                 <DialogTitle>Add Data</DialogTitle>
               </DialogHeader>
@@ -577,14 +716,92 @@ export default function TableActivies() {
                         </div>
                         <div className="mb-4 flex flex-col">
                           <Label htmlFor="description">Description</Label>
-                          <Textarea
-                            id="description"
+                          <Editor
                             name="description"
-                            placeholder="Enter your description"
-                            className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
+                            id="description"
                             value={formik.values.description}
+                            style={{ height: "320px" }}
+                            onTextChange={(e: any) => {
+                              setText(e.htmlValue);
+                              formik.setFieldValue("description", e.htmlValue);
+                            }}
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            headerTemplate={
+                              <>
+                                <span className="ql-formats">
+                                  <select className="ql-font"></select>
+                                  <select className="ql-size"></select>
+                                </span>
+                                <span className="ql-formats">
+                                  <button className="ql-bold"></button>
+                                  <button className="ql-italic"></button>
+                                  <button className="ql-underline"></button>
+                                  <button className="ql-strike"></button>
+                                </span>
+                                <span className="ql-formats">
+                                  <select className="ql-color"></select>
+                                  <select className="ql-background"></select>
+                                </span>
+                                <span className="ql-formats">
+                                  <button
+                                    className="ql-script"
+                                    value="sub"
+                                  ></button>
+                                  <button
+                                    className="ql-script"
+                                    value="super"
+                                  ></button>
+                                </span>
+                                <span className="ql-formats">
+                                  <button
+                                    className="ql-header"
+                                    value="1"
+                                  ></button>
+                                  <button
+                                    className="ql-header"
+                                    value="2"
+                                  ></button>
+                                  <button className="ql-blockquote"></button>
+                                  <button className="ql-code-block"></button>
+                                </span>
+                                <span className="ql-formats">
+                                  <button
+                                    className="ql-list"
+                                    value="ordered"
+                                  ></button>
+                                  <button
+                                    className="ql-list"
+                                    value="bullet"
+                                  ></button>
+                                  <button
+                                    className="ql-indent"
+                                    value="-1"
+                                  ></button>
+                                  <button
+                                    className="ql-indent"
+                                    value="+1"
+                                  ></button>
+                                </span>
+                                <span className="ql-formats">
+                                  <button
+                                    className="ql-direction"
+                                    value="rtl"
+                                  ></button>
+                                  <select className="ql-align"></select>
+                                </span>
+                                <span className="ql-formats">
+                                  <button className="ql-link"></button>
+                                  <button className="ql-image"></button>
+                                  <button className="ql-video"></button>
+                                  <button className="ql-formula"></button>
+                                </span>
+                                <span className="ql-formats">
+                                  <button className="ql-clean"></button>
+                                </span>
+                              </>
+                            }
                           />
                           {formik.touched.description &&
                           formik.errors.description ? (
@@ -641,11 +858,22 @@ export default function TableActivies() {
                             </div>
                           )}
                           {preview && ( // Tampilkan pratinjau gambar jika ada
-                            <img
-                              src={preview}
-                              alt="Selected"
-                              className="mt-2 max-w-full h-auto"
-                            />
+                            <div className="mt-2 flex items-center flex-col gap-2">
+                              <img
+                                src={preview}
+                                alt="Selected"
+                                className="max-w-full h-auto"
+                              />
+
+                              {/* Tombol untuk menghapus gambar */}
+                              <Button
+                                type="button"
+                                className=" px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 w-full"
+                                onClick={handleRemoveImage}
+                              >
+                                Remove Image
+                              </Button>
+                            </div>
                           )}
 
                           <ErrorMessage

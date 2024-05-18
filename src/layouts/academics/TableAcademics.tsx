@@ -36,7 +36,14 @@ import { axiosInstance } from "@/lib/axios";
 import { useQuery, useMutation, Mutation } from "@tanstack/react-query";
 import type { Academic, Student } from "@/types";
 import { Button } from "@/components/ui/button";
-import { ErrorMessage, useFormik, Formik, Field, Form } from "formik";
+import {
+  ErrorMessage,
+  useFormik,
+  Formik,
+  Field,
+  Form,
+  validateYupSchema,
+} from "formik";
 import * as Yup from "yup";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -53,22 +60,13 @@ import {
 } from "@/components/ui/pagination";
 import { Edit, Trash } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { title } from "process";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import React from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { Textarea } from "@/components/ui/textarea";
-export default function TableAcademic() {
 
+import React from "react";
+import { Editor } from "primereact/editor";
+import QuillResizeImage from "quill-resize-image";
+import Quill from "quill";
+import DetailAcademic from "@/components/button/ButtonDashDetailAcademic";
+export default function TableAcademic() {
   const pageSize = 3; // Tentukan nilai pageSize
   const [page, setPage] = useState(1); // Tentukan nilai awal page
   const {
@@ -85,6 +83,51 @@ export default function TableAcademic() {
   const [searchTerm, setSearchTerm] = useState(""); // State untuk menyimpan kata kunci pencarian
 
   // Fungsi penanganan perubahan input untuk memperbarui state kata kunci pencarian
+
+  //textarea function
+  const [text, setText] = useState<string>("");
+Quill.register("modules/resizeImage", QuillResizeImage);
+
+  // Fungsi untuk memotong teks HTML tanpa merusak tag
+  const truncateHTML = (html: string, maxLength: number) => {
+    if (html.length <= maxLength) return html;
+
+    let length = 0;
+    let result = "";
+    const regex = /(<([^>]+)>)/gi;
+    let tags: any[] = [];
+    let lastIndex = 0;
+
+    html.replace(regex, (match, p1, p2, offset) => {
+      if (length >= maxLength) return "";
+
+      const text = html.substring(lastIndex, offset);
+      if (length + text.length > maxLength) {
+        result += text.substring(0, maxLength - length);
+        length = maxLength;
+      } else {
+        result += text;
+        length += text.length;
+      }
+      result += match;
+      tags.push(p2.split(" ")[0]);
+      lastIndex = offset + match.length;
+
+      return "";
+    });
+
+    if (length < maxLength) {
+      result += html.substring(lastIndex, maxLength - length + lastIndex);
+    }
+
+    // Close any unclosed tags
+    while (tags.length) {
+      const tag = tags.pop();
+      result += `</${tag}>`;
+    }
+
+    return result + (html.length > maxLength ? "..." : "");
+  };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -224,21 +267,37 @@ export default function TableAcademic() {
     let orderNumber = startIndex + 1;
     return academicToRender?.map((academic: Academic) => {
       const currentOrderNumber = orderNumber++;
+      
       return (
         <TableRow key={academic.id}>
-              <TableCell className="w-[100px]" hidden>
-                  {academic.id}
-              </TableCell>
-              <TableCell className="w-[50px]">{currentOrderNumber}</TableCell>
-              <TableCell className="w-[200px]">{academic.title}</TableCell>
-              <TableCell>{academic.date}</TableCell>
-              <TableCell className="w-[200px]"><span className="text-justify">{academic.description}</span></TableCell>
-              {/* <ScrollArea className="w-30 whitespace-nowrap rounded-md border">
-                <ScrollBar orientation="horizontal"/>
-              </ScrollArea> */}
-              <TableCell>{academic.link}</TableCell>
-              <TableCell className="flex gap-2">
-               <Dialog>
+          <TableCell className="w-[100px]" hidden>
+            {academic.id}
+          </TableCell>
+          <TableCell className="w-[50px]">{currentOrderNumber}</TableCell>
+          <TableCell style={{ maxWidth: "200px" }}>
+            {academic.title.length > 50
+              ? academic.title.substring(0, 50) + "..."
+              : academic.title}
+          </TableCell>
+
+          <TableCell>{academic.date}</TableCell>
+
+          <TableCell>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: truncateHTML(academic.description, 5),
+              }}
+            />
+          </TableCell>
+
+          <TableCell>
+            {academic.link.length > 50
+              ? academic.link.substring(0, 50) + "..."
+              : academic.link}
+          </TableCell>
+          <TableCell className="flex gap-2">
+            <DetailAcademic id={academic.id} />
+            <Dialog>
               <DialogTrigger asChild>
                 <div>
                   {/* Tambahkan ikon di dalam tombol */}
@@ -249,7 +308,7 @@ export default function TableAcademic() {
                       // Atur nilai formik untuk id sesuai dengan id mahasiswa yang akan diedit
                       formik.setValues({
                         ...formik.values,
-                       id: academic.id,
+                        id: academic.id,
                         title: academic.title,
                         description: academic.description,
                         date: academic.date,
@@ -263,7 +322,7 @@ export default function TableAcademic() {
                   </Button>
                 </div>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
+              <DialogContent className="min-w-[1040px]">
                 <DialogHeader>
                   <DialogTitle>Edit Data</DialogTitle>
                 </DialogHeader>
@@ -272,95 +331,180 @@ export default function TableAcademic() {
                   validationSchema={validationSchema}
                   onSubmit={hendlerSubmit}
                 >
-                  <ScrollArea className="h-full w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
+                  <ScrollArea className="h-[800px] w-[1000px] rounded-md border p-4 md:h-[500px] md:w-[365px]">
                     <Form
                       className="flex flex-wrap "
                       onSubmit={formik.handleSubmit}
                     >
                       <div className="w-full justify-normal gap-4 flex">
-                      <div className="w-full">
-                        <div className="mb-4 flex flex-col">
-                          <Label htmlFor="title">Title</Label>
-                          <span>{formik.values.title}</span>
-                          <Input
-                            type="text"
-                            id="title"
-                            name="title"
-                            placeholder="Enter your title"
-                            className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.title}
-                          />
-                          {formik.touched.title && formik.errors.title ? (
-                            <div className="text-red-500">
-                              {formik.errors.title}
-                            </div>
-                          ) : null}
-                        </div>
-                        <div className="mb-4 flex flex-col">
-                          <Label htmlFor="date">Date</Label>
-                          <span>{formik.values.date}</span>
-                          <input
-                            type="date"
-                            id="date"
-                            name="date"
-                            className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            value={formik.values.date}
-                            onChange={(e) =>
-                              formik.setFieldValue("date", e.target.value)
-                            }
-                          />
-                          {formik.touched.date && formik.errors.date && (
-                            <div className="text-red-500">
-                              {formik.errors.date}
-                            </div>
-                          )}
-                        </div>
-                        <div className="mb-4 flex flex-col">
-                          <Label htmlFor="description">Description</Label>
-                            <Textarea
-                            id="description"
-                            name="description"
-                            placeholder="Enter your description"
-                            className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.description}
+                        <div className="w-full">
+                          <div className="mb-4 flex flex-col">
+                            <Label htmlFor="title">Title</Label>
+                            <span>{formik.values.title}</span>
+                            <Input
+                              type="text"
+                              id="title"
+                              name="title"
+                              placeholder="Enter your title"
+                              className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              value={formik.values.title}
                             />
-                            {formik.touched.description && formik.errors.description ? (
-                            <div className="text-red-500">
-                              {formik.errors.description}
-                            </div>
-                          ) : null}
-                       
-                        </div>
-                        <div className="flex flex-col mb-4">
-                          <Label htmlFor="link">Link</Label>
-                          <Input
-                            type="text"
-                            id="link"
-                            name="link"
-                            placeholder="Enter your link"
-                            className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.link}
-                          />
-                          {formik.touched.link && formik.errors.link ? (
-                            <div className="text-red-500">
-                              {formik.errors.link}
-                            </div>
-                          ) : null}
-                        </div>
-                        {/* Add other form fields similarly */}
-                        <Button type="submit" className="w-full">
-                          Submit
-                        </Button>
-                      </div>
+                            {formik.touched.title && formik.errors.title ? (
+                              <div className="text-red-500">
+                                {formik.errors.title}
+                              </div>
+                            ) : null}
+                          </div>
+                          <div className="mb-4 flex flex-col">
+                            <Label htmlFor="date">Date</Label>
+                            <span>{formik.values.date}</span>
+                            <input
+                              type="date"
+                              id="date"
+                              name="date"
+                              className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              value={formik.values.date}
+                              onChange={(e) =>
+                                formik.setFieldValue("date", e.target.value)
+                              }
+                            />
+                            {formik.touched.date && formik.errors.date && (
+                              <div className="text-red-500">
+                                {formik.errors.date}
+                              </div>
+                            )}
+                          </div>
+                          <div className="mb-4 flex flex-col">
+                            <Label htmlFor="description">Description</Label>
+                            <Editor
+                              name="description"
+                              id="description"
+                              value={formik.values.description}
+                              style={{ height: "1000px" }}
+                              onTextChange={(e: any) => {
+                                setText(e.htmlValue);
+                                formik.setFieldValue(
+                                  "description",
+                                  e.htmlValue
+                                );
+                              }}
+                              onBlur={formik.handleBlur}
+                              onChange={formik.handleChange}
+                              className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              headerTemplate={
+                                <>
+                                  <span className="ql-formats">
+                                    <select className="ql-font"></select>
+                                    <select className="ql-size"></select>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <button className="ql-bold"></button>
+                                    <button className="ql-italic"></button>
+                                    <button className="ql-underline"></button>
+                                    <button className="ql-strike"></button>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <select className="ql-color"></select>
+                                    <select className="ql-background"></select>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <button
+                                      className="ql-script"
+                                      value="sub"
+                                    ></button>
+                                    <button
+                                      className="ql-script"
+                                      value="super"
+                                    ></button>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <button
+                                      className="ql-header"
+                                      value="1"
+                                    ></button>
+                                    <button
+                                      className="ql-header"
+                                      value="2"
+                                    ></button>
+                                    <button className="ql-blockquote"></button>
+                                    <button className="ql-code-block"></button>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <button
+                                      className="ql-list"
+                                      value="ordered"
+                                    ></button>
+                                    <button
+                                      className="ql-list"
+                                      value="bullet"
+                                    ></button>
+                                    <button
+                                      className="ql-indent"
+                                      value="-1"
+                                    ></button>
+                                    <button
+                                      className="ql-indent"
+                                      value="+1"
+                                    ></button>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <button
+                                      className="ql-direction"
+                                      value="rtl"
+                                    ></button>
+                                    <select className="ql-align"></select>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <button className="ql-link"></button>
+                                    <button className="ql-image"></button>
+                                    <button className="ql-video"></button>
+                                    <button className="ql-formula"></button>
+                                  </span>
+                                  <span className="ql-formats">
+                                    <button className="ql-clean"></button>
+                                  </span>
+                                </>
+                              }
+                              modules={{
+                                resizeImage: {
+                                  displaySize: true,
+                                },
+                              }}
+                            />
+                            {formik.touched.description &&
+                            formik.errors.description ? (
+                              <div className="text-red-500">
+                                {formik.errors.description}
+                              </div>
+                            ) : null}
+                          </div>
+                          <div className="flex flex-col mb-4">
+                            <Label htmlFor="link">Link</Label>
+                            <Input
+                              type="text"
+                              id="link"
+                              name="link"
+                              placeholder="Enter your link"
+                              className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              value={formik.values.link}
+                            />
 
-                    </div>
-                      
+                            {formik.touched.link && formik.errors.link ? (
+                              <div className="text-red-500">
+                                {formik.errors.link}
+                              </div>
+                            ) : null}
+                          </div>
+                          {/* Add other form fields similarly */}
+                          <Button type="submit" className="w-full">
+                            Submit
+                          </Button>
+                        </div>
+                      </div>
                     </Form>
                   </ScrollArea>
                 </Formik>
@@ -399,8 +543,6 @@ export default function TableAcademic() {
     });
   };
 
-
-
   return (
     <div className="px-4 mt-3">
       <h1 className="font-semibold text-2xl">Academic Data</h1>
@@ -416,7 +558,7 @@ export default function TableAcademic() {
                 Add Data
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] w-full mx-auto">
+            <DialogContent className="sm:max-w-[425px] min-w-[1040px]">
               <DialogHeader>
                 <DialogTitle>Add Data</DialogTitle>
               </DialogHeader>
@@ -425,7 +567,7 @@ export default function TableAcademic() {
                 validationSchema={validationSchema}
                 onSubmit={hendlerSubmit}
               >
-                <ScrollArea className="h-full w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
+                <ScrollArea className="h-[700px] w-[1000px] rounded-md border p-4 md:h-[500px] md:w-[365px]">
                   <Form
                     className="flex flex-wrap "
                     onSubmit={formik.handleSubmit}
@@ -472,14 +614,97 @@ export default function TableAcademic() {
                         </div>
                         <div className="mb-4 flex flex-col">
                           <Label htmlFor="description">Description</Label>
-                          <Textarea
-                            id="description"
+                          <Editor
                             name="description"
-                            placeholder="Enter your description"
-                            className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
+                            id="description"
                             value={formik.values.description}
+                            style={{ height: "1200px" }}
+                            onTextChange={(e: any) => {
+                              setText(e.htmlValue);
+                              formik.setFieldValue("description", e.htmlValue);
+                            }}
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            headerTemplate={
+                              <>
+                                <span className="ql-formats">
+                                  <select className="ql-font"></select>
+                                  <select className="ql-size"></select>
+                                </span>
+                                <span className="ql-formats">
+                                  <button className="ql-bold"></button>
+                                  <button className="ql-italic"></button>
+                                  <button className="ql-underline"></button>
+                                  <button className="ql-strike"></button>
+                                </span>
+                                <span className="ql-formats">
+                                  <select className="ql-color"></select>
+                                  <select className="ql-background"></select>
+                                </span>
+                                <span className="ql-formats">
+                                  <button
+                                    className="ql-script"
+                                    value="sub"
+                                  ></button>
+                                  <button
+                                    className="ql-script"
+                                    value="super"
+                                  ></button>
+                                </span>
+                                <span className="ql-formats">
+                                  <button
+                                    className="ql-header"
+                                    value="1"
+                                  ></button>
+                                  <button
+                                    className="ql-header"
+                                    value="2"
+                                  ></button>
+                                  <button className="ql-blockquote"></button>
+                                  <button className="ql-code-block"></button>
+                                </span>
+                                <span className="ql-formats">
+                                  <button
+                                    className="ql-list"
+                                    value="ordered"
+                                  ></button>
+                                  <button
+                                    className="ql-list"
+                                    value="bullet"
+                                  ></button>
+                                  <button
+                                    className="ql-indent"
+                                    value="-1"
+                                  ></button>
+                                  <button
+                                    className="ql-indent"
+                                    value="+1"
+                                  ></button>
+                                </span>
+                                <span className="ql-formats">
+                                  <button
+                                    className="ql-direction"
+                                    value="rtl"
+                                  ></button>
+                                  <select className="ql-align"></select>
+                                </span>
+                                <span className="ql-formats">
+                                  <button className="ql-link"></button>
+                                  <button className="ql-image"></button>
+                                  <button className="ql-video"></button>
+                                  <button className="ql-formula"></button>
+                                </span>
+                                <span className="ql-formats">
+                                  <button className="ql-clean"></button>
+                                </span>
+                              </>
+                            }
+                            modules={{
+                              resizeImage: {
+                                displaySize: true,
+                              },
+                            }}
                           />
                           {formik.touched.description &&
                           formik.errors.description ? (

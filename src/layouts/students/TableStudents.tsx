@@ -109,7 +109,7 @@ export default function TableStudent() {
   const { mutate: CreateOrUpdateStudent } = useMutation({
     mutationFn: async () => {
       try {
-        const { id, name, nrp, ipk, major, year, semester, status, image ,receivedAwardId} =
+        const { id, name, nrp, ipk, major, year, semester, status, image ,receivedAwardId,receivedAwardName} =
           formik.values;
         let studentsRes;
         const formData = new FormData();
@@ -121,6 +121,7 @@ export default function TableStudent() {
         formData.append("semester", semester);
         formData.append("status", status);
         formData.append("receivedAwardId", receivedAwardId);
+        formData.append("receivedAwardName", receivedAwardName);
 
         if (image !== null) {
           formData.append("image", image);
@@ -331,7 +332,8 @@ export default function TableStudent() {
                         year: student.year.toString(),
                         semester: student.semester.toString(),
                         status: student.status,
-                        // receivedAwardName: student.receivedAwardName,
+                        receivedAwardId: student.receivedAwardId || "",
+                        receivedAwardName: student.receivedAwardName || "",
                       });
                       setPreview(
                         student.image
@@ -651,6 +653,17 @@ export default function TableStudent() {
                                         "receivedAwardId",
                                         e.target.value
                                       );
+                                      const selectedScholarship =
+                                        dataScholarship.find(
+                                          (scholarship: Scholarship) =>
+                                            scholarship.id === e.target.value
+                                        );
+                                      formik.setFieldValue(
+                                        "receivedAwardName",
+                                        selectedScholarship
+                                          ? selectedScholarship.title
+                                          : ""
+                                      );
                                     }}
                                     onBlur={field.onBlur}
                                     className={`w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
@@ -663,8 +676,6 @@ export default function TableStudent() {
                                     <option value="" disabled>
                                       Pilih Beasiswa
                                     </option>
-
-                                    {/* Mapping through scholarships data to render options */}
                                     {dataScholarship &&
                                       dataScholarship.map(
                                         (scholarship: Scholarship) => (
@@ -1259,16 +1270,41 @@ export default function TableStudent() {
             {renderStudent(page, pageSize, data, searchTerm)}
             {isLoading && (
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
                 <TableCell>
-                  <div className="flex items-center justify-center mt-4">
-                    <p className="font-semibold mr-1">Loading</p>
-                    <LoaderIcon className="animate-spin h-10 w-10" />
-                  </div>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
                 </TableCell>
               </TableRow>
+              
             )}
           </TableBody>
         </Table>
