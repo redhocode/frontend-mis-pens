@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/resizable"
 import { Metadata } from "next";
 import Script from "next/script";
+import { PrimeReactProvider } from "primereact/api";
 export const metadata: Metadata = {
   metadataBase: new URL("https://pjj.pens.ac.id"),
   icons: {
@@ -36,9 +37,11 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
             {/* <Navbar /> */}
             <Sidebar />
             <Providers>
+              <PrimeReactProvider value={{unstyled: true}}>
               <div className="flex flex-col flex-1 mx-4 my-4 md:mx-8 md:pl-2">
                 {children}
               </div>
+              </PrimeReactProvider>
             </Providers>
           </div>
         </section>
