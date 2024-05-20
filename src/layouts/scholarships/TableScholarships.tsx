@@ -679,7 +679,7 @@ export default function TableSholarships() {
                 Add Data
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] w-[800px] mx-auto">
+            <DialogContent className="sm:max-w-[425px] min-w-[800px] mx-auto">
               <DialogHeader>
                 <DialogTitle>Add Data</DialogTitle>
               </DialogHeader>
@@ -688,7 +688,7 @@ export default function TableSholarships() {
                 validationSchema={validationSchema}
                 onSubmit={hendlerSubmit}
               >
-                <ScrollArea className="h-full w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
+                <ScrollArea className="h-[700px] w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
                   <Form
                     className="flex flex-wrap "
                     onSubmit={formik.handleSubmit}
