@@ -68,6 +68,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Textarea } from "@/components/ui/textarea";
 import { link } from "fs";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 export default function TableUser() {
   
   const pageSize = 3; // Tentukan nilai pageSize
@@ -580,9 +581,16 @@ export default function TableUser() {
             {isLoading && (
               <TableRow>
                 <TableCell>
-                  <div className="flex items-center justify-center mt-4">
-                    <LoaderIcon className="animate-spin h-10 w-10" />
-                  </div>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
                 </TableCell>
               </TableRow>
             )}

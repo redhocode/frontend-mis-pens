@@ -71,6 +71,7 @@ import DetailScholarship from "@/components/button/ButtonDashDetailScholarship";
 import { Editor } from "primereact/editor";
 import QuillResizeImage from "quill-resize-image";
 import Quill from "quill";
+import { Skeleton } from "@/components/ui/skeleton";
 export default function TableSholarships() {
   const pageSize = 3; // Tentukan nilai pageSize
   const [page, setPage] = useState(1); // Tentukan nilai awal page
@@ -943,13 +944,23 @@ export default function TableSholarships() {
             {renderData(page, pageSize, data, searchTerm)}
             {isLoading && (
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell>
-                  <div className="flex items-center justify-center mt-4">
-                    <LoaderIcon className="animate-spin h-10 w-10" />
-                  </div>
+             <TableCell>
+                  <Skeleton className="w-full h-6" />
                 </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell></TableCell>
+              
               </TableRow>
             )}
           </TableBody>

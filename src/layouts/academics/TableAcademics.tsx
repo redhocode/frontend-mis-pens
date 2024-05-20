@@ -66,6 +66,7 @@ import { Editor } from "primereact/editor";
 import QuillResizeImage from "quill-resize-image";
 import Quill from "quill";
 import DetailAcademic from "@/components/button/ButtonDashDetailAcademic";
+import { Skeleton } from "@/components/ui/skeleton";
 export default function TableAcademic() {
   const pageSize = 3; // Tentukan nilai pageSize
   const [page, setPage] = useState(1); // Tentukan nilai awal page
@@ -778,13 +779,22 @@ Quill.register("modules/resizeImage", QuillResizeImage);
             {renderAcademic(page, pageSize, data, searchTerm)}
             {isLoading && (
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
                 <TableCell>
-                  <div className="flex items-center justify-center mt-4">
-                    <LoaderIcon className="animate-spin h-10 w-10" />
-                  </div>
+                  <Skeleton className="w-full h-6" />
                 </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
+                <TableCell></TableCell>
               </TableRow>
             )}
           </TableBody>
