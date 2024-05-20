@@ -579,47 +579,8 @@ export default function TableSholarships() {
                               </div>
                             ) : null}
                           </div>
-                          <div className="flex flex-col mb-4">
-                            <Label htmlFor="image">Picture</Label>
-                            <Input
-                              id="image"
-                              name="image"
-                              type="file"
-                              className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                              onChange={handleImageChange}
-                              onBlur={formik.handleBlur}
-                            />
-                            {formik.touched.image && formik.errors.image && (
-                              <div className="text-red-500">
-                                {formik.errors.image}
-                              </div>
-                            )}
-                            {preview && ( // Tampilkan pratinjau gambar jika ada
-                              <div className="mt-2 flex items-center flex-col gap-2">
-                                <img
-                                  src={preview}
-                                  alt="Selected"
-                                  className="max-w-full h-auto"
-                                />
-
-                                {/* Tombol untuk menghapus gambar */}
-                                <Button
-                                  type="button"
-                                  className=" px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 w-full"
-                                  onClick={handleRemoveImage}
-                                >
-                                  Remove Image
-                                </Button>
-                              </div>
-                            )}
-
-                            <ErrorMessage
-                              name="image"
-                              component="div"
-                              className="text-red-500"
-                            />
-                          </div>
-                          {/* Add other form fields similarly */}
+                          {/*  */}
+                        
                           <Button type="submit" className="w-full">
                             Submit
                           </Button>
@@ -853,7 +814,7 @@ export default function TableSholarships() {
                             </div>
                           ) : null}
                         </div>
-                        <div className="flex flex-col mb-4">
+                        {/* <div className="flex flex-col mb-4">
                           <Label htmlFor="image">Picture</Label>
                           <Input
                             id="image"
@@ -895,7 +856,7 @@ export default function TableSholarships() {
                             component="div"
                             className="text-red-500"
                           />
-                        </div>
+                        </div> */}
                         {/* Add other form fields similarly */}
                         <Button type="submit" className="w-full">
                           Submit
