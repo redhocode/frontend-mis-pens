@@ -35,7 +35,14 @@ const Page: React.FC<pageProps> = ({params})=> {
    if (isLoading) {
      return (
        <div className="flex items-center justify-center h-screen">
-         <ScaleLoader color="#f0d400" />
+         <ScaleLoader
+           color="#f0d400"
+           height={200}
+           margin={5}
+           radius={52}
+           speedMultiplier={1}
+           width={40}
+         />
        </div>
      );
    }
