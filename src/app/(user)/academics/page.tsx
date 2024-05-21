@@ -1,4 +1,4 @@
-
+"use client"
 import Footer from '@/components/footer/footer'
 import Navbar from '@/components/navbar/navbar'
 import CradAcademics from '@/layouts/academics/CardAcademics'

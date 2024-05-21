@@ -1,4 +1,4 @@
-
+"use client"
 import { PageWrapper } from '@/components/animate/page-wrapper'
 import Footer from '@/components/footer/footer'
 import Navbar from '@/components/navbar/navbar'
