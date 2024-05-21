@@ -161,7 +161,8 @@ export const CradScholarships = () => {
 
               <div className="flex flex-col space-y-3 mt-2">
                 {!data.image ? ( // Periksa jika tidak ada gambar
-                  <Skeleton className="h-[200px] w-full rounded-xl" />
+                 // <Skeleton className="h-[200px] w-full rounded-xl" />
+                 <span></span>
                 ) : (
                   <img
                     src={
