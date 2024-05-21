@@ -179,7 +179,7 @@ export const CradScholarships = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Label>Keterangan</Label>
+        
             <div className="px-2 py-2 mt-2 outline-1 outline outline-slate-100 rounded-md shadow-sm">
               <div
                 dangerouslySetInnerHTML={{

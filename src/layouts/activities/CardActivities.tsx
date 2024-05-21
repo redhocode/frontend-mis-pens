@@ -42,6 +42,46 @@ export const CradActivities = () => {
   const totalPages = Math.ceil(totalStudents / pageSize);
 
   const [searchTerm, setSearchTerm] = useState("");
+  // Fungsi untuk memotong teks HTML tanpa merusak tag
+  const truncateHTML = (html: string, maxLength: number) => {
+    if (html.length <= maxLength) return html;
+
+    let length = 0;
+    let result = "";
+    const regex = /(<([^>]+)>)/gi;
+    let tags: any[] = [];
+    let lastIndex = 0;
+
+    html.replace(regex, (match, p1, p2, offset) => {
+      if (length >= maxLength) return "";
+
+      const text = html.substring(lastIndex, offset);
+      if (length + text.length > maxLength) {
+        result += text.substring(0, maxLength - length);
+        length = maxLength;
+      } else {
+        result += text;
+        length += text.length;
+      }
+      result += match;
+      tags.push(p2.split(" ")[0]);
+      lastIndex = offset + match.length;
+
+      return "";
+    });
+
+    if (length < maxLength) {
+      result += html.substring(lastIndex, maxLength - length + lastIndex);
+    }
+
+    // Close any unclosed tags
+    while (tags.length) {
+      const tag = tags.pop();
+      result += `</${tag}>`;
+    }
+
+    return result + (html.length > maxLength ? "..." : "");
+  };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -117,9 +157,14 @@ export const CradActivities = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ScrollArea className="h-[150px] w-full rounded-md border p-4">
-              <p>{data.description}</p>
-            </ScrollArea>
+            <div className="px-2 py-2 mt-2 outline-1 outline outline-slate-100 rounded-md shadow-sm">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: truncateHTML(data.description, 50),
+                }}
+                className="text-justify"
+              />
+            </div>
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button variant="ghost" className="uppercase font-thin">
@@ -177,9 +222,7 @@ export const CradActivities = () => {
       <div className="flex flex-wrap mx-auto gap-4 justify-center mb-5">
         {renderStudent(page, pageSize, data, searchTerm, filterValue)}
         {isLoading && (
-          <div className="flex items-center justify-center mt-4">
-         
-          </div>
+          <div className="flex items-center justify-center mt-4"></div>
         )}
       </div>
       <Pagination>
