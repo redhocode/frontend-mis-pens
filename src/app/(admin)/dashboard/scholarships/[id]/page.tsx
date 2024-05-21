@@ -88,7 +88,7 @@ const Page: React.FC<pageProps> = ({ params }) => {
                       )}
                     </div>
                     <br />
-                    <Label>Keterangan</Label>
+                    
                     <ScrollArea className="min-h-screen w-full rounded-md border p-4">
                       <div
                         dangerouslySetInnerHTML={{
