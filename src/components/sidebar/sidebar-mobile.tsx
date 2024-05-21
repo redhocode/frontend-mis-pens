@@ -12,6 +12,7 @@ import { usePathname } from "next/navigation";
 import logoutUser from "../../features/user/logoutUser";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { ModeToggle } from "../mode";
 interface SidebarMobileProps {
   sidebarItems: SidebarItems;
 }
@@ -48,6 +49,7 @@ export function SidebarMobile(props: SidebarMobileProps) {
 
         <SheetContent side="left" className="px-3 py-4">
           <SheetHeader className="flex flex-row justify-between items-center space-y-0">
+            <ModeToggle />
             <span className="text-2xl font-semibold text-foreground mx-3">
               Dashboard
             </span>

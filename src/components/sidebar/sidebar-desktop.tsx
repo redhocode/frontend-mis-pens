@@ -20,7 +20,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
+import { ModeToggle } from "../mode";
 interface SidebarDesktopProps {
   sidebarItems: SidebarItems;
 }
@@ -52,9 +52,11 @@ const handleLogout = async () => {
   return (
     <aside className="w-[250px] max-w-xs h-screen fixed left-0 top-0 z-40 border-r bg-background">
       <div className="w-full px-3 py-4">
+        <ModeToggle />
         <h3 className="mx-3 text-lg font-semibold text-foreground">
           Dashboard
         </h3>
+
         <div className="justify-center mt-6 mb-6 ml-16 items-center">
           <Avatar className="w-24 h-24 outline-2 outline cursor-pointer">
             <AvatarImage src="https://github.com/redhocode.png" />
@@ -62,7 +64,9 @@ const handleLogout = async () => {
           </Avatar>
         </div>
         <div className="flex flex-col">
-          <Label className="text-foreground ml-20 mb-2 text-xl uppercase antialiased">{user}</Label>
+          <Label className="text-foreground ml-20 mb-2 text-xl uppercase antialiased">
+            {user}
+          </Label>
           <Label className="text-foreground ml-20 font-light text-xs">
             ({role})
           </Label>
