@@ -33,7 +33,7 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
   
         <section>
-          <div className="ml-[270px] mt-3 mx-5 md:ml-4 bg-white dark:bg-zinc-800 py-4">
+          <div className="ml-[270px] mt-3 mx-5 md:ml-4 bg-white dark:bg-zinc-800 py-4 min-h-screen">
             {/* <Navbar /> */}
             <Sidebar />
             <Providers>
