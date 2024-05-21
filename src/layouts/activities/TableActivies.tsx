@@ -548,6 +548,7 @@ export default function TableActivies() {
                             <Input
                               id="image"
                               name="image"
+                              disabled
                               type="file"
                               className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                               onChange={(e) => {
@@ -661,7 +662,7 @@ export default function TableActivies() {
                 Add Data
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] min-w-[1040]">
+            <DialogContent className="sm:max-w-[425px] min-w-[1040px]">
               <DialogHeader>
                 <DialogTitle>Add Data</DialogTitle>
               </DialogHeader>
@@ -833,6 +834,7 @@ export default function TableActivies() {
                           <Label htmlFor="image">Picture</Label>
                           <Input
                             id="image"
+                            disabled
                             name="image"
                             type="file"
                             className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -932,9 +934,6 @@ export default function TableActivies() {
             {renderActivity(page, pageSize, data, searchTerm)}
             {isLoading && (
               <TableRow>
-                 <TableCell>
-                  <Skeleton className="w-full h-6" />
-                </TableCell>
                 <TableCell>
                   <Skeleton className="w-full h-6" />
                 </TableCell>
@@ -947,7 +946,9 @@ export default function TableActivies() {
                 <TableCell>
                   <Skeleton className="w-full h-6" />
                 </TableCell>
-              
+                <TableCell>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
               </TableRow>
             )}
           </TableBody>

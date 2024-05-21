@@ -702,6 +702,7 @@ export default function TableStudent() {
                             <Label htmlFor="image">Picture</Label>
                             <Input
                               id="image"
+                              disabled
                               name="image"
                               type="file"
                               className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -1170,6 +1171,7 @@ export default function TableStudent() {
                           <Label htmlFor="image">Picture</Label>
                           <Input
                             id="image"
+                            disabled
                             name="image"
                             type="file"
                             className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

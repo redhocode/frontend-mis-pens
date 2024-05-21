@@ -561,6 +561,7 @@ export default function TableSholarships() {
                               </div>
                             ) : null}
                           </div>
+
                           <div className="flex flex-col mb-4">
                             <Label htmlFor="link">Link</Label>
                             <Input
@@ -580,7 +581,53 @@ export default function TableSholarships() {
                             ) : null}
                           </div>
                           {/*  */}
+                          <div className="flex flex-col mb-4">
+                            <Label htmlFor="image">Picture</Label>
+                            <Input
+                              id="image"
+                              name="image"
+                              disabled
+                              type="file"
+                              className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              onChange={(e) => {
+                                if (
+                                  e.target.files &&
+                                  e.target.files.length > 0
+                                ) {
+                                  const reader = new FileReader();
+                                  reader.onload = (event) => {
+                                    if (reader.readyState === 2) {
+                                      const file = e.target.files![0];
+                                      if (file) {
+                                        formik.setFieldValue("image", file);
+                                        setPreview(reader.result as string);
+                                      }
+                                    }
+                                  };
+                                  reader.readAsDataURL(e.target.files[0]);
+                                }
+                              }}
+                              onBlur={formik.handleBlur}
+                            />
+                            {formik.touched.image && formik.errors.image && (
+                              <div className="text-red-500">
+                                {formik.errors.image}
+                              </div>
+                            )}
+                            {preview && ( // Tampilkan pratinjau gambar jika ada
+                              <img
+                                src={preview}
+                                alt="Selected"
+                                className="mt-2 max-w-full h-auto"
+                              />
+                            )}
 
+                            <ErrorMessage
+                              name="image"
+                              component="div"
+                              className="text-red-500"
+                            />
+                          </div>
                           <Button type="submit" className="w-full">
                             Submit
                           </Button>
@@ -814,11 +861,12 @@ export default function TableSholarships() {
                             </div>
                           ) : null}
                         </div>
-                        {/* <div className="flex flex-col mb-4">
+                        <div className="flex flex-col mb-4">
                           <Label htmlFor="image">Picture</Label>
                           <Input
                             id="image"
                             name="image"
+                            disabled
                             type="file"
                             className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             onChange={(e) => {
@@ -856,7 +904,7 @@ export default function TableSholarships() {
                             component="div"
                             className="text-red-500"
                           />
-                        </div> */}
+                        </div>
                         {/* Add other form fields similarly */}
                         <Button type="submit" className="w-full">
                           Submit
