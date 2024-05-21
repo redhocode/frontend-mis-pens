@@ -690,7 +690,7 @@ Quill.register("modules/resizeImage", QuillResizeImage);
                                   ></button>
                                   <select className="ql-align"></select>
                                 </span>
-                                <span className="ql-formats">
+                                <span className="ql-formats z-10">
                                   <button className="ql-link"></button>
                                   <button className="ql-image"></button>
                                   <button className="ql-video"></button>
