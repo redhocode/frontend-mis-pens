@@ -5,7 +5,7 @@ import React from 'react'
 // `app/page.tsx` is the UI for the `/` URL
 export default function Page() {
   return(
-    <div className='mt-20'> 
+    <div className=''> 
         <LoginForm />
        </div>
   )
