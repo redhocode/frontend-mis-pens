@@ -33,7 +33,7 @@ const Page: React.FC<pageProps> = ({params})=> {
 
    if (isLoading) {
      return (
-       <div className="flex items-center justify-center">
+       <div className="flex items-center justify-center h-screen">
          <CardSkeleton />
        </div>
      );
