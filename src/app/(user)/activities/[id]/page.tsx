@@ -24,6 +24,8 @@ import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { ScaleLoader } from "react-spinners";
+import { motion, useScroll, useSpring } from "framer-motion";
+import "../../../globals.css";
 interface pageProps {
   params: {
     id: string;
@@ -33,7 +35,12 @@ const Page: React.FC<pageProps> = ({ params }) => {
   const router = useRouter();
   // Gunakan hook useFetchDataById untuk mengambil data berdasarkan ID
   const { data, isLoading } = useFetchDataActivityById(params.id);
-
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -53,6 +60,7 @@ const Page: React.FC<pageProps> = ({ params }) => {
     <>
       <section className="mt-32 px-4 py-4 container shadow-inner min-h-screen">
         <Navbar />
+        <motion.div className="progress-bar" style={{ scaleX }} />
         <PageWrapper>
           <div className="flex gap-4 mb-5 justify-center md:flex-col flex-col mx-auto items-center">
             {data.data ? (

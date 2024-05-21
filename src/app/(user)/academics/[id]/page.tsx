@@ -21,16 +21,24 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import CardSkeleton from "@/components/skeleton/card-skeleton";
 import { ScaleLoader } from "react-spinners";
+import { motion, useScroll, useSpring } from "framer-motion";
+import "../../../globals.css";
 interface pageProps {
   params: {
     id: string;
   };
 }
 const Page: React.FC<pageProps> = ({ params }) => {
+
   const router = useRouter();
   // Gunakan hook useFetchDataById untuk mengambil data berdasarkan ID
   const { data, isLoading } = useFetchDataAcademicById(params.id);
-
+     const { scrollYProgress } = useScroll();
+     const scaleX = useSpring(scrollYProgress, {
+       stiffness: 100,
+       damping: 30,
+       restDelta: 0.001,
+     });
   if (isLoading) {
     return (
       <>
@@ -53,6 +61,7 @@ const Page: React.FC<pageProps> = ({ params }) => {
     <>
       <section className="mt-32 px-4 py-4 container shadow-inner min-h-screen">
         <Navbar />
+        <motion.div className="progress-bar" style={{ scaleX }} />
         <PageWrapper>
           <div className="flex gap-4 mb-5 justify-center md:flex-col flex-col mx-auto items-center">
             {data.data ? (
@@ -88,7 +97,7 @@ const Page: React.FC<pageProps> = ({ params }) => {
                     <ScrollArea className="min-h-screen w-full rounded-md border p-4">
                       <div
                         dangerouslySetInnerHTML={{
-                          __html:(data.data.description),
+                          __html: data.data.description,
                         }}
                         className="text-justify"
                       />
