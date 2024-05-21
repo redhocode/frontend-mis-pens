@@ -4,9 +4,9 @@ import React from 'react'
 
 // `app/page.tsx` is the UI for the `/` URL
 export default function Page() {
-  return(
-    <div className='mt-20'> 
-        <LoginForm />
-       </div>
-  )
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <LoginForm />
+    </div>
+  );
 }

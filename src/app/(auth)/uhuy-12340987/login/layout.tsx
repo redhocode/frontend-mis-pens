@@ -11,7 +11,7 @@ function LoginLayout({
 }) {
   return (
       <section>
-        <main className=" sm:mt-3 mx-5 bg-white dark:bg-inherit">
+        <main className=" sm:mt-3 mx-5 min-h-screen dark:bg-inherit">
         {children}
          <Toaster />
         </main>
