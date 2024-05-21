@@ -100,7 +100,8 @@ export const CradActivities = () => {
               <br />
               <div className="flex flex-col space-y-3 mt-2">
                 {!data.image ? ( // Periksa jika tidak ada gambar
-                  <Skeleton className="h-[295px] w-full rounded-xl" />
+                  // <Skeleton className="h-[295px] w-full rounded-xl" />
+                  <span></span>
                 ) : (
                   <img
                     src={
