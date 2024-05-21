@@ -66,3 +66,12 @@
   }
 }
 
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6rem;
+  background: #f0d400;
+  transform-origin: 0%;
+}
