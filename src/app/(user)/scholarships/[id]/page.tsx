@@ -19,6 +19,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
+import CardSkeleton from "@/components/skeleton/card-skeleton";
 interface pageProps {
   params: {
     id: string;
@@ -33,8 +34,7 @@ const Page: React.FC<pageProps> = ({params})=> {
    if (isLoading) {
      return (
        <div className="flex items-center justify-center mt-4">
-         <p className="font-semibold mr-1">Loading</p>
-         <LoaderIcon className="animate-spin h-10 w-10" />
+         <CardSkeleton />
        </div>
      );
    }
@@ -77,7 +77,12 @@ const Page: React.FC<pageProps> = ({params})=> {
                     <br />
                     <Label>Keterangan</Label>
                     <ScrollArea className="min-h-screen w-full rounded-md border p-4">
-                      <p className="text-justify">{data.data.description}</p>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: data.data.description,
+                        }}
+                        className="text-justify"
+                      />
                     </ScrollArea>
                   </CardContent>
                   <CardFooter>
