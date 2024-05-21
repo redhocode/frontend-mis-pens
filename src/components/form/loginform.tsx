@@ -74,7 +74,7 @@ const handleLogin = async (values: any, { setSubmitting, setErrors }: any) => {
         <div className=" max-w-max max-h-screen">
          
          
-          <div className="flex flex-wrap shadow-lg px-20 py-20 justify-center bg-white dark:bg-neutral-800">
+          <div className="flex flex-wrap shadow-lg px-20 py-20 justify-center ">
             <div className="outline outline-2 outline-secondary px-4 py-4 rounded-sm ">
                <h1 className="mb-2 text-3xl font-bold text-center text-primary">
             Welcome
