@@ -332,7 +332,7 @@ Quill.register("modules/resizeImage", QuillResizeImage);
                   validationSchema={validationSchema}
                   onSubmit={hendlerSubmit}
                 >
-                  <ScrollArea className="h-[800px] w-[1000px] rounded-md border p-4 md:h-[500px] md:w-[365px]">
+                  <ScrollArea className="h-[700px] w-[1000px] rounded-md border p-4 md:h-[500px] md:w-[365px]">
                     <Form
                       className="flex flex-wrap "
                       onSubmit={formik.handleSubmit}

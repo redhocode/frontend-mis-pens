@@ -403,7 +403,7 @@ export default function TableSholarships() {
                   </Button>
                 </div>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
+              <DialogContent className="min-w-[1040px]">
                 <DialogHeader>
                   <DialogTitle>Edit Data</DialogTitle>
                 </DialogHeader>
@@ -412,7 +412,7 @@ export default function TableSholarships() {
                   validationSchema={validationSchema}
                   onSubmit={hendlerSubmit}
                 >
-                  <ScrollArea className="h-[700px] w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
+                  <ScrollArea className="h-[700px] w-[1000px] rounded-md border p-4 md:h-[500px] md:w-[365px]">
                     <Form
                       className="flex flex-wrap "
                       onSubmit={formik.handleSubmit}
@@ -463,7 +463,7 @@ export default function TableSholarships() {
                               name="description"
                               id="description"
                               value={formik.values.description}
-                              style={{ height: "1000px" }}
+                              style={{ height: "1200px" }}
                               onTextChange={(e: any) => {
                                 setText(e.htmlValue);
                                 formik.setFieldValue(
@@ -537,7 +537,7 @@ export default function TableSholarships() {
                                     ></button>
                                     <select className="ql-align"></select>
                                   </span>
-                                  <span className="ql-formats">
+                                  <span className="ql-formats z-10">
                                     <button className="ql-link"></button>
                                     <button className="ql-image"></button>
                                     <button className="ql-video"></button>
@@ -580,7 +580,7 @@ export default function TableSholarships() {
                             ) : null}
                           </div>
                           {/*  */}
-                        
+
                           <Button type="submit" className="w-full">
                             Submit
                           </Button>
@@ -701,7 +701,7 @@ export default function TableSholarships() {
                             name="description"
                             id="description"
                             value={formik.values.description}
-                            style={{ height: "1000px" }}
+                            style={{ height: "1200px" }}
                             onTextChange={(e: any) => {
                               setText(e.htmlValue);
                               formik.setFieldValue("description", e.htmlValue);
@@ -772,7 +772,7 @@ export default function TableSholarships() {
                                   ></button>
                                   <select className="ql-align"></select>
                                 </span>
-                                <span className="ql-formats">
+                                <span className="ql-formats z-10">
                                   <button className="ql-link"></button>
                                   <button className="ql-image"></button>
                                   <button className="ql-video"></button>

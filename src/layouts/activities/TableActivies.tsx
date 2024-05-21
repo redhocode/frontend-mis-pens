@@ -372,7 +372,7 @@ export default function TableActivies() {
                   </Button>
                 </div>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px] min-w-[800px]">
+              <DialogContent className="sm:max-w-[425px] min-w-[1040px]">
                 <DialogHeader>
                   <DialogTitle>Edit Data</DialogTitle>
                 </DialogHeader>
@@ -381,7 +381,7 @@ export default function TableActivies() {
                   validationSchema={validationSchema}
                   onSubmit={hendlerSubmit}
                 >
-                  <ScrollArea className="h-[700px] w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
+                  <ScrollArea className="h-[700px] w-[1000px] rounded-md border p-4 md:h-[500px] md:w-[365px]">
                     <Form
                       className="flex flex-wrap "
                       onSubmit={formik.handleSubmit}
@@ -432,7 +432,7 @@ export default function TableActivies() {
                               name="description"
                               id="description"
                               value={formik.values.description}
-                              style={{ height: "320px" }}
+                              style={{ height: "1200px" }}
                               onTextChange={(e: any) => {
                                 setText(e.htmlValue);
                                 formik.setFieldValue(
@@ -506,7 +506,7 @@ export default function TableActivies() {
                                     ></button>
                                     <select className="ql-align"></select>
                                   </span>
-                                  <span className="ql-formats">
+                                  <span className="ql-formats z-10">
                                     <button className="ql-link"></button>
                                     <button className="ql-image"></button>
                                     <button className="ql-video"></button>
@@ -661,7 +661,7 @@ export default function TableActivies() {
                 Add Data
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] min-w-[800px] mx-auto">
+            <DialogContent className="sm:max-w-[425px] min-w-[1040]">
               <DialogHeader>
                 <DialogTitle>Add Data</DialogTitle>
               </DialogHeader>
@@ -670,7 +670,7 @@ export default function TableActivies() {
                 validationSchema={validationSchema}
                 onSubmit={hendlerSubmit}
               >
-                <ScrollArea className="h-[700px] w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
+                <ScrollArea className="h-[700px] w-[1000px] rounded-md border p-4 md:h-[500px] md:w-[365px]">
                   <Form
                     className="flex flex-wrap "
                     onSubmit={formik.handleSubmit}
@@ -721,7 +721,7 @@ export default function TableActivies() {
                             name="description"
                             id="description"
                             value={formik.values.description}
-                            style={{ height: "320px" }}
+                            style={{ height: "1200px" }}
                             onTextChange={(e: any) => {
                               setText(e.htmlValue);
                               formik.setFieldValue("description", e.htmlValue);
@@ -735,7 +735,7 @@ export default function TableActivies() {
                                   <select className="ql-font"></select>
                                   <select className="ql-size"></select>
                                 </span>
-                                <span className="ql-formats">
+                                <span className="ql-formats z-10">
                                   <button className="ql-bold"></button>
                                   <button className="ql-italic"></button>
                                   <button className="ql-underline"></button>
