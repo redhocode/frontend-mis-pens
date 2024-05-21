@@ -23,6 +23,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
+import { ScaleLoader } from "react-spinners";
 interface pageProps {
   params: {
     id: string;
@@ -35,9 +36,15 @@ const Page: React.FC<pageProps> = ({ params }) => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center mt-4">
-        <p className="font-semibold mr-1">Loading</p>
-        <LoaderIcon className="animate-spin h-10 w-10" />
+      <div className="flex items-center justify-center h-screen">
+        <ScaleLoader
+          color="#f0d400"
+          height={200}
+          margin={5}
+          radius={52}
+          speedMultiplier={1}
+          width={40}
+        />
       </div>
     );
   }
