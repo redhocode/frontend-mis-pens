@@ -58,7 +58,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Editor } from "primereact/editor";
 import DetailActivity from "@/components/button/ButtonDashDetailActiviy";
-
+import QuillResizeImage from "quill-resize-image";
+import Quill from "quill";
 export default function TableActivies() {
   const pageSize = 3; // Tentukan nilai pageSize
   const [page, setPage] = useState(1); // Tentukan nilai awal page
@@ -77,7 +78,7 @@ export default function TableActivies() {
 
   //textarea function
   const [text, setText] = useState<string>("");
-
+Quill.register("modules/resizeImage", QuillResizeImage);
   // Fungsi untuk memotong teks HTML tanpa merusak tag
   const truncateHTML = (html: string, maxLength: number) => {
     if (html.length <= maxLength) return html;
@@ -517,6 +518,11 @@ export default function TableActivies() {
                                   </span>
                                 </>
                               }
+                              modules={{
+                                resizeImage: {
+                                  displaySize: true,
+                                },
+                              }}
                             />
                             {formik.touched.description &&
                             formik.errors.description ? (
@@ -804,6 +810,11 @@ export default function TableActivies() {
                                 </span>
                               </>
                             }
+                            modules={{
+                              resizeImage: {
+                                displaySize: true,
+                              },
+                            }}
                           />
                           {formik.touched.description &&
                           formik.errors.description ? (
