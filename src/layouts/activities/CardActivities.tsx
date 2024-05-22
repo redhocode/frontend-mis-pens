@@ -160,7 +160,7 @@ export const CradActivities = () => {
             <div className="px-2 py-2 mt-2 outline-1 outline outline-slate-100 rounded-md shadow-sm">
               <div
                 dangerouslySetInnerHTML={{
-                  __html: truncateHTML(data.description, 1),
+                  __html: truncateHTML(data.description, 0),
                 }}
                 className="text-justify"
               />
