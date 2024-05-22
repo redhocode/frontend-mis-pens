@@ -343,7 +343,7 @@ export default function TableSholarships() {
           <TableCell>
             <div
               dangerouslySetInnerHTML={{
-                __html: truncateHTML(scholarships.description, 5),
+                __html: truncateHTML(scholarships.description, 1),
               }}
             />
           </TableCell>
