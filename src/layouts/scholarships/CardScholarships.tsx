@@ -201,7 +201,7 @@ export const CradScholarships = () => {
                   variant="ghost"
                   className="ml-2 bg-primary text-white rounded-lg "
                 >
-                  <span>Lebih Lanjut</span>
+                  <span>Link Tautan</span>
                 </Button>
               </Link>
             )}

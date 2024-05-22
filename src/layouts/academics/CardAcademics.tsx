@@ -190,7 +190,7 @@ export const CradAcademics = () => {
             ) : (
               <Link href={data.link} target="_blank" rel="noopener noreferrer">
                 <Button variant="ghost" className="">
-                  <span>Link</span>
+                  <span>Link Tautan</span>
                 </Button>
               </Link>
             )}
