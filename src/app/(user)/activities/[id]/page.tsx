@@ -76,7 +76,8 @@ const Page: React.FC<pageProps> = ({ params }) => {
                   <CardContent>
                     <div className="flex flex-col space-y-3 mt-2">
                       {!data.data.image ? ( // Periksa jika tidak ada gambar
-                        <Skeleton className="h-[200px] w-[750px] rounded-xl" />
+                        // <Skeleton className="h-[200px] w-[750px] rounded-xl" />
+                        <span></span>
                       ) : (
                         <img
                           src={
@@ -92,9 +93,14 @@ const Page: React.FC<pageProps> = ({ params }) => {
                       )}
                     </div>
                     <br />
-                  
+
                     <ScrollArea className="min-h-screen w-full rounded-md border p-4">
-                      <p className="text-justify">{data.data.description}</p>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: data.data.description,
+                        }}
+                        className="text-justify"
+                      />
                     </ScrollArea>
                   </CardContent>
                   <CardFooter>
