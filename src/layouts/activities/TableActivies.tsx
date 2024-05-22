@@ -320,7 +320,7 @@ Quill.register("modules/resizeImage", QuillResizeImage);
           <TableCell>
             <div
               dangerouslySetInnerHTML={{
-                __html: truncateHTML(activity.description, 10),
+                __html: truncateHTML(activity.description, 1),
               }}
             />
           </TableCell>
