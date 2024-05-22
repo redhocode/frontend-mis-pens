@@ -12,7 +12,7 @@ import { usePathname } from "next/navigation";
 import logoutUser from "../../features/user/logoutUser";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { ModeToggle } from "../mode";
+import { ModeToggle } from "../mode-dash";
 interface SidebarMobileProps {
   sidebarItems: SidebarItems;
 }

@@ -20,7 +20,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ModeToggle } from "../mode";
+import { ModeToggle } from "../mode-dash";
 interface SidebarDesktopProps {
   sidebarItems: SidebarItems;
 }
