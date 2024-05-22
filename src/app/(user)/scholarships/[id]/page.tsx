@@ -75,7 +75,8 @@ const Page: React.FC<pageProps> = ({params})=> {
                   <CardContent>
                     <div className="flex flex-col space-y-3 mt-2">
                       {!data.data.image ? ( // Periksa jika tidak ada gambar
-                        <Skeleton className="h-[200px] w-[750px] rounded-xl" />
+                        // <Skeleton className="h-[200px] w-[750px] rounded-xl" />
+                        <span></span>
                       ) : (
                         <img
                           src={
