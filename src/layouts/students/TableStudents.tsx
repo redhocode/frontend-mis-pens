@@ -296,7 +296,7 @@ export default function TableStudent() {
             ) : (
               <img
                 src={
-                    CDN+student.image
+                    student.image
                 }
                 alt="Image"
                 className="object-cover h-10 cursor-pointer transition-transform duration-300 hover:scale-110"

@@ -176,7 +176,7 @@ const CradStudentsUser = () => {
               ) : (
                 <img
                   src={
-                    CDN + student.image
+                    student.image
                    }
                   alt="Activity Image"
                   className="object-cover h-[294px] transition duration-300 ease-in-out rounded-xl hover:scale-105 cursor-pointer"
