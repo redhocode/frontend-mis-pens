@@ -80,10 +80,7 @@ const Page: React.FC<pageProps> = ({ params }) => {
                         <span></span>
                       ) : (
                         <img
-                          src={
-                          
-                                data.data.image
-                          }
+                          src={data.data.image!}
                           alt="Activity Image"
                           className="object-cover cursor-pointer w-full h-xl min-w-screen"
                         />
@@ -91,14 +88,14 @@ const Page: React.FC<pageProps> = ({ params }) => {
                     </div>
                     <br />
 
-                    <ScrollArea className="min-h-screen w-full rounded-md border p-4">
+                    <div className="min-h-screen w-full rounded-md p-4 px-2 py-2 outline-1  outline-slate-100">
                       <div
                         dangerouslySetInnerHTML={{
                           __html: data.data.description,
                         }}
                         className="text-justify"
                       />
-                    </ScrollArea>
+                    </div>
                   </CardContent>
                   <CardFooter>
                     <Button variant="ghost" className="uppercase font-thin">

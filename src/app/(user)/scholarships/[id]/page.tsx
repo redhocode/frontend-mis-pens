@@ -80,11 +80,8 @@ const Page: React.FC<pageProps> = ({params})=> {
                       ) : (
                         <img
                           src={
-                            process.env.NODE_ENV === "production"
-                              ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD +
-                                data.data.image
-                              : process.env.NEXT_PUBLIC_URL_IMAGE_DEV +
-                                data.data.image
+                          
+                                data.data.image!
                           }
                           alt="Activity Image"
                           className="object-cover cursor-pointer w-full h-xl min-w-screen"
