@@ -76,13 +76,13 @@ const Page: React.FC<pageProps> = ({ params }) => {
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-col space-y-3 mt-2">
-                      {!data.image ? ( // Periksa jika tidak ada gambar
+                      {!data.data.data.image ? ( // Periksa jika tidak ada gambar
                         <span></span>
                       ) : (
                         <img
                           src={
                             
-                                data.image
+                                data.data.data.image
                           }
                           alt="academic Image"
                           className="object-cover cursor-pointer w-full h-xl min-w-screen"
