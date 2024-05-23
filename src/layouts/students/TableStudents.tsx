@@ -85,7 +85,7 @@ export default function TableStudent() {
     name: Yup.string().required("Name is required"),
     nrp: Yup.number()
       .required("NRP is required")
-      .min(8, "NRP must be 8 digits"),
+      .min(10, "NRP must be 8 digits"),
     ipk: Yup.number()
       .required("IPK is required")
       .lessThan(5, "IPK must be less than 4"),
