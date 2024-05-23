@@ -221,7 +221,7 @@ const CradStudentsUser = () => {
       <div className="flex justify-center flex-col mx-auto">
         <div className="flex flex-col mb-12   bg-white text-zinc-900 px-4 py-4 rounded-lg shadow-md dark:bg-neutral-800 dark:text-white max-w-4xl mx-auto justify-center">
           <h1 className="text-2xl font-bold justify-center mb-4 mx-auto uppercase">
-            - Data Mahasiswa -
+            Data Mahasiswa
           </h1>
           <div className="">
             <section className="block mx-auto container max-w-4xl text-justify">
