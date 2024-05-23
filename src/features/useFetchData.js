@@ -62,7 +62,7 @@ export const useFetchScholarship = (page, pageSize, filterValue) => {
           pageSize,
         },
       });
-       console.log("Response from API:", response.data);
+   //    console.log("Response from API:", response.data);
       return response.data;
     },
   });

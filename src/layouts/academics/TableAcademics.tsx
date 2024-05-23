@@ -832,63 +832,60 @@ export default function TableAcademic() {
                           ) : null}
                         </div>
                         {/* Add other form fields similarly */}
-                         <div className="flex flex-col mb-4">
-                            <Label htmlFor="image">Picture</Label>
-                            <Input
-                              id="image"
-                              name="image"
-                              type="file"
-                              className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                              onChange={(e) => {
-                                if (
-                                  e.target.files &&
-                                  e.target.files.length > 0
-                                ) {
-                                  const reader = new FileReader();
-                                  reader.onload = (event) => {
-                                    if (reader.readyState === 2) {
-                                      const file = e.target.files![0];
-                                      if (file) {
-                                        formik.setFieldValue("image", file);
-                                        setPreview(reader.result as string);
-                                      }
+                        <div className="flex flex-col mb-4">
+                          <Label htmlFor="image">Picture</Label>
+                          <Input
+                            id="image"
+                            name="image"
+                            type="file"
+                            className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            onChange={(e) => {
+                              if (e.target.files && e.target.files.length > 0) {
+                                const reader = new FileReader();
+                                reader.onload = (event) => {
+                                  if (reader.readyState === 2) {
+                                    const file = e.target.files![0];
+                                    if (file) {
+                                      formik.setFieldValue("image", file);
+                                      setPreview(reader.result as string);
                                     }
-                                  };
-                                  reader.readAsDataURL(e.target.files[0]);
-                                }
-                              }}
-                              onBlur={formik.handleBlur}
-                            />
-                            {formik.touched.image && formik.errors.image && (
-                              <div className="text-red-500">
-                                {formik.errors.image}
-                              </div>
-                            )}
-                            {preview && ( // Tampilkan pratinjau gambar jika ada
-                              <div className="mt-2 flex items-center flex-col gap-2">
-                                <img
-                                  src={preview}
-                                  alt="Selected"
-                                  className="max-w-full h-auto"
-                                />
+                                  }
+                                };
+                                reader.readAsDataURL(e.target.files[0]);
+                              }
+                            }}
+                            onBlur={formik.handleBlur}
+                          />
+                          {formik.touched.image && formik.errors.image && (
+                            <div className="text-red-500">
+                              {formik.errors.image}
+                            </div>
+                          )}
+                          {preview && ( // Tampilkan pratinjau gambar jika ada
+                            <div className="mt-2 flex items-center flex-col gap-2">
+                              <img
+                                src={preview}
+                                alt="Selected"
+                                className="max-w-full h-auto"
+                              />
 
-                                {/* Tombol untuk menghapus gambar */}
-                                <Button
-                                  type="button"
-                                  className=" px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 w-full"
-                                  onClick={handleRemoveImage}
-                                >
-                                  Remove Image
-                                </Button>
-                              </div>
-                            )}
+                              {/* Tombol untuk menghapus gambar */}
+                              <Button
+                                type="button"
+                                className=" px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 w-full"
+                                onClick={handleRemoveImage}
+                              >
+                                Remove Image
+                              </Button>
+                            </div>
+                          )}
 
-                            <ErrorMessage
-                              name="image"
-                              component="div"
-                              className="text-red-500"
-                            />
-                          </div>
+                          <ErrorMessage
+                            name="image"
+                            component="div"
+                            className="text-red-500"
+                          />
+                        </div>
                         <Button type="submit" className="w-full">
                           Submit
                         </Button>
@@ -925,6 +922,7 @@ export default function TableAcademic() {
               <TableHead className="text-white font-semibold">
                 Description
               </TableHead>
+              <TableHead className="text-white font-semibold">Image</TableHead>
               <TableHead className="text-white font-semibold">Link</TableHead>
               <TableHead className="text-white font-semibold justify-center content-center ">
                 Action
