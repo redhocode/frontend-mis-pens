@@ -296,8 +296,8 @@ export default function TableStudent() {
               <img
                 src={
                   process.env.NODE_ENV === "production"
-                    ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD + student.image
-                    : process.env.NEXT_PUBLIC_URL_IMAGE_DEV + student.image
+                    ? `${process.env.NEXT_PUBLIC_PROD_API_URL}/storage/v1/object/public/images/${student.image}`
+                    : `${process.env.NEXT_PUBLIC_DEV_API_URL}/storage/v1/object/public/images/${student.image}`
                 }
                 alt="Image"
                 className="object-cover h-10 cursor-pointer transition-transform duration-300 hover:scale-110"
@@ -702,7 +702,6 @@ export default function TableStudent() {
                             <Label htmlFor="image">Picture</Label>
                             <Input
                               id="image"
-                              
                               name="image"
                               type="file"
                               className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -1206,7 +1205,7 @@ export default function TableStudent() {
                           )}
                           <Button
                             type="button"
-                            className=" px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 w-full"
+                            className=" mt-2px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 w-full"
                             onClick={handleRemoveImage}
                           >
                             Remove Image
