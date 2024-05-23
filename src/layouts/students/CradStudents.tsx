@@ -176,8 +176,8 @@ const CradStudentsUser = () => {
                 <img
                   src={
                     process.env.NODE_ENV === "production"
-                      ? `process.env.NEXT_PUBLIC_PROD_API_URL` + student.image
-                      : `process.env.NEXT_PUBLIC_DEV_API_URL` + student.image
+                      ? process.env.NEXT_PUBLIC_PROD_API_URL+ student.image
+                      : process.env.NEXT_PUBLIC_DEV_API_URL + student.image
                   }
                   alt="Activity Image"
                   className="object-cover h-[294px] transition duration-300 ease-in-out rounded-xl hover:scale-105 cursor-pointer"
