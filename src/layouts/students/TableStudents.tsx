@@ -110,7 +110,7 @@ export default function TableStudent() {
   const { mutate: CreateOrUpdateStudent } = useMutation({
     mutationFn: async () => {
       try {
-        const { id, name, nrp, ipk, major, year, semester, status, image ,receivedAwardId,receivedAwardName} =
+        const { id, name, nrp, ipk, major, year, semester, status,graduated, image ,receivedAwardId,receivedAwardName} =
           formik.values;
         let studentsRes;
         const formData = new FormData();
@@ -123,6 +123,7 @@ export default function TableStudent() {
         formData.append("status", status);
         formData.append("receivedAwardId", receivedAwardId);
         formData.append("receivedAwardName", receivedAwardName);
+        formData.append("graduated", graduated);
 
         if (image !== null) {
           formData.append("image", image);
@@ -232,6 +233,7 @@ export default function TableStudent() {
       status: "",
       id: "",
       image: "",
+      graduated: "",
       receivedAwardId: "",
       receivedAwardName: "",
     },
@@ -260,6 +262,7 @@ export default function TableStudent() {
         student.semester.toString(),
         student.ipk.toString(),
         student.status,
+        student.graduated.toString(),
       ];
 
       // Cek apakah setiap field mengandung kata kunci pencarian (dalam huruf kecil)
@@ -290,14 +293,13 @@ export default function TableStudent() {
           <TableCell>{student.semester}</TableCell>
           <TableCell>{student.ipk}</TableCell>
           <TableCell>{student.status}</TableCell>
+          <TableCell>{student.graduated}</TableCell>
           <TableCell>
             {!student.image ? ( // Periksa jika tidak ada gambar
               <Skeleton className="h-[50px] w-full rounded-xl" />
             ) : (
               <img
-                src={
-                    student.image
-                }
+                src={student.image}
                 alt="Image"
                 className="object-cover h-10 cursor-pointer transition-transform duration-300 hover:scale-110"
               />
@@ -331,17 +333,13 @@ export default function TableStudent() {
                         year: student.year.toString(),
                         semester: student.semester.toString(),
                         status: student.status,
+                        graduated: student.graduated.toString(),
                         receivedAwardId: student.receivedAwardId || "",
                         receivedAwardName: student.receivedAwardName || "",
                       });
                       setPreview(
                         student.image
-                          ? process.env.NODE_ENV === "production"
-                            ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD +
-                              student.image
-                            : process.env.NEXT_PUBLIC_URL_IMAGE_DEV +
-                              student.image
-                          : null
+                         
                       );
                     }}
                   >
@@ -592,7 +590,12 @@ export default function TableStudent() {
                                   <select
                                     {...field}
                                     value={formik.values.status}
-                                    onChange={formik.handleChange}
+                                    onChange={(e) => {
+                                      formik.handleChange(e);
+                                      if (e.target.value === "Lulus") {
+                                        formik.setFieldValue("graduated", ""); // Reset tahun jika status bukan "Lulus"
+                                      }
+                                    }}
                                     onBlur={formik.handleBlur}
                                     className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                   >
@@ -602,9 +605,31 @@ export default function TableStudent() {
                                     <option value="Lulus">Lulus</option>
                                     <option value="Aktif">Aktif</option>
                                     <option value="Cuti">Cuti</option>
-
-                                    {/* Tambahkan pilihan semester lainnya sesuai kebutuhan */}
-                                  </select>
+                                  </select>{" "}
+                                  {formik.values.status === "Lulus" && (
+                                    <select
+                                      name="graduated"
+                                      value={formik.values.graduated.toString()}
+                                      onChange={formik.handleChange}
+                                      onBlur={formik.handleBlur}
+                                      className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    >
+                                      <option value="" disabled>
+                                        Tahun Lulus
+                                      </option>
+                                      {/* Tambahkan opsi tahun sesuai kebutuhan */}
+                                      <option value="2021">2021</option>
+                                      <option value="2022">2022</option>
+                                      <option value="2023">2023</option>
+                                      <option value="2024">2024</option>
+                                      <option value="2025">2025</option>
+                                      <option value="2026">2026</option>
+                                      <option value="2027">2027</option>
+                                      <option value="2028">2028</option>
+                                      <option value="2029">2029</option>
+                                      <option value="2030">2030</option>
+                                    </select>
+                                  )}
                                 </>
                               )}
                             </Field>
@@ -1051,7 +1076,7 @@ export default function TableStudent() {
                                   onChange={(e) => {
                                     formik.handleChange(e);
                                     if (e.target.value === "Lulus") {
-                                      formik.setFieldValue("tahunLulus", ""); // Reset tahun jika status bukan "Lulus"
+                                      formik.setFieldValue("graduated", ""); // Reset tahun jika status bukan "Lulus"
                                     }
                                   }}
                                   onBlur={formik.handleBlur}
@@ -1066,8 +1091,8 @@ export default function TableStudent() {
                                 </select>{" "}
                                 {formik.values.status === "Lulus" && (
                                   <select
-                                    name="tahunLulus"
-                                    // value={formik.values.tahunLulus}
+                                    name="graduated"
+                                    value={formik.values.graduated.toString()}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -1079,6 +1104,13 @@ export default function TableStudent() {
                                     <option value="2021">2021</option>
                                     <option value="2022">2022</option>
                                     <option value="2023">2023</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                    <option value="2027">2027</option>
+                                    <option value="2028">2028</option>
+                                    <option value="2029">2029</option>
+                                    <option value="2030">2030</option>
                                   </select>
                                 )}
                               </>
@@ -1169,7 +1201,6 @@ export default function TableStudent() {
                           <Label htmlFor="image">Picture</Label>
                           <Input
                             id="image"
-                            
                             name="image"
                             type="file"
                             className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -1261,6 +1292,7 @@ export default function TableStudent() {
               </TableHead>
               <TableHead className="text-white font-semibold">IPK</TableHead>
               <TableHead className="text-white font-semibold">Status</TableHead>
+              <TableHead className="text-white font-semibold">GraduatedYear</TableHead>
               <TableHead className="text-white font-semibold">
                 Picture
               </TableHead>

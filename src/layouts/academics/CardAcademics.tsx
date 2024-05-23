@@ -73,10 +73,7 @@ export const CradAcademics = () => {
     setPage(newPage);
   };
 
-  const handleFilterChange = (value: string) => {
-    console.log("New Filter Value:", value); // Tambahkan logging di sini
-    setFilterValue(value);
-  };
+
   // Fungsi untuk memotong teks HTML tanpa merusak tag
   const truncateHTML = (html: string, maxLength: number) => {
     if (html.length <= maxLength) return html;
@@ -167,11 +164,23 @@ export const CradAcademics = () => {
             </CardTitle>
             <CardDescription>
               <span>{data.date}</span>
+
+              <div className="flex flex-col space-y-3 mt-2">
+                {!data.image ? ( // Periksa jika tidak ada gambar
+                  // <Skeleton className="h-[200px] w-full rounded-xl" />
+                  <span></span>
+                ) : (
+                  <img
+                    src={data.image}
+                    alt="Scholarship Image"
+                    className="object-cover h-[200px] cursor-pointer w-full rounded-xl transasition hover:scale-105 duration-300"
+                  />
+                )}
+              </div>
               <br />
             </CardDescription>
           </CardHeader>
           <CardContent>
-      
             <div className="px-2 py-2 mt-2 outline-1 outline outline-slate-100 rounded-md shadow-sm">
               <div
                 dangerouslySetInnerHTML={{

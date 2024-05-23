@@ -166,11 +166,9 @@ export const CradScholarships = () => {
                 ) : (
                   <img
                     src={
-                      process.env.NODE_ENV === "production"
-                        ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD + data.image
-                        : process.env.NEXT_PUBLIC_URL_IMAGE_DEV + data.image
+                      data.image
                     }
-                    alt="Activity Image"
+                    alt="Scholarship Image"
                     className="object-cover h-[200px] cursor-pointer w-full rounded-xl transasition hover:scale-105 duration-300"
                   />
                 )}

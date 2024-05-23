@@ -329,11 +329,7 @@ Quill.register("modules/resizeImage", QuillResizeImage);
               <Skeleton className="h-[40px] w-full rounded-xl" />
             ) : (
               <img
-                src={
-                  process.env.NODE_ENV === "production"
-                    ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD + activity.image
-                    : process.env.NEXT_PUBLIC_URL_IMAGE_DEV + activity.image
-                }
+                src={activity.image}
                 alt="Activity Image "
                 className="object-cover h-[40px]"
               />
@@ -365,6 +361,7 @@ Quill.register("modules/resizeImage", QuillResizeImage);
                         date: activity.date,
                         link: activity.link,
                       });
+                      setPreview(activity.image);
                     }}
                   >
                     <Edit name="Edit" className="mr-2" />{" "}
@@ -554,7 +551,7 @@ Quill.register("modules/resizeImage", QuillResizeImage);
                             <Input
                               id="image"
                               name="image"
-                              disabled
+                            
                               type="file"
                               className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                               onChange={(e) => {
@@ -845,7 +842,7 @@ Quill.register("modules/resizeImage", QuillResizeImage);
                           <Label htmlFor="image">Picture</Label>
                           <Input
                             id="image"
-                            disabled
+                           
                             name="image"
                             type="file"
                             className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

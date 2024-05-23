@@ -30,11 +30,13 @@ export interface NavbarItems{
     semester: number;
     status: string;
     image: string;
+    graduated: number;
   }
 
   export interface Academic {
     username: ReactNode;
     id: string;
+    image: string;
     title: string;
     description: string;
     date: string;

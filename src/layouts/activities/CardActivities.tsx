@@ -145,9 +145,7 @@ export const CradActivities = () => {
                 ) : (
                   <img
                     src={
-                      process.env.NODE_ENV === "production"
-                        ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD + data.image
-                        : process.env.NEXT_PUBLIC_URL_IMAGE_DEV + data.image
+                    data.image
                     }
                     alt="Activity Image "
                     className="object-cover h-[200px]"

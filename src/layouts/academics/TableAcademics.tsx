@@ -77,8 +77,8 @@ export default function TableAcademic() {
   } = useFetchAcademic(page, pageSize);
   // Mendapatkan total halaman dari data
   // Hitung total halaman berdasarkan jumlah data dan ukuran halaman
-  const totalStudents = data?.length || 0; // Menggunakan data langsung, karena `useFetchStudent` sudah mengembalikan data, bukan respon lengkap
-  const totalPages = Math.ceil(totalStudents / pageSize);
+  const totalData = data?.length || 0; // Menggunakan data langsung, karena `useFetchStudent` sudah mengembalikan data, bukan respon lengkap
+  const totalPages = Math.ceil(totalData / pageSize);
 
   //seach
   const [searchTerm, setSearchTerm] = useState(""); // State untuk menyimpan kata kunci pencarian
@@ -87,7 +87,7 @@ export default function TableAcademic() {
 
   //textarea function
   const [text, setText] = useState<string>("");
-Quill.register("modules/resizeImage", QuillResizeImage);
+  Quill.register("modules/resizeImage", QuillResizeImage);
 
   // Fungsi untuk memotong teks HTML tanpa merusak tag
   const truncateHTML = (html: string, maxLength: number) => {
@@ -137,42 +137,65 @@ Quill.register("modules/resizeImage", QuillResizeImage);
     setPage(newPage);
   };
   const { toast } = useToast();
-
+  const MAX_FILE_SIZE = 1024 * 1024 * 5;
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
     description: Yup.string().required("Description is required"),
     date: Yup.date().required("Date is required"),
     link: Yup.string().optional(),
+    image: Yup.mixed()
+      .test("fileSize", "File size too large", (value: any) => {
+        const file = value as File | undefined;
+        return !file || file.size <= MAX_FILE_SIZE;
+      })
+      .test("fileType", "Invalid file type", (value: any) => {
+        const file = value as File | undefined;
+        return (
+          !file ||
+          (typeof file.type === "string" && file.type.includes("image"))
+        );
+      }),
   });
   const { mutate: CreateOrUpdateAcademic } = useMutation({
     mutationFn: async (data: any) => {
       try {
-        const { id, title, description, date, link } = formik.values;
-        let academicRes;
+        const { id, title, description, date, link, image } = formik.values;
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("date", date);
+        formData.append("link", link);
+        if (image !== null) {
+          formData.append("image", image);
+        }
+
+        let academicsRes;
 
         if (id) {
-          academicRes = await axiosInstance.patch(`/academics/${id}`, {
-            title,
-            description,
-            date,
-            link,
-          });
+          academicsRes = await axiosInstance.patch(
+            `/ academics/${id}`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
         } else {
-          academicRes = await axiosInstance.post("/academics", {
-            title,
-            description,
-            date,
-            link,
+          academicsRes = await axiosInstance.post("/academics", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           });
         }
-        return academicRes;
+        return academicsRes;
       } catch (error) {
         console.error(error);
         toast({
           title: "Error",
           description: "Something went wrong",
           variant: "destructive",
-          className: "w-[400px] md:w-[100px]",
+          className: "w-[400px] md:w-[300px]",
         });
         throw error;
       }
@@ -180,7 +203,7 @@ Quill.register("modules/resizeImage", QuillResizeImage);
     onSuccess: () => {
       toast({
         title: "Success",
-        className: "w-[400px]",
+        className: "w-[400px] md:w-[300px]",
         description: "Data has been successfully posted",
       });
       refetchAcademic();
@@ -209,11 +232,18 @@ Quill.register("modules/resizeImage", QuillResizeImage);
       });
     },
   });
+  const [preview, setPreview] = useState<string | null>(null);
+  //remove image
+  const handleRemoveImage = () => {
+    formik.setFieldValue("image", ""); // Set nilai image ke string kosong
+    setPreview(null); // Hapus pratinjau gambar
+  };
   // Submit handler function
   const hendlerSubmit = async (values: any) => {
     try {
       await CreateOrUpdateAcademic(values);
       refetchAcademic();
+      formik.resetForm();
       toast({
         title: "Success",
         description: "Data has been successfully posted",
@@ -236,6 +266,7 @@ Quill.register("modules/resizeImage", QuillResizeImage);
       description: "",
       date: "",
       link: "",
+      image: "",
       id: "",
     },
     validationSchema: validationSchema,
@@ -268,7 +299,7 @@ Quill.register("modules/resizeImage", QuillResizeImage);
     let orderNumber = startIndex + 1;
     return academicToRender?.map((academic: Academic) => {
       const currentOrderNumber = orderNumber++;
-      
+
       return (
         <TableRow key={academic.id}>
           <TableCell className="w-[100px]" hidden>
@@ -290,7 +321,15 @@ Quill.register("modules/resizeImage", QuillResizeImage);
               }}
             />
           </TableCell>
-
+          <TableCell>
+            {academic.image && (
+              <img
+                src={academic.image}
+                alt="Activity Image"
+                className="w-[50px] h-[50px] object-cover"
+              />
+            )}
+          </TableCell>
           <TableCell>
             {academic.link.length > 50
               ? academic.link.substring(0, 50) + "..."
@@ -315,6 +354,8 @@ Quill.register("modules/resizeImage", QuillResizeImage);
                         date: academic.date,
                         link: academic.link,
                       });
+                       setPreview(
+                        academic.image)
                     }}
                   >
                     <Edit name="Edit" className="mr-2" />{" "}
@@ -481,6 +522,7 @@ Quill.register("modules/resizeImage", QuillResizeImage);
                               </div>
                             ) : null}
                           </div>
+
                           <div className="flex flex-col mb-4">
                             <Label htmlFor="link">Link</Label>
                             <Input
@@ -501,6 +543,63 @@ Quill.register("modules/resizeImage", QuillResizeImage);
                             ) : null}
                           </div>
                           {/* Add other form fields similarly */}
+                           <div className="flex flex-col mb-4">
+                            <Label htmlFor="image">Picture</Label>
+                            <Input
+                              id="image"
+                              name="image"
+                              type="file"
+                              className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              onChange={(e) => {
+                                if (
+                                  e.target.files &&
+                                  e.target.files.length > 0
+                                ) {
+                                  const reader = new FileReader();
+                                  reader.onload = (event) => {
+                                    if (reader.readyState === 2) {
+                                      const file = e.target.files![0];
+                                      if (file) {
+                                        formik.setFieldValue("image", file);
+                                        setPreview(reader.result as string);
+                                      }
+                                    }
+                                  };
+                                  reader.readAsDataURL(e.target.files[0]);
+                                }
+                              }}
+                              onBlur={formik.handleBlur}
+                            />
+                            {formik.touched.image && formik.errors.image && (
+                              <div className="text-red-500">
+                                {formik.errors.image}
+                              </div>
+                            )}
+                            {preview && ( // Tampilkan pratinjau gambar jika ada
+                              <div className="mt-2 flex items-center flex-col gap-2">
+                                <img
+                                  src={preview}
+                                  alt="Selected"
+                                  className="max-w-full h-auto"
+                                />
+
+                                {/* Tombol untuk menghapus gambar */}
+                                <Button
+                                  type="button"
+                                  className=" px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 w-full"
+                                  onClick={handleRemoveImage}
+                                >
+                                  Remove Image
+                                </Button>
+                              </div>
+                            )}
+
+                            <ErrorMessage
+                              name="image"
+                              component="div"
+                              className="text-red-500"
+                            />
+                          </div>
                           <Button type="submit" className="w-full">
                             Submit
                           </Button>
@@ -733,6 +832,63 @@ Quill.register("modules/resizeImage", QuillResizeImage);
                           ) : null}
                         </div>
                         {/* Add other form fields similarly */}
+                         <div className="flex flex-col mb-4">
+                            <Label htmlFor="image">Picture</Label>
+                            <Input
+                              id="image"
+                              name="image"
+                              type="file"
+                              className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              onChange={(e) => {
+                                if (
+                                  e.target.files &&
+                                  e.target.files.length > 0
+                                ) {
+                                  const reader = new FileReader();
+                                  reader.onload = (event) => {
+                                    if (reader.readyState === 2) {
+                                      const file = e.target.files![0];
+                                      if (file) {
+                                        formik.setFieldValue("image", file);
+                                        setPreview(reader.result as string);
+                                      }
+                                    }
+                                  };
+                                  reader.readAsDataURL(e.target.files[0]);
+                                }
+                              }}
+                              onBlur={formik.handleBlur}
+                            />
+                            {formik.touched.image && formik.errors.image && (
+                              <div className="text-red-500">
+                                {formik.errors.image}
+                              </div>
+                            )}
+                            {preview && ( // Tampilkan pratinjau gambar jika ada
+                              <div className="mt-2 flex items-center flex-col gap-2">
+                                <img
+                                  src={preview}
+                                  alt="Selected"
+                                  className="max-w-full h-auto"
+                                />
+
+                                {/* Tombol untuk menghapus gambar */}
+                                <Button
+                                  type="button"
+                                  className=" px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 w-full"
+                                  onClick={handleRemoveImage}
+                                >
+                                  Remove Image
+                                </Button>
+                              </div>
+                            )}
+
+                            <ErrorMessage
+                              name="image"
+                              component="div"
+                              className="text-red-500"
+                            />
+                          </div>
                         <Button type="submit" className="w-full">
                           Submit
                         </Button>
@@ -757,7 +913,7 @@ Quill.register("modules/resizeImage", QuillResizeImage);
       </div>
       <div className="rounded-md shadow py-2 mb-4 px-4">
         <Table className="shadow-md border-2">
-          <TableCaption className="">Total Data : {totalStudents}</TableCaption>
+          <TableCaption className="">Total Data : {totalData}</TableCaption>
           <TableHeader className="rounded-md bg-primary">
             <TableRow>
               <TableHead className="w-[100px] text-white" hidden>

@@ -352,10 +352,7 @@ export default function TableSholarships() {
             {scholarships.image && (
               <img
                 src={
-                  process.env.NODE_ENV === "production"
-                    ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD +
-                      scholarships.image
-                    : process.env.NEXT_PUBLIC_URL_IMAGE_DEV + scholarships.image
+                scholarships.image
                 }
                 alt="Activity Image"
                 className="w-[50px] h-[50px] object-cover"
@@ -388,12 +385,7 @@ export default function TableSholarships() {
                       });
                       setPreview(
                         scholarships.image
-                          ? process.env.NODE_ENV === "production"
-                            ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD +
-                              scholarships.image
-                            : process.env.NEXT_PUBLIC_URL_IMAGE_DEV +
-                              scholarships.image
-                          : null // Jika tidak ada gambar, berikan nilai null
+                          
                       );
                     }}
                   >
@@ -586,7 +578,6 @@ export default function TableSholarships() {
                             <Input
                               id="image"
                               name="image"
-                              disabled
                               type="file"
                               className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                               onChange={(e) => {
@@ -615,11 +606,22 @@ export default function TableSholarships() {
                               </div>
                             )}
                             {preview && ( // Tampilkan pratinjau gambar jika ada
-                              <img
-                                src={preview}
-                                alt="Selected"
-                                className="mt-2 max-w-full h-auto"
-                              />
+                              <div className="mt-2 flex items-center flex-col gap-2">
+                                <img
+                                  src={preview}
+                                  alt="Selected"
+                                  className="max-w-full h-auto"
+                                />
+
+                                {/* Tombol untuk menghapus gambar */}
+                                <Button
+                                  type="button"
+                                  className=" px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 w-full"
+                                  onClick={handleRemoveImage}
+                                >
+                                  Remove Image
+                                </Button>
+                              </div>
                             )}
 
                             <ErrorMessage

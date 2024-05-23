@@ -54,6 +54,7 @@
     "next-themes": "^0.3.0",
     "primereact": "^10.6.5",
     "quill": "^2.0.2",
+    "quill-better-table": "^1.2.10",
     "quill-resize-image": "^1.0.4",
     "react": "^18",
     "react-datepicker": "^6.9.0",
