@@ -702,7 +702,7 @@ export default function TableStudent() {
                             <Label htmlFor="image">Picture</Label>
                             <Input
                               id="image"
-                              disabled
+                              
                               name="image"
                               type="file"
                               className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -1171,7 +1171,7 @@ export default function TableStudent() {
                           <Label htmlFor="image">Picture</Label>
                           <Input
                             id="image"
-                            disabled
+                            
                             name="image"
                             type="file"
                             className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -1204,7 +1204,13 @@ export default function TableStudent() {
                               className="mt-2 max-w-full h-auto"
                             />
                           )}
-
+                          <Button
+                            type="button"
+                            className=" px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 w-full"
+                            onClick={handleRemoveImage}
+                          >
+                            Remove Image
+                          </Button>
                           <ErrorMessage
                             name="image"
                             component="div"
@@ -1306,7 +1312,6 @@ export default function TableStudent() {
                   <Skeleton className="w-full h-6" />
                 </TableCell>
               </TableRow>
-              
             )}
           </TableBody>
         </Table>
