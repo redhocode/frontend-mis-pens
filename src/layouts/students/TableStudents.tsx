@@ -296,8 +296,8 @@ export default function TableStudent() {
               <img
                 src={
                   process.env.NODE_ENV === "production"
-                    ? process.env.NEXT_PUBLIC_PROD_API_URL + student.image
-                    : process.env.NEXT_PUBLIC_DEV_API_URL + student.image
+                    ? `${process.env.NEXT_PUBLIC_PROD_API_URL}/gfxqjalllxopembdwqku.supabase.co/storage/v1/object/public/images/${student.image}` // Jika URL API diatur sebagai production, gunakan URL productionprocess.env.NEXT_PUBLIC_PROD_API_URL + student.image
+                    : `${process.env.NEXT_PUBLIC_DEV_API_URL}/gfxqjalllxopembdwqku.supabase.co/storage/v1/object/public/images/${student.image}` // Jika URL API diatur sebagai development, gunakan URL developmentprocess.env.NEXT_PUBLIC_DEV_API_URL + student.image
                 }
                 alt="Image"
                 className="object-cover h-10 cursor-pointer transition-transform duration-300 hover:scale-110"
