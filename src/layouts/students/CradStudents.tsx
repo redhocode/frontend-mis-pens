@@ -76,12 +76,9 @@ const CradStudentsUser = () => {
   };
 
   const handleFilterChange = (value: string) => {
-    //console.log("New Filter Value:", value); // Tambahkan logging di sini
     setFilterValue(value);
 
-    // Setelah Anda melakukan pemfilteran data, update totalFilteredData di sini
     const filteredData = data.filter((student: Student) => {
-      // Logika pemfilteran data sesuai dengan value dari filter
       if (value === "Aktif") {
         return student.status === "Aktif";
       } else if (value === "1.8") {
@@ -89,12 +86,10 @@ const CradStudentsUser = () => {
       } else if (value === "Cuti") {
         return student.status === "Cuti";
       } else {
-        // Jika tidak ada filter yang sesuai, maka data tidak difilter
         return true;
       }
     });
 
-    //Set totalFilteredData setelah filter diterapkan
     setTotalFilteredData(filteredData?.length ?? 0);
   };
 
@@ -105,16 +100,19 @@ const CradStudentsUser = () => {
     searchTerm: string,
     filterValue: string
   ) => {
-      if (!data || data.length === 0) {
-        // Tampilkan skeleton terus menerus
-        return Array.from({ length: pageSize }).map((_, index) => (
-          <CardSkeleton3 key={index} />
-        ));
-      }
-    // console.log("Data Mahasiswa:", data);
+    if (isLoading) {
+      return Array.from({ length: pageSize }).map((_, index) => (
+        <CardSkeleton3 key={index} />
+      ));
+    }
+
+    if (!data || data.length === 0) {
+      return <p>No students found.</p>;
+    }
+
     const startIndex = (page - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize, data?.length);
-    // Filter berdasarkan filterValue
+
     let filteredData = data;
     if (filterValue === "Aktif") {
       filteredData = filteredData?.filter(
@@ -131,10 +129,9 @@ const CradStudentsUser = () => {
         (student) => student.status === "Lulus"
       );
     }
-    // Hitung jumlah data setelah filter
+
     const totalFilteredData = filteredData?.length || 0;
 
-    // Filter berdasarkan searchTerm
     if (searchTerm) {
       filteredData = filteredData?.filter((student: Student) => {
         const searchTermLower = searchTerm.toLowerCase();
@@ -148,7 +145,6 @@ const CradStudentsUser = () => {
           student.status,
         ];
 
-        // Cek apakah setiap field mengandung kata kunci pencarian (dalam huruf kecil)
         return fieldsToSearch.some(
           (field) =>
             typeof field === "string" &&
@@ -160,7 +156,10 @@ const CradStudentsUser = () => {
     const studentsToRender = filteredData?.slice(startIndex, endIndex);
     return studentsToRender?.map((student: Student) => {
       return (
-        <Card className="w-[270px] md:w-full dark:bg-zinc-800 " key={student.id}>
+        <Card
+          className="w-[270px] md:w-full dark:bg-zinc-800 "
+          key={student.id}
+        >
           <CardHeader>
             <CardTitle>
               <span>{student.name}</span>
@@ -171,7 +170,7 @@ const CradStudentsUser = () => {
           </CardHeader>
           <CardContent>
             <div className="flex flex-col space-y-3 mt-2 pb-4 justify-center mx-auto">
-              {!student.image ? ( // Periksa jika tidak ada gambar
+              {!student.image ? (
                 <Skeleton className="h-[294px] w-full rounded-xl" />
               ) : (
                 <img
@@ -305,9 +304,7 @@ const CradStudentsUser = () => {
       <div className="flex flex-wrap mx-auto gap-4 justify-center mb-5">
         {renderStudent(page, pageSize, data, searchTerm, filterValue)}
         {isLoading && (
-          <div className="flex items-center justify-center mt-4">
-            
-          </div>
+          <div className="flex items-center justify-center mt-4"></div>
         )}
       </div>
 
