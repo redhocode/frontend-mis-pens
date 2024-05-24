@@ -91,7 +91,7 @@ const Page: React.FC<pageProps> = ({ params }) => {
                     </div>
                     <br />
                    
-                    <div className="min-h-screen w-full rounded-md border p-4 px-2 py-2 dark:bg-zinc-900">
+                    <div className="min-h-screen w-full rounded-md border p-4 px-2 py-2 dark:bg-zinc-900 dark:border-zinc-700">
                       <div
                         dangerouslySetInnerHTML={{
                           __html: data.data.description,
