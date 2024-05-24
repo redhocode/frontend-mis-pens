@@ -853,20 +853,20 @@ export default function TableStudent() {
                 Add Data
               </Button>
             </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Add Student</DialogTitle>
+              </DialogHeader>
+              <ScrollArea className="h-[700px] w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
               <Formik
                 initialValues={formik.initialValues}
                 validationSchema={validationSchema}
                 onSubmit={hendlerSubmit}
               >
-                <ScrollArea className="h-[700px] w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
                   <Form
                     className="flex flex-wrap "
                     onSubmit={formik.handleSubmit}
                   >
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add Student</DialogTitle>
-              </DialogHeader>
                     <div className="w-full justify-normal gap-4 flex">
                       <div className="w-full">
                         <div className="mb-4 flex flex-col">
@@ -1268,21 +1268,20 @@ export default function TableStudent() {
                         {/* Add other form fields similarly */}
                       </div>
                     </div>
+                  </Form>
+              </Formik>
+                </ScrollArea>
             </DialogContent>
               <DialogFooter>
-                <DialogClose asChild>
-                  <Button type="button" variant="secondary" onClick={handleReset}>
-                    Close
-                   
-                  </Button>
                         <Button type="submit" className="w-full">
                           Submit
                         </Button>
+                <DialogClose asChild>
+                  <Button type="button" variant="secondary" onClick={handleReset}>
+                    Close
+                  </Button>
                 </DialogClose>
               </DialogFooter>
-                  </Form>
-                </ScrollArea>
-              </Formik>
           </Dialog>
         </div>
         <div>
