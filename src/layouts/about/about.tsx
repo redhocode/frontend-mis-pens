@@ -14,10 +14,10 @@ export default function AboutLayout() {
       <div className="flex flex-col justify-center min-h-screen mx-auto container items-center">
         <Card>
           <CardHeader>
-            <CardTitle className="text-3xl font-semibold uppercase justify-center flex">
-              <h1 className="text-xl font-semibold uppercase">
+            <CardTitle className="text-3xl font-semibold uppercase justify-center flex dark:bg-zinc-800">
+            
                 Tentang Pendidikan Jarak Jauh (PJJ)
-              </h1>
+              
             </CardTitle>
           </CardHeader>
           <CardContent className="dark:bg-zinc-800">
