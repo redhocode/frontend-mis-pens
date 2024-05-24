@@ -248,7 +248,10 @@ export default function TableStudent() {
     validationSchema: validationSchema,
     onSubmit: hendlerSubmit,
   });
-
+  //reset form
+    const handleReset = () => {
+      formik.resetForm();
+    };
   // Function to render student data and search
 
   const renderStudent = (
@@ -1273,7 +1276,7 @@ export default function TableStudent() {
               </Formik>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button type="button" variant="secondary" onClick={formik.resetForm}>
+                  <Button type="button" variant="secondary" onClick={handleReset}>
                     Close
                    
                   </Button>
