@@ -151,7 +151,7 @@ export const CradScholarships = () => {
 
     return dataToRender?.map((data: Scholarship) => {
       return (
-        <Card className="md:w-full w-[950px] max-h-screen" key={data.id}>
+        <Card className="md:w-full w-[950px] max-h-screen dark:bg-zinc-800" key={data.id}>
           <CardHeader>
             <CardTitle>
               <span>{data.title}</span>
@@ -178,7 +178,7 @@ export const CradScholarships = () => {
           </CardHeader>
           <CardContent>
         
-            <div className="px-2 py-2 mt-2 outline-1 outline outline-slate-100 rounded-md shadow-sm">
+            <div className="px-2 py-2 mt-2 rounded-md shadow-sm dark:bg-zinc-900">
               <div
                 dangerouslySetInnerHTML={{
                   __html: truncateHTML(data.description, 50),
@@ -213,7 +213,7 @@ export const CradScholarships = () => {
   return (
     <>
       <div className="flex justify-center flex-col mx-auto mb-12">
-        <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl bg-white text-zinc-900 px-4 py-4 rounded-lg shadow-md dark:bg-neutral-800 dark:text-white">
+        <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl bg-white text-zinc-900 px-4 py-4 rounded-lg shadow-md dark:bg-zinc-800 dark:text-white">
           {" "}
           <h1 className="text-4xl font-bold justify-center mb-4 mx-auto uppercase">
             Informasi Beasiswa
@@ -236,14 +236,14 @@ export const CradScholarships = () => {
           </p>
         </div>
 
-        <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto" />
+        <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto dark:bg-zinc-800" />
         <div className="flex justify-center flex-wrap">
           <Input
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
             placeholder="Cari data."
-            className="md:w-full mt-2 mb-2 w-[700px] focus:outline-none border-gray-300 h-[50px]"
+            className="md:w-full mt-2 mb-2 w-[700px] focus:outline-none border-gray-300 h-[50px] dark:bg-zinc-800"
           />
         </div>
         <div className="flex justify-center flex-wrap mb-6"></div>
