@@ -296,7 +296,7 @@ export default function TableStudent() {
           <TableCell>{student.semester}</TableCell>
           <TableCell>{student.ipk}</TableCell>
           <TableCell>{student.status}</TableCell>
-          <TableCell>{student.graduated?.toString()||""}</TableCell>
+          <TableCell>{student.graduated?.toString()}</TableCell>
           <TableCell>
             {!student.image ? ( // Periksa jika tidak ada gambar
               <Skeleton className="h-[50px] w-full rounded-xl" />
@@ -336,8 +336,8 @@ export default function TableStudent() {
                         year: student.year.toString(),
                         semester: student.semester.toString(),
                         status: student.status,
-                        graduated: student.graduated?.toString() || "",
-                        image: student.image || "",
+                        graduated: student.graduated?.toString(),
+                       
                         receivedAwardId: student.receivedAwardId || "",
                         receivedAwardName: student.receivedAwardName || "",
                       });
