@@ -159,6 +159,9 @@ export default function TableStudent() {
     },
     onSuccess: () => {
       refetchStudents();
+      formik.resetForm();
+      setPreview(null);
+      formik.setFieldValue("image", "");
       toast({
         title: "Success",
         className: "w-[400px]",
