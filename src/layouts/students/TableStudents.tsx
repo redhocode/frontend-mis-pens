@@ -1275,6 +1275,7 @@ export default function TableStudent() {
                 <DialogClose asChild>
                   <Button type="button" variant="secondary">
                     Close
+                    {formik.resetForm()}
                   </Button>
                 </DialogClose>
               </DialogFooter>
