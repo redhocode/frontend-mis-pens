@@ -67,22 +67,22 @@ const LineChart = ({width= 50, height= 50}) => {
  }, [students]);
 
   return (
-    <Card className="bg-white bg-opacity-10 backdrop-blur-lg w-[270px] md:w-full">
-      <CardHeader className="bg-white bg-opacity-10 backdrop-blur-lg">
-        <CardTitle className="text-secondarypens">
+    <Card className=" w-[270px] md:w-full">
+      <CardHeader className="">
+        <CardTitle className="">
           Jumlah Mahasiswa Per-IPK
         </CardTitle>
       </CardHeader>
-      <CardContent className="bg-white bg-opacity-10 backdrop-blur-lg">
+      <CardContent className="">
         <canvas
           ref={ipkChartRef}
-          className="my-chart text-secondarypens" // Menggunakan class untuk styling
+          className="my-chart" // Menggunakan class untuk styling
           width={width} // Menentukan lebar canvas
           height={height} // Menentukan tinggi canvas
         ></canvas>
       </CardContent>
-      <CardFooter className="bg-white bg-opacity-10 backdrop-blur-lg">
-        <CardDescription className="text-secondarypens">
+      <CardFooter className="">
+        <CardDescription className="">
           Total Data: {totalData}
         </CardDescription>
       </CardFooter>

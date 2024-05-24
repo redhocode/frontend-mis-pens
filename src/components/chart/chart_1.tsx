@@ -57,16 +57,16 @@ const DonutChart = ({width=50, height=50}) => {
               "#FF6347",
             ],
             borderColor: [
-              "#36A2EB",
-              "#FF6384",
-              "#FFCE56",
-              "#4BC0C0",
-              "#9966FF",
-              "#FF9F40",
-              "#C7C7C7",
-              "#5366FF",
-              "#FF9F80",
-              "#FF6347",
+              "#FFFFFF",
+              "#FFFFFF",
+              "#FFFFFF",
+              "#FFFFFF",
+              "#FFFFFF",
+              "#FFFFFF",
+              "#FFFFFF",
+              "#FFFFFF",
+              "#FFFFFF",
+              "#FFFFFF",
             ],
             borderWidth: 1,
           },
@@ -87,22 +87,22 @@ const DonutChart = ({width=50, height=50}) => {
   }, [students]);
 
   return (
-    <Card className="bg-white bg-opacity-10 backdrop-blur-lg w-[270px] md:w-full">
-      <CardHeader className="bg-white bg-opacity-10 backdrop-blur-lg">
-        <CardTitle className="text-secondarypens">
+    <Card className=" w-[270px] md:w-full">
+      <CardHeader className="">
+        <CardTitle className="">
           Setatus Mahasiswa
         </CardTitle>
       </CardHeader>
-      <CardContent className="bg-white bg-opacity-10 backdrop-blur-lg">
+      <CardContent className="">
         <canvas
           ref={chartRef}
-          className="my-chart text-secondarypens" // Menggunakan class untuk styling
+          className="my-chart" // Menggunakan class untuk styling
           width={width} // Menentukan lebar canvas
           height={height} // Menentukan tinggi canvas
         ></canvas>
       </CardContent>
-      <CardFooter className="bg-white bg-opacity-10 backdrop-blur-lg">
-        <CardDescription className="text-secondarypens">
+      <CardFooter className="">
+        <CardDescription className="">
           Total Data: {totalData}
         </CardDescription>
       </CardFooter>

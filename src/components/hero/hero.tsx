@@ -6,6 +6,7 @@ import Chart_5 from "../chart/chart_5";
 import Chart_4 from "../chart/chart_4";
 import Chart_3 from "../chart/chart_3";
 import Chart_1 from "../chart/chart_1";
+import Chart_2 from "../chart/chart_2";
 export default function Hero() {
   return (
     <>
@@ -77,7 +78,7 @@ export default function Hero() {
                 <div className="flex flex-wrap md:flex-col mx-auto gap-5 md:hidden sm:hidden sm:flex-col">
                   <Chart_5 />
                   <Chart_1 />
-                  <Chart_3 />
+                  <Chart_2 />
                   <Chart_4 />
                 </div>
               </div>
