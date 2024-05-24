@@ -30,6 +30,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { CirclePlus, LoaderIcon } from "lucide-react";
 import { axiosInstance } from "@/lib/axios";
@@ -1270,7 +1271,13 @@ export default function TableStudent() {
                   </Form>
                 </ScrollArea>
               </Formik>
-              <DialogFooter></DialogFooter>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button type="button" variant="secondary">
+                    Close
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
             </DialogContent>
           </Dialog>
         </div>
@@ -1306,7 +1313,9 @@ export default function TableStudent() {
               </TableHead>
               <TableHead className="text-white font-semibold">IPK</TableHead>
               <TableHead className="text-white font-semibold">Status</TableHead>
-              <TableHead className="text-white font-semibold">GraduatedYear</TableHead>
+              <TableHead className="text-white font-semibold">
+                GraduatedYear
+              </TableHead>
               <TableHead className="text-white font-semibold">
                 Picture
               </TableHead>
