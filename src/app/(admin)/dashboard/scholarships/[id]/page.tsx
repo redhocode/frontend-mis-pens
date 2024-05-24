@@ -62,7 +62,7 @@ const Page: React.FC<pageProps> = ({ params }) => {
             {data.data ? (
               <div>
                 {/* Tambahkan komponen lain sesuai kebutuhan */}
-                <Card className="md:w-full min-h-screen w-[800px]">
+                <Card className="md:w-full min-h-screen w-[800px] dark:bg-zinc-800">
                   <CardHeader>
                     <CardTitle>{data.data.title}</CardTitle>
                     <CardDescription>
@@ -75,28 +75,22 @@ const Page: React.FC<pageProps> = ({ params }) => {
                         <span></span>
                       ) : (
                         <img
-                          src={
-                            process.env.NODE_ENV === "production"
-                              ? process.env.NEXT_PUBLIC_URL_IMAGE_PROD +
-                                data.data.image
-                              : process.env.NEXT_PUBLIC_URL_IMAGE_DEV +
-                                data.data.image
-                          }
-                          alt="Activity Image"
+                          src={data.data.image!}
+                          alt="academic Image"
                           className="object-cover cursor-pointer w-full h-xl min-w-screen"
                         />
                       )}
                     </div>
                     <br />
-                    
-                    <ScrollArea className="min-h-screen w-full rounded-md border p-4">
+
+                    <div className="min-h-screen w-full rounded-md border p-4 px-2 py-2 dark:border-zinc-700">
                       <div
                         dangerouslySetInnerHTML={{
                           __html: data.data.description,
                         }}
                         className="text-justify"
                       />
-                    </ScrollArea>
+                    </div>
                   </CardContent>
                   <CardFooter>
                     <Button variant="ghost" className="uppercase font-thin">
