@@ -65,7 +65,7 @@ export default function TableStudent() {
     isLoading,
     refetch: refetchStudents,
   } = useFetchStudent(page, pageSize);
-  const { data: dataScholarship } = useFetchScholarship();
+  const {data: dataScholarship} = useFetchScholarship();
   // Mendapatkan total halaman dari data
   // Hitung total halaman berdasarkan jumlah data dan ukuran halaman
   const totalStudents = data?.length || 0; // Menggunakan data langsung, karena `useFetchStudent` sudah mengembalikan data, bukan respon lengkap
@@ -115,20 +115,8 @@ export default function TableStudent() {
   const { mutate: CreateOrUpdateStudent } = useMutation({
     mutationFn: async () => {
       try {
-        const {
-          id,
-          name,
-          nrp,
-          ipk,
-          major,
-          year,
-          semester,
-          status,
-          graduated,
-          image,
-          receivedAwardId,
-          receivedAwardName,
-        } = formik.values;
+        const { id, name, nrp, ipk, major, year, semester, status,graduated, image ,receivedAwardId,receivedAwardName} =
+          formik.values;
         let studentsRes;
         const formData = new FormData();
         formData.append("name", name);
@@ -212,19 +200,19 @@ export default function TableStudent() {
   });
 
   //reset form
-  const handleReset = () => {
-    formik.resetForm();
-  };
+    const handleReset = () => {
+      formik.resetForm();
+    };
 
   const [preview, setPreview] = useState<string | null>(null);
   //remove image
   const handleRemoveImage = () => {
     setPreview(null); // Hapus pratinjau gambar
     formik.setFieldValue("image", ""); // Set nilai image ke string kosong
-  };
+  }
   const hendlerSubmit = async (values: any) => {
     try {
-      values.receivedAwardId = values.receivedAwardId;
+       values.receivedAwardId = values.receivedAwardId;
 
       await CreateOrUpdateStudent(values);
       refetchStudents();
@@ -264,7 +252,7 @@ export default function TableStudent() {
     validationSchema: validationSchema,
     onSubmit: hendlerSubmit,
   });
-
+ 
   // Function to render student data and search
 
   const renderStudent = (
@@ -286,6 +274,7 @@ export default function TableStudent() {
         student.semester.toString(),
         student.ipk.toString(),
         student.status,
+       
       ];
 
       // Cek apakah setiap field mengandung kata kunci pencarian (dalam huruf kecil)
@@ -359,6 +348,8 @@ export default function TableStudent() {
                         graduated: student.graduated?.toString() || "",
                         receivedAwardId: student.receivedAwardId || "",
                         receivedAwardName: student.receivedAwardName || "",
+                       
+                       
                       });
 
                       setPreview(student.image);
@@ -863,15 +854,15 @@ export default function TableStudent() {
                 Add Data
               </Button>
             </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Add Student</DialogTitle>
+              </DialogHeader>
               <Formik
                 initialValues={formik.initialValues}
                 validationSchema={validationSchema}
                 onSubmit={hendlerSubmit}
               >
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add Student</DialogTitle>
-              </DialogHeader>
                 <ScrollArea className="h-[700px] w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
                   <Form
                     className="flex flex-wrap "
@@ -1278,20 +1269,21 @@ export default function TableStudent() {
                         {/* Add other form fields similarly */}
                       </div>
                     </div>
+              <DialogFooter>
+                        <Button type="submit" className="w-full">
+                          Submit
+                        </Button>
+                <DialogClose asChild>
+                  <Button type="button" variant="secondary" onClick={handleReset}>
+                    Close
+
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
                   </Form>
                 </ScrollArea>
-            </DialogContent>
-            <DialogFooter>
-              <Button type="submit" className="w-full">
-                Submit
-              </Button>
-              <DialogClose asChild>
-                <Button type="button" variant="secondary" onClick={handleReset}>
-                  Close
-                </Button>
-              </DialogClose>
-            </DialogFooter>
               </Formik>
+            </DialogContent>
           </Dialog>
         </div>
         <div>
