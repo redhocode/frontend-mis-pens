@@ -81,6 +81,9 @@ export default function Hero() {
                 {/* Chart */}
                 <div className="flex flex-warp md:flex-col mx-auto">
                   <Chart_5 />
+                  <Chart_5 />
+                  <Chart_5 />
+                  <Chart_5 />
                 </div>
               </div>
             </div>
