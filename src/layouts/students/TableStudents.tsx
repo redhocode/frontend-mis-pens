@@ -1269,6 +1269,8 @@ export default function TableStudent() {
                         {/* Add other form fields similarly */}
                       </div>
                     </div>
+                  </Form>
+                </ScrollArea>
               <DialogFooter>
                         <Button type="submit" className="w-full">
                           Submit
@@ -1280,8 +1282,6 @@ export default function TableStudent() {
                   </Button>
                 </DialogClose>
               </DialogFooter>
-                  </Form>
-                </ScrollArea>
               </Formik>
             </DialogContent>
           </Dialog>
