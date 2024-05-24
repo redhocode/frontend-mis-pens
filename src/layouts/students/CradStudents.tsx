@@ -2,15 +2,6 @@
 import React, { useState } from "react";
 import { useFetchStudent } from "@/features";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Card,
   CardContent,
   CardDescription,
@@ -19,8 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { Student } from "@/types";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectTrigger,
@@ -32,8 +21,6 @@ import {
   SelectGroup,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
-import { LoaderIcon } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -183,7 +170,7 @@ const CradStudentsUser = () => {
                 />
               )}
             </div>
-            <div className="flex justify-between flex-col gap-3 outline outline-1 py-4 px-4 outline-slate-100 rounded-md shadow-sm">
+            <div className="flex justify-between flex-col gap-3 dark:bg-zinc-900 py-4 px-4 rounded-md shadow-sm">
               <div className="flex justify-between gap-3">
                 <div className="flex flex-col font-semibold">
                   <span>NRP</span>
@@ -218,7 +205,7 @@ const CradStudentsUser = () => {
   return (
     <>
       <div className="flex justify-center flex-col mx-auto">
-        <div className="flex flex-col mb-12   bg-white text-zinc-900 px-4 py-4 rounded-lg shadow-md dark:bg-neutral-800 dark:text-white max-w-4xl mx-auto justify-center">
+        <div className="flex flex-col mb-12   bg-white text-zinc-900 px-4 py-4 rounded-lg shadow-md dark:bg-zinc-800 dark:text-white max-w-4xl mx-auto justify-center">
           <h1 className="text-2xl font-bold justify-center mb-4 mx-auto uppercase">
             Data Mahasiswa
           </h1>
@@ -290,7 +277,7 @@ const CradStudentsUser = () => {
           </Select>
         </div>
       </div>
-      <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto" />
+      <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto dark:border-zinc-800" />
       <div
         className="flex justify-center mx-auto mb-4 font-bold
       "

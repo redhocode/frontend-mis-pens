@@ -181,7 +181,7 @@ export const CradAcademics = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="px-2 py-2 mt-2 outline-1 outline outline-slate-100 rounded-md shadow-sm">
+            <div className="px-2 py-2 mt-2 outline-1 rounded-md shadow-sm">
               <div
                 dangerouslySetInnerHTML={{
                   __html: truncateHTML(data.description, 50),
@@ -214,7 +214,7 @@ export const CradAcademics = () => {
     <>
       <PageWrapper>
         <div className="flex justify-center flex-col mx-auto mb-12">
-          <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl bg-white text-zinc-900 px-4 py-4 rounded-lg shadow-md dark:bg-zinc-950 dark:text-white">
+          <div className="flex flex-col justify-center mb-12 mx-auto max-w-4xl bg-white text-zinc-900 px-4 py-4 rounded-lg shadow-md dark:bg-zinc-800 dark:text-white">
             <h1 className="text-4xl font-bold justify-center mb-4 mx-auto uppercase">
               Informasi Akademik
             </h1>
@@ -246,7 +246,7 @@ export const CradAcademics = () => {
               />
             </div>
           </div>
-          <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto" />
+          <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto dark:border-zinc-800 " />
           <div className="flex justify-center flex-wrap">
             <Input
               type="text"
