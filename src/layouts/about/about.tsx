@@ -14,7 +14,7 @@ export default function AboutLayout() {
       <div className="flex flex-col justify-center min-h-screen mx-auto container items-center text-black">
         <Card>
           <CardHeader className="dark:bg-zinc-800">
-            <CardTitle className="text-3xl font-semibold uppercase justify-center flex dark:bg-zinc-800">
+            <CardTitle className="text-3xl font-semibold uppercase justify-center flex dark:bg-zinc-800 text-black">
             
                 Tentang Pendidikan Jarak Jauh (PJJ)
               
@@ -24,8 +24,8 @@ export default function AboutLayout() {
             <CardDescription>
               <div className="flex flex-warp max-w-4xl gap-4 md:flex-col">
                 <div className="mt-2">
-                  <h3 className="font-semibold">Visi</h3>
-                  <p className="text-justify ">
+                  <h3 className="font-semibold text-black">Visi</h3>
+                  <p className="text-justify text-black">
                     ”Menjadi pusat unggulan pendidikan program diploma 3 melalui
                     pendidikan jarak jauh (distance learning) di bidang
                     teknologi informasi dalam skala nasional maupun
@@ -33,28 +33,28 @@ export default function AboutLayout() {
                   </p>
                 </div>
                 <div className="mt-2 gap-2">
-                  <h3 className="font-semibold">Visi</h3>
-                  <p className="text-justify ">
+                  <h3 className="font-semibold text-black">Visi</h3>
+                  <p className="text-justify text-black">
                     Dalam rangka mewujudkan Visi tersebut di atas, dan sejalan
                     dengan Misi PENS yang kemudian dirumuskan menjadi Misi PS D3
                     PJJ TI, berikut ini adalah misi nya :
                   </p>
                   <ul className="list-disc pl-4">
-                    <li className="text-basemb-2">
+                    <li className="text-base mb-2 text-black">
                       Menyediakan lingkungan pendidikan berpusat pada mahasiswa
                       (student-centered), kualitas tinggi (high-quality), dan
                       fleksibel terhadap waktu dan lokasi mahasiswa
                     </li>
-                    <li className="text-base mb-2">
+                    <li className="text-base mb-2 text-black">
                       Menyediakan sistem aplikasi pembelajaran yang mampu
                       mengakomodir pendidikan jarak jauh melalui media Teknologi
                       Informasi dan Komunikasi (TIK)
                     </li>
-                    <li className="text-bas mb-2">
+                    <li className="text-bas mb-2 text-black">
                       Menghasilkan kualitas bahan ajar pendidikan jarak jauh
                       termediasi Teknologi Informasi dan Komunikasi (TIK)
                     </li>
-                    <li className="text-base  mb-2">
+                    <li className="text-base  mb-2 text-black">
                       Menyelenggarakan suatu kegiatan penelitian terapan bidang
                       teknologi rekayasa Teknologi Informasi dan Komunikasi
                       (TIK), serta menerapkannya kepada masyarakat dan industri.
@@ -65,10 +65,10 @@ export default function AboutLayout() {
               {/* sertikikat */}
               <Separator className="max-w-4xl" />
               <br />
-              <h1 className="text-xl font-semibold">
+              <h1 className="text-xl font-semibold text-black">
                 SERTIFIKAT AKREDITASI PROGRAM STUDI PJJ PENS
               </h1>
-              <p className="text-justify max-w-4xl mt-3">
+              <p className="text-justify max-w-4xl mt-3 text-black">
                 Berdasarkan Keputusan LAM INFOKOM
                 No.033/SK/LAMINFOKOM/Ak/D3/III/2024 menyatakan bahwa program
                 studi Pjj Teknik Informatika pada Program Diploma Tiga
@@ -80,7 +80,7 @@ export default function AboutLayout() {
               {/* Visi Misi */}
               <div className="flex flex-warp max-w-4xl gap-4 md:flex-col">
                 <div className="mt-2 gap-2">
-                  <p className="text-justify ">
+                  <p className="text-justify text-black">
                     Sertifikat Akreditasi LAM INFOKOM untuk Prodi D3 PJJ Teknik
                     Informatika dapat di unduh di :
                     <a
@@ -91,7 +91,7 @@ export default function AboutLayout() {
                       Akrerditasi LAM INFOKOM D3 PJJ TEKNIK INFORMATIKA
                     </a>
                   </p>
-                  <div className="mt-2">
+                  <div className="mt-2 text-black">
                     <img
                       src="https://pjj.pens.ac.id/wp-content/uploads/2019/08/Surat_Sertifikat_LAMINFOKOM_PJJ_TI_1-768x543.png"
                       alt=""
@@ -101,7 +101,7 @@ export default function AboutLayout() {
                 </div>
 
                 <div className="mt-2 gap-2">
-                  <p className="text-justify ">
+                  <p className="text-justify text-black">
                     Dari hasil Assesmen Lapangan pada tanggal 19 Agustus 2019 ,
                     Program Studi D4 PJJ Teknik Telekomunikasi mendapatkan
                     Akreditasi “B” dari BAN-PT ( Badan Akreditasi Nasional
@@ -131,10 +131,10 @@ export default function AboutLayout() {
               <div className="flex flex-warp max-w-4xl gap-4 md:flex-col">
                 {/* <PDFViewer/> */}
                 <div className="mt-2 justify-center mx-auto">
-                  <h1 className="font-semibold uppercase text-xl">
+                  <h1 className="font-semibold uppercase text-xl text-black">
                     SK PROGRAM STUDI D3 PJJ TEKNIK INFORMATIKA (MENRISTEKDIKTI)
                   </h1>
-                  <p className="text-justify mt-4 mb-4">
+                  <p className="text-justify mt-4 mb-4 text-black">
                     Sehubungan dengan telah di tetapkan Keputusan Menteri Riset,
                     Teknologi dan Pendidikan Tinggi Nomor 62/M/KPT/2017 tentang
                     Penyelenggaraan Pendidikan Jarak Jauh pada lingkup Program
