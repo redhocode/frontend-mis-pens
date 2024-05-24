@@ -66,7 +66,7 @@ const Page: React.FC<pageProps> = ({ params }) => {
             {data.data ? (
               <div>
                 {/* Tambahkan komponen lain sesuai kebutuhan */}
-                <Card className="md:w-full min-h-screen w-[800px]">
+                <Card className="md:w-full min-h-screen w-[800px] dark:bg-zinc-800">
                   <CardHeader>
                     <CardTitle>{data.data.title}</CardTitle>
                     <CardDescription>
@@ -74,7 +74,7 @@ const Page: React.FC<pageProps> = ({ params }) => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex flex-col space-y-3 mt-2">
+                    <div className="flex flex-col space-y-3 mt-2 px-2 py-2 dark:border-zinc-700">
                       {!data.data.image ? ( // Periksa jika tidak ada gambar
                         // <Skeleton className="h-[200px] w-[750px] rounded-xl" />
                         <span></span>
