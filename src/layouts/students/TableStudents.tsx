@@ -1276,12 +1276,7 @@ export default function TableStudent() {
                 </ScrollArea>
               </Formik>
               <DialogFooter>
-                <DialogClose asChild>
-                  <Button type="button" variant="secondary" onClick={handleReset}>
-                    Close
-
-                  </Button>
-                </DialogClose>
+               
               </DialogFooter>
             </DialogContent>
           </Dialog>
