@@ -347,7 +347,7 @@ export default function TableStudent() {
                         graduated: student.graduated?.toString() || "",
                         receivedAwardId: student.receivedAwardId || "",
                         receivedAwardName: student.receivedAwardName || "",
-                        image: student.image! || "",
+                       
                        
                       });
 
@@ -857,12 +857,12 @@ export default function TableStudent() {
               <DialogHeader>
                 <DialogTitle>Add Student</DialogTitle>
               </DialogHeader>
-              <ScrollArea className="h-[700px] w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
               <Formik
                 initialValues={formik.initialValues}
                 validationSchema={validationSchema}
                 onSubmit={hendlerSubmit}
               >
+                <ScrollArea className="h-[700px] w-full rounded-md border p-4 md:h-[500px] md:w-[365px]">
                   <Form
                     className="flex flex-wrap "
                     onSubmit={formik.handleSubmit}
@@ -1269,8 +1269,8 @@ export default function TableStudent() {
                       </div>
                     </div>
                   </Form>
-              </Formik>
                 </ScrollArea>
+              </Formik>
             </DialogContent>
               <DialogFooter>
                         <Button type="submit" className="w-full">
@@ -1279,6 +1279,7 @@ export default function TableStudent() {
                 <DialogClose asChild>
                   <Button type="button" variant="secondary" onClick={handleReset}>
                     Close
+
                   </Button>
                 </DialogClose>
               </DialogFooter>
