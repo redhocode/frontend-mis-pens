@@ -77,9 +77,9 @@ export default function Hero() {
                 {/* Chart */}
                 <div className="flex flex-wrap md:flex-col mx-auto gap-5 md:hidden sm:hidden sm:flex-col">
                   <Chart_5 />
-                  <Chart_1 />
-                  <Chart_2 />
                   <Chart_4 />
+                  <Chart_1 />
+                  
                 </div>
               </div>
             </div>

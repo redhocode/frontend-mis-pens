@@ -16,6 +16,7 @@ import Chart_2 from "@/components/chart/chart_2";
 import Chart_3 from "@/components/chart/chart_3";
 import Chart_4 from "@/components/chart/chart_4";
 import Welcome from "@/components/welcome";
+import Chart_5 from "@/components/chart/chart_5";
 
 const ChartDashboard = () => {
   const [user, setUser] = useState<string | null>(null);
@@ -38,42 +39,13 @@ const ChartDashboard = () => {
         {/* Tampilkan chart hanya jika pengguna adalah admin */}
         {isAdmin && (
           <>
-            <Card className="w-[400px] md:w-full">
-              <CardHeader>
-                <CardTitle>Status Mahasiswa</CardTitle>
-                <CardDescription></CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Chart_1 />
-              </CardContent>
-            </Card>
-            <Card className="w-[400px] md:w-full">
-              <CardHeader>
-                <CardTitle>Angkatan</CardTitle>
-                <CardDescription></CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Chart_2 />
-              </CardContent>
-            </Card>
-            <Card className="w-[400px] md:w-full">
-              <CardHeader>
-                <CardTitle>IPK</CardTitle>
-                <CardDescription></CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Chart_3 />
-              </CardContent>
-            </Card>
-            <Card className="w-[400px] md:w-full">
-              <CardHeader>
-                <CardTitle>Semester</CardTitle>
-                <CardDescription></CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Chart_4 />
-              </CardContent>
-            </Card>
+            <div className="flex flex-wrap md:flex-col mx-auto gap-5 md:hidden sm:hidden sm:flex-col">
+              <Chart_1 />
+              <Chart_2 />
+              <Chart_3 />
+              <Chart_4 />
+              <Chart_5 />
+            </div>
           </>
         )}
       </div>
