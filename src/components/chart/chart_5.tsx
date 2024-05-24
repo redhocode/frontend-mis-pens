@@ -6,24 +6,31 @@ import { useFetchStudent } from "@/features"; // Ganti dengan fungsi pengambilan
 const PieChart = () => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const [studentData, setStudentData] = useState<any[]>([]);
-   const [totalData, setTotalData] = useState<number>(0);
+  const [totalData, setTotalData] = useState<number>(0);
 
   const { data: students } = useFetchStudent(); // Ganti dengan penggunaan hook atau fungsi pengambilan data yang sesuai
 
   useEffect(() => {
     if (students) {
+      // Filter out students with null graduated status
+      const filteredStudents = students.filter(
+        (student: any) => student.graduated !== null
+      );
+
       // Menghitung total jumlah data
-      const total = students.length;
+      const total = filteredStudents.length;
       setTotalData(total);
+
       // Proses data
       const statusCounts: { [key: string]: number } = {};
-      students.forEach((student: any) => {
+      filteredStudents.forEach((student: any) => {
         if (statusCounts[student.graduated]) {
           statusCounts[student.graduated]++;
         } else {
           statusCounts[student.graduated] = 1;
         }
       });
+
       // Hancurkan chart sebelumnya jika ada
       if (chartRef.current) {
         const chartInstance = Chart.getChart(chartRef.current);
@@ -31,6 +38,7 @@ const PieChart = () => {
           chartInstance.destroy();
         }
       }
+
       // Buat data untuk chart
       const chartData = {
         labels: Object.keys(statusCounts),
@@ -69,7 +77,6 @@ const PieChart = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <h1>Pie Chart</h1>
       <canvas
         ref={chartRef}
         className="my-chart" // Menggunakan class untuk styling

@@ -3,6 +3,14 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Chart_5 from "../chart/chart_5";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 export default function Hero() {
   return (
     <>
@@ -67,7 +75,17 @@ export default function Hero() {
                   <p className="text-white transition duration-300 ease-in-out  hover:scale-110 mb-6">
                     Mixing The Best of Distance and On-Campus Higher Education
                   </p>
-                  <Chart_5 />
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Jumlah Mahasiswa</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription>
+                       <Chart_5 />
+                      </CardDescription>
+                    </CardContent>
+                    <CardFooter></CardFooter>
+                  </Card>
                 </motion.div>
               </div>
             </div>
