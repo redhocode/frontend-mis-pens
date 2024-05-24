@@ -3,14 +3,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Chart_5 from "../chart/chart_5";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import Chart_4 from "../chart/chart_4";
+import Chart_3 from "../chart/chart_3";
+import Chart_1 from "../chart/chart_1";
 export default function Hero() {
   return (
     <>
@@ -81,9 +76,9 @@ export default function Hero() {
                 {/* Chart */}
                 <div className="flex flex-wrap md:flex-col mx-auto gap-5 md:hidden sm:hidden sm:flex-col">
                   <Chart_5 />
-                  <Chart_5 />
-                  <Chart_5 />
-                  <Chart_5 />
+                  <Chart_1 />
+                  <Chart_3 />
+                  <Chart_4 />
                 </div>
               </div>
             </div>

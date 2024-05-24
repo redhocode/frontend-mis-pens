@@ -2,8 +2,15 @@
 import { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 import { useFetchStudent } from "@/features"; // Ganti dengan fungsi pengambilan data dari database yang sesuai
-
-const DonutChart = () => {
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+const DonutChart = ({width=50, height=50}) => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const [studentData, setStudentData] = useState<any[]>([]);
    const [totalData, setTotalData] = useState<number>(0);
@@ -38,16 +45,28 @@ const DonutChart = () => {
           {
             data: Object.values(statusCounts),
             backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)", // Warna untuk tahun angkatan
-              // Tambahkan warna tambahan jika ada status lainnya
+              "#36A2EB",
+              "#FF6384",
+              "#FFCE56",
+              "#4BC0C0",
+              "#9966FF",
+              "#FF9F40",
+              "#C7C7C7",
+              "#5366FF",
+              "#FF9F80",
+              "#FF6347",
             ],
             borderColor: [
-              "rgba(255, 99, 132, 6)",
-              "rgba(54, 162, 235, 6)",
-              "rgba(255, 206, 87, 6)",
-              // Tambahkan warna tambahan jika ada status lainnya
+              "#36A2EB",
+              "#FF6384",
+              "#FFCE56",
+              "#4BC0C0",
+              "#9966FF",
+              "#FF9F40",
+              "#C7C7C7",
+              "#5366FF",
+              "#FF9F80",
+              "#FF6347",
             ],
             borderWidth: 1,
           },
@@ -68,15 +87,26 @@ const DonutChart = () => {
   }, [students]);
 
   return (
-    <div>
-      <canvas
-        ref={chartRef}
-        className="my-chart" // Menggunakan class untuk styling
-        width="200" // Menentukan lebar canvas
-        height="200" // Menentukan tinggi canvas
-      ></canvas>
-      <p>Total Data: {totalData}</p>
-    </div>
+    <Card className="bg-white bg-opacity-10 backdrop-blur-lg w-[270px] md:w-full">
+      <CardHeader className="bg-white bg-opacity-10 backdrop-blur-lg">
+        <CardTitle className="text-secondarypens">
+          Setatus Mahasiswa
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="bg-white bg-opacity-10 backdrop-blur-lg">
+        <canvas
+          ref={chartRef}
+          className="my-chart text-secondarypens" // Menggunakan class untuk styling
+          width={width} // Menentukan lebar canvas
+          height={height} // Menentukan tinggi canvas
+        ></canvas>
+      </CardContent>
+      <CardFooter className="bg-white bg-opacity-10 backdrop-blur-lg">
+        <CardDescription className="text-secondarypens">
+          Total Data: {totalData}
+        </CardDescription>
+      </CardFooter>
+    </Card>
   );
 };
 
