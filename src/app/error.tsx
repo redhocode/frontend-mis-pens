@@ -19,8 +19,9 @@ export default function Error({
     <div className="flex flex-col justify-center items-center h-screen">
       <h1 className="text-9xl animate-bounce">Oops!</h1>
       <h2 className="mb-4 text-xl">Some thing went wrong</h2>
+      <span>{error.message}</span>
       
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" onClick={reset}>
           Try again
         </Button>
       
