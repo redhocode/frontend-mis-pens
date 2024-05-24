@@ -28,8 +28,7 @@ export default function Hero() {
                 type="video/mp4"
               />
             </video>
-            <div className="absolute inset-0 opacity-50 bg-sky-900"></div>
-            <div className="absolute inset-0 flex items-center justify-center text-center outline outline-secondary">
+            <div className="absolute inset-0 flex items-center justify-center text-center outline outline-secondary flex-col">
               <div className="max-w-full p-6 rounded-xl text-neutral-content">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.5 }}

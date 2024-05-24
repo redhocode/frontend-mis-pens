@@ -97,18 +97,18 @@ const PieChart = ({ width = 50, height = 50 }) => {
   return (
     <Card className="bg-white bg-opacity-10 backdrop-blur-lg w-[270px] md:w-full">
       <CardHeader className="bg-white bg-opacity-10 backdrop-blur-lg">
-        <CardTitle>Jumlah Mahasiswa Lulus Per-Tahun</CardTitle>
+        <CardTitle className="text-black">Jumlah Mahasiswa Lulus Per-Tahun</CardTitle>
       </CardHeader>
       <CardContent className="bg-white bg-opacity-10 backdrop-blur-lg">
         <canvas
           ref={chartRef}
-          className="my-chart" // Menggunakan class untuk styling
+          className="my-chart text-black" // Menggunakan class untuk styling
           width={width} // Menentukan lebar canvas
           height={height} // Menentukan tinggi canvas
         ></canvas>
       </CardContent>
-      <CardFooter>
-        <CardDescription>Total Data: {totalData}</CardDescription>
+      <CardFooter className="bg-white bg-opacity-10 backdrop-blur-lg">
+        <CardDescription className="text-black">Total Data: {totalData}</CardDescription>
       </CardFooter>
     </Card>
   );
