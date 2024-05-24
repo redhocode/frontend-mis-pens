@@ -265,7 +265,7 @@ export default function TableStudent() {
         student.semester.toString(),
         student.ipk.toString(),
         student.status,
-        student.graduated.toString(),
+       
       ];
 
       // Cek apakah setiap field mengandung kata kunci pencarian (dalam huruf kecil)
