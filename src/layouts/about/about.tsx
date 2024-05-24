@@ -22,7 +22,7 @@ export default function AboutLayout() {
           </CardHeader>
           <CardContent className="dark:bg-zinc-800">
             <CardDescription>
-              <div className="flex flex-warp max-w-4xl gap-4 md:flex-col">
+              <div className="flex flex-warp max-w-4xl gap-4 md:flex-col text-black">
                 <div className="mt-2">
                   <h3 className="font-semibold">Visi</h3>
                   <p className="text-justify ">
