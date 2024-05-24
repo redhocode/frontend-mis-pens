@@ -1266,22 +1266,22 @@ export default function TableStudent() {
                         </div>
 
                         {/* Add other form fields similarly */}
-                        <Button type="submit" className="w-full">
-                          Submit
-                        </Button>
                       </div>
                     </div>
-                  </Form>
-                </ScrollArea>
-              </Formik>
               <DialogFooter>
                 <DialogClose asChild>
                   <Button type="button" variant="secondary" onClick={handleReset}>
                     Close
                    
                   </Button>
+                        <Button type="submit" className="w-full">
+                          Submit
+                        </Button>
                 </DialogClose>
               </DialogFooter>
+                  </Form>
+                </ScrollArea>
+              </Formik>
             </DialogContent>
           </Dialog>
         </div>
