@@ -97,15 +97,18 @@ export default function TableStudent() {
     status: Yup.string().required("Status is required"),
     image: Yup.mixed()
       .test("fileSize", "File size too large", (value: any) => {
-        const file = value as File | undefined;
-        return !file || file.size <= MAX_FILE_SIZE;
+        // Jika value tidak ada (tidak ada gambar yang dipilih), maka validasi dilewati
+        if (!value) return true;
+
+        const file = value as File;
+        return file.size <= MAX_FILE_SIZE;
       })
       .test("fileType", "Invalid file type", (value: any) => {
-        const file = value as File | undefined;
-        return (
-          !file ||
-          (typeof file.type === "string" && file.type.includes("image"))
-        );
+        // Jika value tidak ada (tidak ada gambar yang dipilih), maka validasi dilewati
+        if (!value) return true;
+
+        const file = value as File;
+        return typeof file.type === "string" && file.type.includes("image");
       }),
   });
   const { mutate: CreateOrUpdateStudent } = useMutation({
