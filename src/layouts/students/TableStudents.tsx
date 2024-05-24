@@ -1217,20 +1217,33 @@ export default function TableStudent() {
                             className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             onChange={(e) => {
                               if (e.target.files && e.target.files.length > 0) {
-                                const reader = new FileReader();
-                                reader.onload = (event) => {
-                                  if (reader.readyState === 2) {
-                                    const file = e.target.files![0];
-                                    if (file) {
+                                const file = e.target.files[0];
+                                // Cek ukuran file
+                                if (file.size <= MAX_FILE_SIZE) {
+                                  // Baca file menggunakan FileReader
+                                  const reader = new FileReader();
+                                  reader.onload = (event) => {
+                                    if (reader.readyState === 2) {
+                                      // Set nilai gambar ke dalam formik
                                       formik.setFieldValue(
                                         "image",
-                                        URL.createObjectURL(file)
+                                        event.target?.result
                                       );
-                                      setPreview(reader.result as string);
+                                      // Tampilkan pratinjau gambar
+                                      setPreview(
+                                        event.target?.result as string
+                                      );
                                     }
-                                  }
-                                };
-                                reader.readAsDataURL(e.target.files[0]);
+                                  };
+                                  reader.readAsDataURL(file);
+                                } else {
+                                  // Tampilkan pesan kesalahan jika ukuran file terlalu besar
+                                  alert("File size too large");
+                                  // Kosongkan input file
+                                  e.target.value = null;
+                                  // Kosongkan pratinjau gambar
+                                  setPreview("");
+                                }
                               }
                             }}
                             onBlur={formik.handleBlur}
@@ -1306,7 +1319,9 @@ export default function TableStudent() {
               </TableHead>
               <TableHead className="text-white font-semibold">IPK</TableHead>
               <TableHead className="text-white font-semibold">Status</TableHead>
-              <TableHead className="text-white font-semibold">GraduatedYear</TableHead>
+              <TableHead className="text-white font-semibold">
+                GraduatedYear
+              </TableHead>
               <TableHead className="text-white font-semibold">
                 Picture
               </TableHead>
