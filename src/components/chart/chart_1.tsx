@@ -90,7 +90,7 @@ const DonutChart = ({width=50, height=50}) => {
     <Card className=" w-[270px] md:w-full">
       <CardHeader className="">
         <CardTitle className="">
-          Setatus Mahasiswa
+          Data Status Mahasiswa
         </CardTitle>
       </CardHeader>
       <CardContent className="">
