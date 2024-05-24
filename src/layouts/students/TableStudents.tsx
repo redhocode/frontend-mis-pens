@@ -853,10 +853,6 @@ export default function TableStudent() {
                 Add Data
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add Student</DialogTitle>
-              </DialogHeader>
               <Formik
                 initialValues={formik.initialValues}
                 validationSchema={validationSchema}
@@ -867,6 +863,10 @@ export default function TableStudent() {
                     className="flex flex-wrap "
                     onSubmit={formik.handleSubmit}
                   >
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Add Student</DialogTitle>
+              </DialogHeader>
                     <div className="w-full justify-normal gap-4 flex">
                       <div className="w-full">
                         <div className="mb-4 flex flex-col">
@@ -1268,6 +1268,7 @@ export default function TableStudent() {
                         {/* Add other form fields similarly */}
                       </div>
                     </div>
+            </DialogContent>
               <DialogFooter>
                 <DialogClose asChild>
                   <Button type="button" variant="secondary" onClick={handleReset}>
@@ -1282,7 +1283,6 @@ export default function TableStudent() {
                   </Form>
                 </ScrollArea>
               </Formik>
-            </DialogContent>
           </Dialog>
         </div>
         <div>
