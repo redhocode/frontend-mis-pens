@@ -95,11 +95,11 @@ const PieChart = ({ width = 50, height = 50 }) => {
   }, [students]);
 
   return (
-    <Card className="backdrop-opacity-10 backdrop-invert w-[270px] md:w-full">
-      <CardHeader className="backdrop-opacity-10 backdrop-invert">
+    <Card className="bg-white bg-opacity-10 backdrop-blur-lg w-[270px] md:w-full">
+      <CardHeader className="bg-white bg-opacity-10 backdrop-blur-lg">
         <CardTitle>Jumlah Mahasiswa Lulus Per-Tahun</CardTitle>
       </CardHeader>
-      <CardContent className="backdrop-opacity-10 backdrop-invert">
+      <CardContent className="bg-white bg-opacity-10 backdrop-blur-lg">
         <canvas
           ref={chartRef}
           className="my-chart" // Menggunakan class untuk styling
