@@ -337,9 +337,11 @@ export default function TableStudent() {
                         semester: student.semester.toString(),
                         status: student.status,
                         graduated: student.graduated?.toString() || "",
+                        image: student.image || "",
                         receivedAwardId: student.receivedAwardId || "",
                         receivedAwardName: student.receivedAwardName || "",
                       });
+                      
                       setPreview(
                         student.image
                          
