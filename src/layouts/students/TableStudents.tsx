@@ -1271,6 +1271,7 @@ export default function TableStudent() {
                     </div>
                   </Form>
                 </ScrollArea>
+              </Formik>
               <DialogFooter>
                         <Button type="submit" className="w-full">
                           Submit
@@ -1282,7 +1283,6 @@ export default function TableStudent() {
                   </Button>
                 </DialogClose>
               </DialogFooter>
-              </Formik>
             </DialogContent>
           </Dialog>
         </div>
