@@ -14,6 +14,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
 import Head from "next/head";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 declare let dataLayer: any[];
 
 export const metadata: Metadata = {
@@ -77,6 +78,7 @@ export default function RootLayout({
               {children}
               {/* <GoogleTagManager gtmId="G-FSYRLCVKQ5" /> // METRIC ID */}
               <GoogleAnalytics gaId="G-FSYRLCVKQ5" />
+              <SpeedInsights />
             </Providers>
           </ThemeProvider>
           <Toaster />
