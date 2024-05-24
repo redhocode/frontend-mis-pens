@@ -54,6 +54,7 @@ import {
 import { Edit, Trash } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CDN } from "@/lib/cdn";
+import { Graduate } from "next/font/google";
 
 export default function TableStudent() {
   const pageSize = 10; // Tentukan nilai pageSize
@@ -336,16 +337,13 @@ export default function TableStudent() {
                         year: student.year.toString(),
                         semester: student.semester.toString(),
                         status: student.status,
-                        graduated: student.graduated.toString() || null,
-                       
+                        graduated: student.graduated.toString() || student.graduated,
+
                         receivedAwardId: student.receivedAwardId || "",
                         receivedAwardName: student.receivedAwardName || "",
                       });
-                      
-                      setPreview(
-                        student.image
-                         
-                      );
+
+                      setPreview(student.image);
                     }}
                   >
                     <Edit name="Edit" className="mr-2" />{" "}
@@ -623,16 +621,17 @@ export default function TableStudent() {
                                         Tahun Lulus
                                       </option>
                                       {/* Tambahkan opsi tahun sesuai kebutuhan */}
-                                      <option value="2021">2021</option>
-                                      <option value="2022">2022</option>
-                                      <option value="2023">2023</option>
-                                      <option value="2024">2024</option>
-                                      <option value="2025">2025</option>
-                                      <option value="2026">2026</option>
-                                      <option value="2027">2027</option>
-                                      <option value="2028">2028</option>
-                                      <option value="2029">2029</option>
-                                      <option value="2030">2030</option>
+                                      {Array.from(
+                                        { length: 11 },
+                                        (_, i) => 2020 + i
+                                      ).map((graduated) => (
+                                        <option
+                                          key={graduated}
+                                          value={graduated.toString()}
+                                        >
+                                          {graduated}
+                                        </option>
+                                      ))}
                                     </select>
                                   )}
                                 </>
