@@ -13,7 +13,7 @@ export default function AboutLayout() {
     <>
       <div className="flex flex-col justify-center min-h-screen mx-auto container items-center">
         <Card>
-          <CardHeader>
+          <CardHeader className="dark:bg-zinc-800">
             <CardTitle className="text-3xl font-semibold uppercase justify-center flex dark:bg-zinc-800">
             
                 Tentang Pendidikan Jarak Jauh (PJJ)
