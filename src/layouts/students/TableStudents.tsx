@@ -340,6 +340,8 @@ export default function TableStudent() {
                         graduated: student.graduated?.toString() || "",
                         receivedAwardId: student.receivedAwardId || "",
                         receivedAwardName: student.receivedAwardName || "",
+                        image: student.image || "",
+                       
                       });
 
                       setPreview(student.image);
@@ -742,7 +744,10 @@ export default function TableStudent() {
                                     if (reader.readyState === 2) {
                                       const file = e.target.files![0];
                                       if (file) {
-                                        formik.setFieldValue("image", file);
+                                        formik.setFieldValue(
+                                          "image",
+                                          URL.createObjectURL(file)
+                                        );
                                         setPreview(reader.result as string);
                                       }
                                     }
@@ -1214,7 +1219,10 @@ export default function TableStudent() {
                                   if (reader.readyState === 2) {
                                     const file = e.target.files![0];
                                     if (file) {
-                                      formik.setFieldValue("image", file);
+                                      formik.setFieldValue(
+                                        "image",
+                                        URL.createObjectURL(file)
+                                      );
                                       setPreview(reader.result as string);
                                     }
                                   }
