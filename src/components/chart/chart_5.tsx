@@ -2,8 +2,15 @@
 import { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 import { useFetchStudent } from "@/features"; // Ganti dengan fungsi pengambilan data dari database yang sesuai
-
-const PieChart = ({ width = 200, height = 200 }) => {
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+const PieChart = ({ width = 50, height = 50 }) => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const [studentData, setStudentData] = useState<any[]>([]);
   const [totalData, setTotalData] = useState<number>(0);
@@ -88,16 +95,23 @@ const PieChart = ({ width = 200, height = 200 }) => {
   }, [students]);
 
   return (
-    <div className="flex flex-col items-center">
-      <h1>Pie Chart</h1>
-      <canvas
-        ref={chartRef}
-        className="my-chart" // Menggunakan class untuk styling
-        width={width} // Menentukan lebar canvas
-        height={height} // Menentukan tinggi canvas
-      ></canvas>
-      <span className="bottom-0">Total Data: {totalData}</span>
-    </div>
+      <Card>
+        <CardHeader className="bg-transparent">
+          <CardTitle>Jumlah Mahasiswa Lulus Per-Tahun</CardTitle>
+        </CardHeader>
+        <CardContent className="bg-transparent">
+          <canvas
+            ref={chartRef}
+            className="my-chart" // Menggunakan class untuk styling
+            width={width} // Menentukan lebar canvas
+            height={height} // Menentukan tinggi canvas
+          ></canvas>
+        </CardContent>
+        <CardFooter>
+          <CardDescription>Total Data: {totalData}</CardDescription>
+        </CardFooter>
+      </Card>
+    
   );
 };
 

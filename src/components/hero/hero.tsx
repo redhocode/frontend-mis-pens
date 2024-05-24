@@ -75,18 +75,11 @@ export default function Hero() {
                   <p className="text-white transition duration-300 ease-in-out  hover:scale-110 mb-6">
                     Mixing The Best of Distance and On-Campus Higher Education
                   </p>
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Jumlah Mahasiswa</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription>
-                       <Chart_5 />
-                      </CardDescription>
-                    </CardContent>
-                    <CardFooter></CardFooter>
-                  </Card>
                 </motion.div>
+                {/* Chart */}
+                <div className="flex flex-warp md:flex-col mx-auto">
+                  <Chart_5 />
+                </div>
               </div>
             </div>
           </div>
