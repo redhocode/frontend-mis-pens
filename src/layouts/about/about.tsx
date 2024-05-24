@@ -11,10 +11,10 @@ import {
 export default function AboutLayout() {
   return (
     <>
-      <div className="flex flex-col justify-center min-h-screen mx-auto container items-center">
+      <div className="flex flex-col justify-center min-h-screen mx-auto container items-center text-black">
         <Card>
           <CardHeader className="dark:bg-zinc-800">
-            <CardTitle className="text-3xl font-semibold uppercase justify-center flex dark:bg-zinc-800 text-gray-400">
+            <CardTitle className="text-3xl font-semibold uppercase justify-center flex dark:bg-zinc-800">
             
                 Tentang Pendidikan Jarak Jauh (PJJ)
               
@@ -22,7 +22,7 @@ export default function AboutLayout() {
           </CardHeader>
           <CardContent className="dark:bg-zinc-800">
             <CardDescription>
-              <div className="flex flex-warp max-w-4xl gap-4 md:flex-col text-gray-400">
+              <div className="flex flex-warp max-w-4xl gap-4 md:flex-col">
                 <div className="mt-2">
                   <h3 className="font-semibold">Visi</h3>
                   <p className="text-justify ">
