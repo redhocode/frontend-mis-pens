@@ -76,11 +76,11 @@ export default function Hero() {
                     Mixing The Best of Distance and On-Campus Higher Education
                   </p>
                 </motion.div>
+              </div>
                 {/* Chart */}
                 <div className="flex flex-warp md:flex-col mx-auto">
                   <Chart_5 />
                 </div>
-              </div>
             </div>
           </div>
         </div>
