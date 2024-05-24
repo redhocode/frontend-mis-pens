@@ -236,14 +236,14 @@ export const CradScholarships = () => {
           </p>
         </div>
 
-        <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto dark:bg-zinc-800" />
+        <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto dark:border-zinc-800" />
         <div className="flex justify-center flex-wrap">
           <Input
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
             placeholder="Cari data."
-            className="md:w-full mt-2 mb-2 w-[700px] focus:outline-none border-gray-300 h-[50px] dark:bg-zinc-800"
+            className="md:w-full mt-2 mb-2 w-[700px] focus:outline-none border-gray-300 h-[50px] dark:bg-zinc-800 dark:outline-0 dark:border-zinc-800 dark:focus:outline-0 dark:text-white"
           />
         </div>
         <div className="flex justify-center flex-wrap mb-6"></div>

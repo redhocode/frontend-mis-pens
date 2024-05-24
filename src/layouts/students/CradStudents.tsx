@@ -239,7 +239,7 @@ const CradStudentsUser = () => {
             <SelectTrigger className="w-[700px] dark:bg-zinc-800">
               <SelectValue placeholder="Select a filter" />
             </SelectTrigger>
-            <SelectContent className="dark:bg-zinc-800 dark:border-none">
+            <SelectContent className="dark:bg-zinc-800 dark:border-zinc-900">
               <SelectGroup>
                 <SelectLabel>Filter Data Mahasiswa</SelectLabel>
                 <SelectItem

@@ -181,7 +181,7 @@ export const CradAcademics = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="px-2 py-2 mt-2 outline-1 rounded-md shadow-sm">
+            <div className="px-2 py-2 mt-2 dark:bg-zinc-900 rounded-md shadow-sm">
               <div
                 dangerouslySetInnerHTML={{
                   __html: truncateHTML(data.description, 50),
