@@ -13,23 +13,14 @@ import Footer from "@/components/footer/footer";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
+import Head from "next/head";
 declare let dataLayer: any[];
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://pjj.pens.ac.id"),
   icons: {
-    icon: [
-      {
-        media: "(prefers-color-scheme: light)",
-        url: "/public/images/pens.png",
-        href: "/public/images/pens.png",
-      },
-      {
-        media: "(prefers-color-scheme: dark)",
-        url: "/public/images/pens.png",
-        href: "/public/images/pens.png",
-      },
-    ],
+    icon: "/images/pens.png",
+
   },
   title: "D3 PJJ Teknik Informatika - Politeknik Elektro Negeri Surabaya",
   description:
@@ -43,15 +34,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
+      <Head>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0"
         ></meta>
-        <link rel="shortcut icon" href="/shortcut-icon.png" />
-        <link rel="icon" href="/images/pens.svg" />
-        <link rel="/image/png" href="/images/pens.png" />
-
+        <link rel="icon" sizes="16x16" href="/images/pens.png" />
+        <link rel="icon" sizes="32x32" href="/images/pens.png" />
+        <link
+          rel="pens"
+          sizes="180x180"
+          href="/images/pens.png"
+        />
         <Script
           async
           strategy="afterInteractive"
@@ -68,7 +62,7 @@ export default function RootLayout({
   
   `}
         </Script>
-      </head>
+      </Head>
 
       <body className={`${inter.className}`} suppressHydrationWarning={true}>
         <main className="bg-slate-100 dark:bg-zinc-900 min-h-screen">
