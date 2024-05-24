@@ -173,7 +173,7 @@ export default function TableAcademic() {
 
         if (id) {
           academicsRes = await axiosInstance.patch(
-            `/ academics/${id}`,
+            `/academics/${id}`,
             formData,
             {
               headers: {
