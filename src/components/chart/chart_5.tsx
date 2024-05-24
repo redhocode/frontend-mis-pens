@@ -95,23 +95,22 @@ const PieChart = ({ width = 50, height = 50 }) => {
   }, [students]);
 
   return (
-      <Card>
-        <CardHeader className="bg-transparent">
-          <CardTitle>Jumlah Mahasiswa Lulus Per-Tahun</CardTitle>
-        </CardHeader>
-        <CardContent className="bg-transparent">
-          <canvas
-            ref={chartRef}
-            className="my-chart" // Menggunakan class untuk styling
-            width={width} // Menentukan lebar canvas
-            height={height} // Menentukan tinggi canvas
-          ></canvas>
-        </CardContent>
-        <CardFooter>
-          <CardDescription>Total Data: {totalData}</CardDescription>
-        </CardFooter>
-      </Card>
-    
+    <Card className="backdrop-opacity-10 backdrop-invert w-[270px] md:w-full">
+      <CardHeader className="backdrop-opacity-10 backdrop-invert">
+        <CardTitle>Jumlah Mahasiswa Lulus Per-Tahun</CardTitle>
+      </CardHeader>
+      <CardContent className="backdrop-opacity-10 backdrop-invert">
+        <canvas
+          ref={chartRef}
+          className="my-chart" // Menggunakan class untuk styling
+          width={width} // Menentukan lebar canvas
+          height={height} // Menentukan tinggi canvas
+        ></canvas>
+      </CardContent>
+      <CardFooter>
+        <CardDescription>Total Data: {totalData}</CardDescription>
+      </CardFooter>
+    </Card>
   );
 };
 
