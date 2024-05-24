@@ -336,7 +336,7 @@ export default function TableStudent() {
                         year: student.year.toString(),
                         semester: student.semester.toString(),
                         status: student.status,
-                        graduated: student.graduated.toString() || "",
+                        graduated: student.graduated || "",
                         receivedAwardId: student.receivedAwardId || "",
                         receivedAwardName: student.receivedAwardName || "",
                       });
