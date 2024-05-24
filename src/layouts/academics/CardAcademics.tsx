@@ -157,7 +157,7 @@ export const CradAcademics = () => {
     const dataToRender = filteredData?.slice(startIndex, endIndex);
     return dataToRender?.map((data: Academic) => {
       return (
-        <Card className="w-full md:w-full outline-1" key={data.id}>
+        <Card className="w-full md:w-full dark:bg-zinc-800" key={data.id}>
           <CardHeader>
             <CardTitle>
               <span>{data.title}</span>
@@ -253,7 +253,7 @@ export const CradAcademics = () => {
               value={searchTerm}
               onChange={handleSearchChange}
               placeholder="Cari data."
-              className="md:w-full max-w-4xl mt-2 w-[700px] h-[50px] focus:outline-none"
+              className="md:w-full max-w-4xl mt-2 w-[700px] h-[50px] focus:outline-none dark:bg-zinc-800 dark:text-white"
             />
           </div>
         </div>
