@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 import { useFetchStudent } from "@/features"; // Ganti dengan fungsi pengambilan data dari database yang sesuai
 
-const PieChart = () => {
+const PieChart = ({ width = 200, height = 200 }) => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const [studentData, setStudentData] = useState<any[]>([]);
   const [totalData, setTotalData] = useState<number>(0);
@@ -48,14 +48,26 @@ const PieChart = () => {
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
               "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)", // Warna untuk tahun angkatan
-              // Tambahkan warna tambahan jika ada status lainnya
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+              "rgba(199, 199, 199, 0.2)",
+              "rgba(83, 102, 255, 0.2)",
+              "rgba(255, 159, 128, 0.2)",
+              "rgba(255, 99, 71, 0.2)",
             ],
             borderColor: [
-              "rgba(255, 99, 132, 6)",
-              "rgba(54, 162, 235, 6)",
-              "rgba(255, 206, 87, 6)",
-              // Tambahkan warna tambahan jika ada status lainnya
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+              "rgba(199, 199, 199, 1)",
+              "rgba(83, 102, 255, 1)",
+              "rgba(255, 159, 128, 1)",
+              "rgba(255, 99, 71, 1)",
             ],
             borderWidth: 1,
           },
@@ -77,11 +89,12 @@ const PieChart = () => {
 
   return (
     <div className="flex flex-col items-center">
+      <h1>Pie Chart</h1>
       <canvas
         ref={chartRef}
         className="my-chart" // Menggunakan class untuk styling
-        width="200" // Menentukan lebar canvas
-        height="200" // Menentukan tinggi canvas
+        width={width} // Menentukan lebar canvas
+        height={height} // Menentukan tinggi canvas
       ></canvas>
       <span className="bottom-0">Total Data: {totalData}</span>
     </div>
