@@ -79,7 +79,7 @@ export default function Hero() {
                   </motion.div>
                 </div>
                 {/* Chart */}
-                <div className="hidden md:flex md:flex-wrap md:flex-col mx-auto gap-5">
+                <div className="flex flex-wrap md:flex-col mx-auto gap-5 md:hidden sm:hidden sm:flex-col">
                   <Chart_5 />
                   <Chart_5 />
                   <Chart_5 />
