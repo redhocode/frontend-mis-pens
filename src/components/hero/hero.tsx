@@ -2,6 +2,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import Chart_5 from "../chart/chart_5";
 export default function Hero() {
   return (
     <>
@@ -63,9 +64,10 @@ export default function Hero() {
                     ease: [0, 0.71, 0.2, 1.01],
                   }}
                 >
-                  <p className="text-white transition duration-300 ease-in-out  hover:scale-110">
+                  <p className="text-white transition duration-300 ease-in-out  hover:scale-110 mb-6">
                     Mixing The Best of Distance and On-Campus Higher Education
                   </p>
+                  <Chart_5 />
                 </motion.div>
               </div>
             </div>
