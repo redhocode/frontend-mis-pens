@@ -64,20 +64,7 @@ const PieChart = ({ width = 50, height = 50 }) => {
               "#FF9F80",
               "#FF6347",
             ],
-            borderColor: [
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-             
-            ],
-            borderWidth: 1,
+         
           },
         ],
       };
@@ -103,7 +90,7 @@ const PieChart = ({ width = 50, height = 50 }) => {
       <CardContent className="">
         <canvas
           ref={chartRef}
-          className="my-chart" // Menggunakan class untuk styling
+          className="my-chart hover:cursor-pointer transition duration-300 ease-in-out hover:scale-105" // Menggunakan class untuk styling
           width={width} // Menentukan lebar canvas
           height={height} // Menentukan tinggi canvas
         ></canvas>

@@ -10,11 +10,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-const DonutChart = ({width=50, height=50}) => {
+const DonutChart = ({ width = 50, height = 50 }) => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
-  const [studentData, setStudentData] = useState<any[]>([]);
-   const [totalData, setTotalData] = useState<number>(0);
+  const [totalData, setTotalData] = useState<number>(0);
+  const [isEnlarged, setIsEnlarged] = useState(false);
 
+  const toggleEnlarged = () => {
+    setIsEnlarged(!isEnlarged);
+  };
   const { data: students } = useFetchStudent(); // Ganti dengan penggunaan hook atau fungsi pengambilan data yang sesuai
 
   useEffect(() => {
@@ -56,19 +59,6 @@ const DonutChart = ({width=50, height=50}) => {
               "#FF9F80",
               "#FF6347",
             ],
-            borderColor: [
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-              "#FFFFFF",
-            ],
-            borderWidth: 1,
           },
         ],
       };
@@ -86,25 +76,34 @@ const DonutChart = ({width=50, height=50}) => {
     }
   }, [students]);
 
+  const chartClassName = isEnlarged
+    ? {
+        transform: isEnlarged ? "scale(1)" : "scale(0.5)",
+        transition: "transform 0.3s ease-in-out",
+      }
+    : {};
+
   return (
-    <Card className=" w-[270px] md:w-full">
-      <CardHeader className="">
-        <CardTitle className="">
-          Data Status Mahasiswa
-        </CardTitle>
+    <Card className="w-[270px] md:w-full relative">
+      <CardHeader>
+        <CardTitle>Data Status Mahasiswa</CardTitle>
       </CardHeader>
-      <CardContent className="">
-        <canvas
-          ref={chartRef}
-          className="my-chart" // Menggunakan class untuk styling
-          width={width} // Menentukan lebar canvas
-          height={height} // Menentukan tinggi canvas
-        ></canvas>
+      <CardContent className="relative">
+        <div
+          className={`my-chart-container 
+          }`}
+        >
+          <canvas
+            ref={chartRef}
+            className={`my-chart  ${chartClassName} hover:cursor-pointer transition duration-300 ease-in-out hover:scale-105`}
+            width={width}
+            height={height}
+            onClick={toggleEnlarged}
+          ></canvas>
+        </div>
       </CardContent>
-      <CardFooter className="">
-        <CardDescription className="">
-          Total Data: {totalData}
-        </CardDescription>
+      <CardFooter>
+        <CardDescription>Total Data: {totalData}</CardDescription>
       </CardFooter>
     </Card>
   );

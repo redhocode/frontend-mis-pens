@@ -61,19 +61,7 @@ const DonutChart = ({ width = 50, height = 50 }) => {
                   "#FF9F80",
                   "#FF6347",
                 ],
-                borderColor: [
-                  "#FFFFFF",
-                  "#FFFFFF",
-                  "#FFFFFF",
-                  "#FFFFFF",
-                  "#FFFFFF",
-                  "#FFFFFF",
-                  "#FFFFFF",
-                  "#FFFFFF",
-                  "#FFFFFF",
-                  "#FFFFFF",
-                ],
-                borderWidth: 1,
+               
               },
             ],
           };
@@ -90,22 +78,18 @@ const DonutChart = ({ width = 50, height = 50 }) => {
   return (
     <Card className="w-[270px] md:w-full">
       <CardHeader className="">
-        <CardTitle className="">
-          Jumlah Mahasiswa Per-Semester
-        </CardTitle>
+        <CardTitle className="">Jumlah Mahasiswa Per-Semester</CardTitle>
       </CardHeader>
       <CardContent className="">
         <canvas
           ref={semesterChartRef}
-          className="my-chart" // Menggunakan class untuk styling
+          className="my-chart hover:cursor-pointer transition duration-300 ease-in-out hover:scale-105" // Menggunakan class untuk styling
           width={width} // Menentukan lebar canvas
           height={height} // Menentukan tinggi canvas
         ></canvas>
       </CardContent>
       <CardFooter className="">
-        <CardDescription className="">
-          Total Data: {totalData}
-        </CardDescription>
+        <CardDescription className="">Total Data: {totalData}</CardDescription>
       </CardFooter>
     </Card>
   );

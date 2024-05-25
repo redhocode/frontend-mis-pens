@@ -1,13 +1,34 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import Chart_5 from "../chart/chart_5";
 import Chart_4 from "../chart/chart_4";
 import Chart_3 from "../chart/chart_3";
 import Chart_1 from "../chart/chart_1";
 import Chart_2 from "../chart/chart_2";
-export default function Hero() {
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { useState, useEffect } from "react";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Button } from "../ui/button";
+import { PieChart,FilePieChart } from "lucide-react";
+function Hero() {
+  const SHEET_SIDES = ["top", "right", "bottom", "left"] as const;
+
+  type SheetSide = (typeof SHEET_SIDES)[number];
+
+
+
   return (
     <>
       <section>
@@ -72,14 +93,42 @@ export default function Hero() {
                     <p className="text-white transition duration-300 ease-in-out  hover:scale-110 mb-6">
                       Mixing The Best of Distance and On-Campus Higher Education
                     </p>
+
+                    <Sheet>
+                      <SheetTrigger>
+                        <Button
+                          variant="secondary"
+                          className="rounded-full px-4 py-4"
+                        >
+                          <FilePieChart className="w-6 h-6 mr-2" />
+                          View Chart
+                        </Button>
+                      </SheetTrigger>
+                      {/* Chart */}
+
+                      <SheetContent
+                        className="w-full md:h-3/2"
+                        side={SHEET_SIDES[2]}
+                      >
+                        <SheetHeader>
+                          <SheetTitle className="mb-2">
+                            Chart Data Mahasiswa PJJ D3 Teknik Informatika
+                          </SheetTitle>
+                        </SheetHeader>
+                        <ScrollArea className="w-full md:w-full h-full rounded-md border px-2 py-2">
+                          <SheetDescription>
+                            <div className="w-full flex flex-grow mx-auto gap-4 justify-center">
+                              <Chart_1 />
+                              <Chart_5 />
+                              <Chart_4 />
+                              <Chart_2 />
+                            </div>
+                          </SheetDescription>
+                          <ScrollBar orientation="horizontal" />
+                        </ScrollArea>
+                      </SheetContent>
+                    </Sheet>
                   </motion.div>
-                </div>
-                {/* Chart */}
-                <div className="flex flex-wrap md:flex-col mx-auto gap-5 md:hidden sm:hidden sm:flex-col">
-                  <Chart_5 />
-                  <Chart_4 />
-                  <Chart_1 />
-                  
                 </div>
               </div>
             </div>
@@ -89,3 +138,5 @@ export default function Hero() {
     </>
   );
 }
+
+export default dynamic(() => Promise.resolve(Hero), { ssr: false });
