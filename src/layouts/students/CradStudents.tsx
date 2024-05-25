@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFetchStudent } from "@/features";
 import {
   Card,
@@ -17,7 +17,6 @@ import {
   SelectContent,
   SelectItem,
   SelectLabel,
-  SelectSeparator,
   SelectGroup,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -34,26 +33,29 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { PageWrapper } from "@/components/animate/page-wrapper";
 import { Separator } from "@/components/ui/separator";
 import CardSkeleton3 from "@/components/skeleton/card-skeleton3";
-import { CDN } from "@/lib/cdn";
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 const CradStudentsUser = () => {
-  const [totalFilteredData, setTotalFilteredData] = useState<number | null>(
-    null
-  );
-
-  const pageSize = 3;
+  const [totalFilteredData, setTotalFilteredData] = useState<number>(0);
   const [page, setPage] = useState(1);
-  const [filterValue, setFilterValue] = useState("");
+  const [pageSize, setPageSize] = useState(3);
+  const [filterValue, setFilterValue] = useState("Semua Data");
+  const [searchTerm, setSearchTerm] = useState("");
+
   const {
     data,
     isLoading,
     refetch: refetchStudents,
   } = useFetchStudent(page, pageSize, filterValue);
 
-  const totalStudents = data?.length || 0;
-  const totalPages = Math.ceil(totalStudents / pageSize);
-
-  const [searchTerm, setSearchTerm] = useState("");
+  useEffect(() => {
+    if (data) {
+      const filteredData = handleFilterAndSearch(data, filterValue, searchTerm);
+      setTotalFilteredData(filteredData.length);
+    } else {
+      setTotalFilteredData(0);
+    }
+  }, [data, filterValue, searchTerm]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -65,64 +67,32 @@ const CradStudentsUser = () => {
 
   const handleFilterChange = (value: string) => {
     setFilterValue(value);
-
-    const filteredData = data.filter((student: Student) => {
-      if (value === "Aktif") {
-        return student.status === "Aktif";
-      } else if (value === "1.8") {
-        return student.ipk < 1.8;
-      } else if (value === "Cuti") {
-        return student.status === "Cuti";
-      } else {
-        return true;
-      }
-    });
-
-    setTotalFilteredData(filteredData?.length ?? 0);
   };
 
-  const renderStudent = (
-    page: number,
-    pageSize: number,
+  const handleFilterAndSearch = (
     data: Student[],
-    searchTerm: string,
-    filterValue: string
+    filterValue: string,
+    searchTerm: string
   ) => {
-    if (isLoading) {
-      return Array.from({ length: pageSize }).map((_, index) => (
-        <CardSkeleton3 key={index} />
-      ));
-    }
-
-    if (!data || data.length === 0) {
-      return <p>No students found.</p>;
-    }
-
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = Math.min(startIndex + pageSize, data?.length);
+    if (!data) return [];
 
     let filteredData = data;
+
     if (filterValue === "Aktif") {
-      filteredData = filteredData?.filter(
-        (student: Student) => student.status === "Aktif"
+      filteredData = filteredData.filter(
+        (student) => student.status === "Aktif"
       );
     } else if (filterValue === "1.8") {
-      filteredData = filteredData?.filter((student) => student.ipk < 1.8);
+      filteredData = filteredData.filter((student) => student.ipk < 1.8);
     } else if (filterValue === "Cuti") {
-      filteredData = filteredData?.filter(
+      filteredData = filteredData.filter(
         (student) => student.status === "Cuti"
-      );
-    } else if (filterValue === "Lulus") {
-      filteredData = filteredData?.filter(
-        (student) => student.status === "Lulus"
       );
     }
 
-    const totalFilteredData = filteredData?.length || 0;
-
     if (searchTerm) {
-      filteredData = filteredData?.filter((student: Student) => {
-        const searchTermLower = searchTerm.toLowerCase();
+      const searchTermLower = searchTerm.toLowerCase();
+      filteredData = filteredData.filter((student: Student) => {
         const fieldsToSearch = [
           student.name,
           student.nrp,
@@ -141,75 +111,84 @@ const CradStudentsUser = () => {
       });
     }
 
-    const studentsToRender = filteredData?.slice(startIndex, endIndex);
-    return studentsToRender?.map((student: Student) => {
-      return (
-        <Card
-          className="w-[270px] md:w-full dark:bg-zinc-800 "
-          key={student.id}
-        >
-          <CardHeader>
-            <CardTitle>
-              <span>{student.name}</span>
-            </CardTitle>
-            <CardDescription>
-              <span>{student.major}</span>
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col space-y-3 mt-2 pb-4 justify-center mx-auto">
-              {!student.image ? (
-                <Skeleton className="h-[294px] w-full rounded-xl" />
-              ) : (
-                <img
-                  src={
-                    student.image
-                   }
-                  alt="Activity Image"
-                  className="object-cover h-[294px] transition duration-300 ease-in-out rounded-xl hover:scale-105 cursor-pointer"
-                />
-              )}
-            </div>
-            <div className="flex justify-between flex-col gap-3 dark:bg-zinc-900 py-4 px-4 rounded-md shadow-sm">
-              <div className="flex justify-between gap-3">
-                <div className="flex flex-col font-semibold">
-                  <span>NRP</span>
-                  <span>Angkatan</span>
-                  <span>Semester</span>
-                  <span>IPK</span>
-                  <span>Beasiswa</span>
-                </div>
-                <div className="flex flex-col">
-                  <span>:</span>
-                  <span>:</span>
-                  <span>:</span>
-                  <span>:</span>
-                  <span>:</span>
-                </div>
-                <div className="flex flex-col">
-                  <span>{student.nrp}</span>
-                  <span>{student.year}</span>
-                  <span>{student.semester}</span>
-                  <span>{student.ipk}</span>
-                  <span>{student.receivedAwardName}</span>
-                </div>
+    return filteredData;
+  };
+
+  const renderStudent = (page: number, pageSize: number, data: Student[]) => {
+    if (isLoading) {
+      return Array.from({ length: pageSize }).map((_, index) => (
+        <CardSkeleton3 key={index} />
+      ));
+    }
+
+    if (!data || data.length === 0) {
+      return <p>No students found.</p>;
+    }
+
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, data.length);
+
+    return data.slice(startIndex, endIndex).map((student: Student) => (
+      <Card className="w-[270px] md:w-full dark:bg-zinc-800 " key={student.id}>
+        <CardHeader>
+          <CardTitle>
+            <span>{student.name}</span>
+          </CardTitle>
+          <CardDescription>
+            <span>{student.major}</span>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col space-y-3 mt-2 pb-4 justify-center mx-auto">
+            {!student.image ? (
+              <Skeleton className="h-[294px] w-full rounded-xl" />
+            ) : (
+              <img
+                src={student.image}
+                alt="Student Image"
+                className="object-cover h-[294px] transition duration-300 ease-in-out rounded-xl hover:scale-105 cursor-pointer"
+              />
+            )}
+          </div>
+          <div className="flex justify-between flex-col gap-3 dark:bg-zinc-900 py-4 px-4 rounded-md shadow-sm">
+            <div className="flex justify-between gap-3">
+              <div className="flex flex-col font-semibold">
+                <span>NRP</span>
+                <span>Angkatan</span>
+                <span>Semester</span>
+                <span>IPK</span>
+                <span>Beasiswa</span>
+              </div>
+              <div className="flex flex-col">
+                <span>:</span>
+                <span>:</span>
+                <span>:</span>
+                <span>:</span>
+                <span>:</span>
+              </div>
+              <div className="flex flex-col">
+                <span>{student.nrp}</span>
+                <span>{student.year}</span>
+                <span>{student.semester}</span>
+                <span>{student.ipk}</span>
+                <span>{student.receivedAwardName}</span>
               </div>
             </div>
-          </CardContent>
-          <CardFooter className="flex justify-between"></CardFooter>
-        </Card>
-      );
-    });
+          </div>
+        </CardContent>
+     
+      </Card>
+    ));
   };
 
   return (
     <>
       <div className="flex justify-center flex-col mx-auto">
-        <div className="flex flex-col mb-12   bg-white text-zinc-900 px-4 py-4 rounded-lg shadow-md dark:bg-zinc-800 dark:text-white max-w-4xl mx-auto justify-center">
+        <div className="flex flex-col mb-12 bg-white text-zinc-900 px-4 py-4 rounded-lg shadow-md dark:bg-zinc-800 dark:text-white max-w-4xl mx-auto justify-center">
           <h1 className="text-2xl font-bold justify-center mb-4 mx-auto uppercase">
             Data Mahasiswa
           </h1>
-          <div className="">
+          <div>
             <section className="block mx-auto container max-w-4xl text-justify">
               <p className="mb-4">
                 Selamat datang di halaman informasi mahasiswa untuk Program
@@ -231,69 +210,42 @@ const CradStudentsUser = () => {
             value={searchTerm}
             onChange={handleSearchChange}
             placeholder="Cari Data Mahasiswa..."
-            className="md:w-full mt-2 mb-2 w-[700px]  dark:bg-zinc-800"
+            className="md:w-full mt-2 mb-2 w-[700px] dark:bg-zinc-800"
           />
         </div>
         <div className="flex justify-center flex-wrap mb-6">
-          <Select onValueChange={handleFilterChange}>
-            <SelectTrigger className="w-[700px] dark:bg-zinc-800">
-              <SelectValue placeholder="Select a filter" />
-            </SelectTrigger>
-            <SelectContent className="dark:bg-zinc-800 dark:border-zinc-900">
-              <SelectGroup>
-                <SelectLabel>Filter Data Mahasiswa</SelectLabel>
-                <SelectItem
-                  value="Semua Data"
-                  onClick={() => handleFilterChange("Semua Data")}
-                >
-                  Semua Data
-                </SelectItem>
-                <SelectItem
-                  value="Aktif"
-                  onClick={() => handleFilterChange("Aktif")}
-                >
-                  Aktif
-                </SelectItem>
-                <SelectItem
-                  value="1.8"
-                  onClick={() => handleFilterChange("1.8")}
-                >
-                  IPK Dibawah 1.8
-                </SelectItem>
-                <SelectItem
-                  value="Cuti"
-                  onClick={() => handleFilterChange("Cuti")}
-                >
-                  Cuti
-                </SelectItem>
-                {/* <SelectItem
-                  value="Lulus"
-                  onClick={() => handleFilterChange("Lulus")}
-                >
-                  Lulus
-                </SelectItem> */}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <Tabs
+            defaultValue="Semua Data"
+            className="w-full items-center justify-center flex flex-col"
+            onValueChange={handleFilterChange}
+          >
+            <TabsList className="shadow-sm px-4 py-4">
+              <TabsTrigger value="Semua Data">Semua Data Mahasiswa</TabsTrigger>
+              <TabsTrigger value="Aktif"> Mahasiswa Aktif</TabsTrigger>
+              <TabsTrigger value="1.8"> Mahasiswa IPK Dibawah 1.8</TabsTrigger>
+              <TabsTrigger value="Cuti">Mahasiswa Cuti</TabsTrigger>
+            </TabsList>
+          </Tabs>
         </div>
-      </div>
-      <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto dark:border-zinc-800" />
-      <div
-        className="flex justify-center mx-auto mb-4 font-bold
-      "
-      >
-        {totalFilteredData !== null && (
-          <p>Jumlah data Mahasiswa yang ditampilkan: {totalFilteredData}</p>
-        )}
+        <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto dark:border-zinc-800" />
       </div>
 
+      <div className="flex justify-center mx-auto mb-4 font-bold">
+        <p>
+         
+          <Badge variant="secondary" className="px-2 py-2">{totalFilteredData} {""} Mahasiswa</Badge>
+        </p>
+      </div>
       <div className="flex flex-wrap mx-auto gap-4 justify-center mb-5">
-        {renderStudent(page, pageSize, data, searchTerm, filterValue)}
+        {renderStudent(
+          page,
+          pageSize,
+          handleFilterAndSearch(data || [], filterValue, searchTerm)
+        )}
         {isLoading && (
           <div className="flex items-center justify-center mt-4"></div>
         )}
       </div>
-
       <Pagination>
         <PaginationContent>
           <PaginationItem>
@@ -301,27 +253,37 @@ const CradStudentsUser = () => {
               onClick={() => handlePageChange(Math.max(page - 1, 1))}
             />
           </PaginationItem>
-          {Array.from({ length: totalPages }, (_, index) => {
-            if (index < 2 || index >= totalPages - 2) {
-              return (
-                <PaginationItem key={index}>
-                  <PaginationLink
-                    href="#"
-                    isActive={index + 1 === page}
-                    onClick={() => handlePageChange(index + 1)}
-                  >
-                    {index + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              );
+          {Array.from(
+            { length: Math.ceil(totalFilteredData / pageSize) },
+            (_, index) => {
+              if (
+                index < 2 ||
+                index >= Math.ceil(totalFilteredData / pageSize) - 2
+              ) {
+                return (
+                  <PaginationItem key={index}>
+                    <PaginationLink
+                      href="#"
+                      isActive={index + 1 === page}
+                      onClick={() => handlePageChange(index + 1)}
+                    >
+                      {index + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                );
+              }
+              if (index === 2) {
+                return <PaginationEllipsis key={index} />;
+              }
             }
-            if (index === 2) {
-              return <PaginationEllipsis key={index} />;
-            }
-          })}
+          )}
           <PaginationItem>
             <PaginationNext
-              onClick={() => handlePageChange(Math.min(page + 1, totalPages))}
+              onClick={() =>
+                handlePageChange(
+                  Math.min(page + 1, Math.ceil(totalFilteredData / pageSize))
+                )
+              }
             />
           </PaginationItem>
         </PaginationContent>
