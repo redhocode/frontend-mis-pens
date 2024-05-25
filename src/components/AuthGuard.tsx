@@ -28,24 +28,28 @@ const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   };
 
   useEffect(() => {
-    // Pindahkan langsung ke halaman login saat browser direload
-    router.push("/uhuy-12340987/login");
+    // Periksa status autentikasi
+    const accessToken = localStorage.getItem("accessToken");
 
-    // Atur timer awal saat komponen pertama kali dirender
-    handleUserActivity();
+    if (!accessToken) {
+      router.push("/uhuy-12340987/login");
+    } else {
+      // Atur timer awal saat komponen pertama kali dirender
+      handleUserActivity();
 
-    // Tambahkan event listeners untuk mendeteksi aktivitas pengguna
-    window.addEventListener("mousemove", handleUserActivity);
-    window.addEventListener("keydown", handleUserActivity);
+      // Tambahkan event listeners untuk mendeteksi aktivitas pengguna
+      window.addEventListener("mousemove", handleUserActivity);
+      window.addEventListener("keydown", handleUserActivity);
 
-    // Bersihkan event listeners saat komponen di-unmount
-    return () => {
-      window.removeEventListener("mousemove", handleUserActivity);
-      window.removeEventListener("keydown", handleUserActivity);
-      // Bersihkan timer saat komponen di-unmount
-      window.clearTimeout(window.authTimeout);
-    };
-  }, []);
+      // Bersihkan event listeners saat komponen di-unmount
+      return () => {
+        window.removeEventListener("mousemove", handleUserActivity);
+        window.removeEventListener("keydown", handleUserActivity);
+        // Bersihkan timer saat komponen di-unmount
+        window.clearTimeout(window.authTimeout);
+      };
+    }
+  }, [router, toast]);
 
   // Render children jika pengguna sudah terautentikasi
   return <>{children}</>;
