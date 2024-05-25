@@ -235,7 +235,7 @@ function Navbar() {
                           Informasi Alumi Akademik PJJ Teknik Informatika
                         </ListItem>
                       </Link>
-                      <Link href="/academics">
+                      <Link href="/kalog">
                         <ListItem href="" title="Katalog Proyek Akhir">
                           Informasi Seputar Katalog Hasil Proyek Akhir PJJ
                           Teknik Informatika
