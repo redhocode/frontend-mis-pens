@@ -42,15 +42,11 @@ export default function RootLayout({
         ></meta>
         <link rel="icon" sizes="16x16" href="/images/pens.png" />
         <link rel="icon" sizes="32x32" href="/images/pens.png" />
-        <link
-          rel="pens"
-          sizes="180x180"
-          href="/images/pens.png"
-        />
+        <link rel="pens" sizes="180x180" href="/images/pens.png" />
         <Script
           async
           strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-FSYRLCVKQ5"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
         ></Script>
 
         <Script>
@@ -59,7 +55,7 @@ export default function RootLayout({
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-FSYRLCVKQ5');
+  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
   
   `}
         </Script>
@@ -76,8 +72,9 @@ export default function RootLayout({
             <Providers>
               {/* <Navbar /> */}
               {children}
-              {/* <GoogleTagManager gtmId="G-FSYRLCVKQ5" /> // METRIC ID */}
-              <GoogleAnalytics gaId="G-FSYRLCVKQ5" />
+              {process.env.NEXT_PUBLIC_GA_ID ? (
+                <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+              ): null}
               <SpeedInsights />
             </Providers>
           </ThemeProvider>
