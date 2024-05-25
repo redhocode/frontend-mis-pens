@@ -754,7 +754,7 @@ export default function TableStudent() {
                                       if (file) {
                                         formik.setFieldValue(
                                           "image",
-                                          URL.createObjectURL(file)
+                                          file
                                         );
                                         setPreview(reader.result as string);
                                       }
@@ -804,6 +804,14 @@ export default function TableStudent() {
                     </Form>
                   </ScrollArea>
                 </Formik>
+                 <DialogFooter>
+                <DialogClose asChild>
+                  <Button type="button" variant="secondary" onClick={handleReset}>
+                    Close
+
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
               </DialogContent>
             </Dialog>
 
@@ -1229,7 +1237,7 @@ export default function TableStudent() {
                                     if (file) {
                                       formik.setFieldValue(
                                         "image",
-                                        URL.createObjectURL(file)
+                                        file
                                       );
                                       setPreview(reader.result as string);
                                     }
