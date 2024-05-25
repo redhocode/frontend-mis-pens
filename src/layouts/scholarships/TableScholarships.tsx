@@ -30,6 +30,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { CirclePlus, LoaderIcon, Pencil } from "lucide-react";
 import { axiosInstance } from "@/lib/axios";
@@ -240,6 +241,10 @@ export default function TableSholarships() {
       });
     },
   });
+  //hendler reset
+  const handleReset = () => {
+    formik.resetForm();
+  }
   // Submit handler function
   const [preview, setPreview] = useState<string | null>(null);
   //remove image
@@ -351,9 +356,7 @@ export default function TableSholarships() {
           <TableCell>
             {scholarships.image && (
               <img
-                src={
-                scholarships.image
-                }
+                src={scholarships.image}
                 alt="Activity Image"
                 className="w-[50px] h-[50px] object-cover"
               />
@@ -383,10 +386,7 @@ export default function TableSholarships() {
                         date: scholarships.date,
                         link: scholarships.link,
                       });
-                      setPreview(
-                        scholarships.image
-                          
-                      );
+                      setPreview(scholarships.image);
                     }}
                   >
                     <Edit name="Edit" className="mr-2" />{" "}
@@ -638,6 +638,17 @@ export default function TableSholarships() {
                     </Form>
                   </ScrollArea>
                 </Formik>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button
+                      variant="secondary"
+                      type="button"
+                      onClick={handleReset}
+                    >
+                      Close
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
               </DialogContent>
             </Dialog>
 
@@ -916,7 +927,13 @@ export default function TableSholarships() {
                   </Form>
                 </ScrollArea>
               </Formik>
-              <DialogFooter></DialogFooter>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button variant="secondary" type="button" onClick={handleReset}>
+                    Close
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
             </DialogContent>
           </Dialog>
         </div>

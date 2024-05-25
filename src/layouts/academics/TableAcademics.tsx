@@ -30,6 +30,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
+  DialogClose
 } from "@/components/ui/dialog";
 import { CirclePlus, LoaderIcon, Pencil } from "lucide-react";
 import { axiosInstance } from "@/lib/axios";
@@ -232,6 +233,10 @@ export default function TableAcademic() {
       });
     },
   });
+  //hendler reset
+  const handleReset = () => {
+    formik.resetForm();
+  }
   const [preview, setPreview] = useState<string | null>(null);
   //remove image
   const handleRemoveImage = () => {
@@ -354,8 +359,7 @@ export default function TableAcademic() {
                         date: academic.date,
                         link: academic.link,
                       });
-                       setPreview(
-                        academic.image)
+                      setPreview(academic.image);
                     }}
                   >
                     <Edit name="Edit" className="mr-2" />{" "}
@@ -543,7 +547,7 @@ export default function TableAcademic() {
                             ) : null}
                           </div>
                           {/* Add other form fields similarly */}
-                           <div className="flex flex-col mb-4">
+                          <div className="flex flex-col mb-4">
                             <Label htmlFor="image">Picture</Label>
                             <Input
                               id="image"
@@ -608,6 +612,17 @@ export default function TableAcademic() {
                     </Form>
                   </ScrollArea>
                 </Formik>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button
+                      variant="secondary"
+                      type="button"
+                      onClick={handleReset}
+                    >
+                      Close
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
               </DialogContent>
             </Dialog>
 
@@ -894,7 +909,17 @@ export default function TableAcademic() {
                   </Form>
                 </ScrollArea>
               </Formik>
-              <DialogFooter></DialogFooter>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button
+                    variant="secondary"
+                    type="button"
+                    onClick={handleReset}
+                  >
+                    Close
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
             </DialogContent>
           </Dialog>
         </div>

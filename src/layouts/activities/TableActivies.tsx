@@ -30,6 +30,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
+  DialogClose
 } from "@/components/ui/dialog";
 import { CirclePlus, LoaderIcon, Pencil } from "lucide-react";
 import { axiosInstance } from "@/lib/axios";
@@ -226,6 +227,10 @@ Quill.register("modules/resizeImage", QuillResizeImage);
       });
     },
   });
+  //hendle close modal
+  const handleReset=()=> {
+    formik.resetForm();
+  }
   // Submit handler function
 
   const [preview, setPreview] = useState<string | null>(null);
@@ -551,7 +556,6 @@ Quill.register("modules/resizeImage", QuillResizeImage);
                             <Input
                               id="image"
                               name="image"
-                            
                               type="file"
                               className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                               onChange={(e) => {
@@ -613,6 +617,17 @@ Quill.register("modules/resizeImage", QuillResizeImage);
                     </Form>
                   </ScrollArea>
                 </Formik>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button
+                      variant="secondary"
+                      type="button"
+                      onClick={handleReset}
+                    >
+                      Close
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
               </DialogContent>
             </Dialog>
 
@@ -842,7 +857,6 @@ Quill.register("modules/resizeImage", QuillResizeImage);
                           <Label htmlFor="image">Picture</Label>
                           <Input
                             id="image"
-                           
                             name="image"
                             type="file"
                             className="w-full mt-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -903,7 +917,17 @@ Quill.register("modules/resizeImage", QuillResizeImage);
                   </Form>
                 </ScrollArea>
               </Formik>
-              <DialogFooter></DialogFooter>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button
+                    variant="secondary"
+                    type="button"
+                    onClick={handleReset}
+                  >
+                    Close
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
             </DialogContent>
           </Dialog>
         </div>
