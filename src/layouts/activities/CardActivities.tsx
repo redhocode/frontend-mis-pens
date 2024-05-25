@@ -206,7 +206,7 @@ export const CradActivities = () => {
             dan cara untuk bergabung.
           </p>
         </div>
-        <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto" />
+        <Separator className="my-4 max-w-4xl border-2 justify-center mx-auto dark:border-zinc-800" />
         <div className="flex justify-center flex-wrap">
           <Input
             type="text"
