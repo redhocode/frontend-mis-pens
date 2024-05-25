@@ -213,10 +213,52 @@ const CradStudentsUser = () => {
             className="md:w-full mt-2 mb-2 w-[700px] dark:bg-zinc-800"
           />
         </div>
-        <div className="flex justify-center flex-wrap mb-6">
+        <div className="flex justify-center md:visible invisible">
+          <Select onValueChange={handleFilterChange}>
+            <SelectTrigger className="w-[700px] dark:bg-zinc-800">
+              <SelectValue placeholder="Select a filter" />
+            </SelectTrigger>
+            <SelectContent className="dark:bg-zinc-800">
+              <SelectGroup>
+                <SelectLabel>Filter Data Mahasiswa</SelectLabel>
+                <SelectItem
+                  value="Semua Data"
+                  onClick={() => handleFilterChange("Semua Data")}
+                >
+                  Semua Data
+                </SelectItem>
+                <SelectItem
+                  value="Aktif"
+                  onClick={() => handleFilterChange("Aktif")}
+                >
+                  Aktif
+                </SelectItem>
+                <SelectItem
+                  value="1.8"
+                  onClick={() => handleFilterChange("1.8")}
+                >
+                  IPK Dibawah 1.8
+                </SelectItem>
+                <SelectItem
+                  value="Cuti"
+                  onClick={() => handleFilterChange("Cuti")}
+                >
+                  Cuti
+                </SelectItem>
+                {/* <SelectItem
+                  value="Lulus"
+                  onClick={() => handleFilterChange("Lulus")}
+                >
+                  Lulus
+                </SelectItem> */}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex justify-center flex-wrap mb-6 -mt-10">
           <Tabs
             defaultValue="Semua Data"
-            className="w-full items-center justify-center flex flex-col"
+            className="w-full items-center justify-center flex flex-col md:hidden"
             onValueChange={handleFilterChange}
           >
             <TabsList className="shadow-sm px-4 py-4">
@@ -231,10 +273,11 @@ const CradStudentsUser = () => {
       </div>
 
       <div className="flex justify-center mx-auto mb-4 font-bold">
-        <p>
-         
-          <Badge variant="secondary" className="px-2 py-2">{totalFilteredData} {""} Mahasiswa</Badge>
-        </p>
+        <span>
+          <Badge variant="secondary" className="px-2 py-2">
+            {totalFilteredData} {""} Mahasiswa
+          </Badge>
+        </span>
       </div>
       <div className="flex flex-wrap mx-auto gap-4 justify-center mb-5">
         {renderStudent(
