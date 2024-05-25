@@ -28,13 +28,8 @@ const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   };
 
   useEffect(() => {
-    // Periksa apakah pengguna telah login dengan melihat apakah ada accessToken di localStorage
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      // Jika pengguna belum login, redirect ke halaman login
-      router.push("/uhuy-12340987/login");
-      return;
-    }
+    // Pindahkan langsung ke halaman login saat browser direload
+    router.push("/uhuy-12340987/login");
 
     // Atur timer awal saat komponen pertama kali dirender
     handleUserActivity();
@@ -50,7 +45,7 @@ const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       // Bersihkan timer saat komponen di-unmount
       window.clearTimeout(window.authTimeout);
     };
-  }, [router]);
+  }, []);
 
   // Render children jika pengguna sudah terautentikasi
   return <>{children}</>;
