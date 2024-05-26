@@ -27,29 +27,48 @@ const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     }, SESSION_TIMEOUT);
   }, [router, toast]);
 
-  useEffect(() => {
-    // Periksa status autentikasi
+  const checkAuthentication = useCallback(() => {
     const accessToken = localStorage.getItem("accessToken");
 
     if (!accessToken) {
       router.replace("/uhuy-12340987/login");
     } else {
-      // Atur timer awal saat komponen pertama kali dirender
       handleUserActivity();
-
-      // Tambahkan event listeners untuk mendeteksi aktivitas pengguna
-      window.addEventListener("mousemove", handleUserActivity);
-      window.addEventListener("keydown", handleUserActivity);
-
-      // Bersihkan event listeners saat komponen di-unmount
-      return () => {
-        window.removeEventListener("mousemove", handleUserActivity);
-        window.removeEventListener("keydown", handleUserActivity);
-        // Bersihkan timer saat komponen di-unmount
-        window.clearTimeout(window.authTimeout);
-      };
     }
   }, [router, handleUserActivity]);
+
+  useEffect(() => {
+    // Initial authentication check
+    checkAuthentication();
+
+    // Listen to route changes using URL change detection
+    const handleRouteChange = () => {
+      checkAuthentication();
+    };
+
+    // Listen for URL changes
+    const urlChangeHandler = () => handleRouteChange();
+    window.addEventListener("popstate", urlChangeHandler);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("popstate", urlChangeHandler);
+    };
+  }, [router, checkAuthentication]);
+
+  useEffect(() => {
+    // Tambahkan event listeners untuk mendeteksi aktivitas pengguna
+    window.addEventListener("mousemove", handleUserActivity);
+    window.addEventListener("keydown", handleUserActivity);
+
+    // Bersihkan event listeners saat komponen di-unmount
+    return () => {
+      window.removeEventListener("mousemove", handleUserActivity);
+      window.removeEventListener("keydown", handleUserActivity);
+      // Bersihkan timer saat komponen di-unmount
+      window.clearTimeout(window.authTimeout);
+    };
+  }, [handleUserActivity]);
 
   // Render children jika pengguna sudah terautentikasi
   return <>{children}</>;
