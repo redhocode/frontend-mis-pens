@@ -64,10 +64,11 @@ export default function RootLayout({
             <Providers>
               {/* <Navbar /> */}
               {children}
+               <SpeedInsights/> 
               {process.env.NEXT_PUBLIC_GA_ID ? (
                 <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
               ) : null}
-              <SpeedInsights />
+             
             </Providers>
           </ThemeProvider>
           <Toaster />
