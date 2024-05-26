@@ -1,7 +1,7 @@
 // components/AuthGuard.tsx
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
 // Konstanta untuk mengatur durasi timeout sesi (30 menit dalam milidetik)
@@ -11,7 +11,7 @@ const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
   const { toast } = useToast();
 
-  const handleUserActivity = () => {
+  const handleUserActivity = useCallback(() => {
     // Hapus timer yang ada
     window.clearTimeout(window.authTimeout);
 
@@ -25,14 +25,14 @@ const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       localStorage.removeItem("accessToken");
       router.push("/uhuy-12340987/login");
     }, SESSION_TIMEOUT);
-  };
+  }, [router, toast]);
 
   useEffect(() => {
     // Periksa status autentikasi
     const accessToken = localStorage.getItem("accessToken");
 
     if (!accessToken) {
-      router.push("/uhuy-12340987/login");
+      router.replace("/uhuy-12340987/login");
     } else {
       // Atur timer awal saat komponen pertama kali dirender
       handleUserActivity();
@@ -49,7 +49,7 @@ const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         window.clearTimeout(window.authTimeout);
       };
     }
-  }, [router, toast]);
+  }, [router, handleUserActivity]);
 
   // Render children jika pengguna sudah terautentikasi
   return <>{children}</>;
