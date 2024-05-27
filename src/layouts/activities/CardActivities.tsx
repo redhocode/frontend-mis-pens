@@ -12,7 +12,6 @@ import {
 import type { Academic, Activity, Student } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LoaderIcon } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -23,8 +22,6 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import DetailActivity from "@/components/button/ButtonDetailActivity";
 import CardSkeleton2 from "@/components/skeleton/card-skeleton2";

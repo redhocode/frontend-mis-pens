@@ -2,15 +2,6 @@
 import React, { useState } from "react";
 import { useFetchAcademic } from "@/features";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Card,
   CardContent,
   CardDescription,
@@ -20,20 +11,7 @@ import {
 } from "@/components/ui/card";
 import type { Academic, Student } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-  SelectLabel,
-  SelectSeparator,
-  SelectGroup,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
-import { LoaderIcon } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -44,10 +22,8 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import Link from "next/link";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { PageWrapper } from "@/components/animate/page-wrapper";
 import DetailAcademic from "@/components/button/ButtonDetailAcademic";
-import CradSkeleton from "@/components/skeleton/card-skeleton";
 import CardSkeleton from "@/components/skeleton/card-skeleton";
 import { Separator } from "@/components/ui/separator";
 export const CradAcademics = () => {

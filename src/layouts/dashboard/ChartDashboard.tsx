@@ -1,16 +1,5 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { useFetchStudent } from "@/features/useFetchData";
-import { Student } from "@/types";
 import React, { useEffect, useRef, useState } from "react";
-import type Chart from "chart.js/auto";
 import Chart_1 from "@/components/chart/chart_1";
 import Chart_2 from "@/components/chart/chart_2";
 import Chart_3 from "@/components/chart/chart_3";

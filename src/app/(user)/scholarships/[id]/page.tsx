@@ -11,15 +11,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
-import { LoaderIcon } from "lucide-react";
 import { useFetchDataById } from "@/features/useFetchDataById";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import CardSkeleton from "@/components/skeleton/card-skeleton";
 import { ScaleLoader } from "react-spinners";
 import { motion, useScroll, useSpring } from "framer-motion";
 import "../../../globals.css";

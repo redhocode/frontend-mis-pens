@@ -1,13 +1,7 @@
 import { Sidebar } from "@/components/sidebar/sidebar";
 import dynamic from "next/dynamic";
 import Providers from "@/components/providers";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable"
 import { Metadata } from "next";
-import Script from "next/script";
 import { PrimeReactProvider } from "primereact/api";
 import AuthGuard from "@/components/AuthGuard";
 export const metadata: Metadata = {

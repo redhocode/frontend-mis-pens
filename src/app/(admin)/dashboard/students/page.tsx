@@ -1,22 +1,6 @@
 
 import AuthGuard from '@/components/AuthGuard'
 import Student from '@/layouts/students/TableStudents'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDownIcon } from "lucide-react";
-import Link from "next/link";
 import { CustomBreadcrumb } from "@/components/breadcrumb/Breadcrumb";
 import { PageWrapper } from '@/components/animate/page-wrapper';
 const menu = [

@@ -1,22 +1,6 @@
 import AuthGuard from "@/components/AuthGuard";
 import TableSholarships from "@/layouts/scholarships/TableScholarships";
 import React from "react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDownIcon } from "lucide-react";
-import Link from "next/link";
 import { CustomBreadcrumb } from "@/components/breadcrumb/Breadcrumb";
 import { PageWrapper } from "@/components/animate/page-wrapper";
 const menu = [

@@ -6,15 +6,6 @@ import {
   useFetchScholarship,
 } from "@/features";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Card,
   CardContent,
   CardDescription,
@@ -24,9 +15,7 @@ import {
 } from "@/components/ui/card";
 import type { Academic, Activity, Scholarship, Student } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { LoaderIcon } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -37,11 +26,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import Link from "next/link";
-import Image from "next/image";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { useRouter } from "next/navigation";
 import DetailScholarship from "@/components/button/ButtonDetailScholarship";
 import CardSkeleton from "@/components/skeleton/card-skeleton";
 

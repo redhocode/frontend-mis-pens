@@ -1,7 +1,5 @@
 "use client";
 import { PageWrapper } from "@/components/animate/page-wrapper";
-import Footer from "@/components/footer/footer";
-import Navbar from "@/components/navbar/navbar";
 import {
   Card,
   CardContent,
@@ -11,19 +9,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
-import { LoaderIcon } from "lucide-react";
 import {
   useFetchDataAcademicById,
   useFetchDataById,
   useFetchDataActivityById,
 } from "@/features/useFetchDataById";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import CardSkeleton from "@/components/skeleton/card-skeleton";
 import { ScaleLoader } from "react-spinners";
 interface pageProps {
   params: {

@@ -1,9 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useFetchUsers } from "@/features/useFetchData";
-import { User } from "@/types";
-import { useRouter } from "next/navigation";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
 const renderTime = ({ remainingTime }: { remainingTime: number }) => {
   if (remainingTime === 0) {
     return <div className="timer">Too lale...</div>;
