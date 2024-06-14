@@ -54,9 +54,19 @@ import {
 } from "@/components/ui/pagination";
 import { Edit, Trash } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CDN } from "@/lib/cdn";
-import { Graduate } from "next/font/google";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
+import { CSVLink} from "react-csv";
+import * as XLSX from "xlsx";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import Papa from "papaparse";
 export default function TableStudent() {
   const pageSize = 10; // Tentukan nilai pageSize
   const [page, setPage] = useState(1); // Tentukan nilai awal page
@@ -252,9 +262,62 @@ export default function TableStudent() {
     validationSchema: validationSchema,
     onSubmit: hendlerSubmit,
   });
- 
-  // Function to render student data and search
-
+ // export data
+   const generateExportData = (data: Student[]) => {
+     return data.map((student, index) => ({
+        No: index + 1,
+       NRP: student.nrp,
+       Name: student.name,
+       Major: student.major,
+       Year: student.year,
+       Semester: student.semester,
+       IPK: student.ipk,
+       Status: student.status,
+       Graduated: student.graduated,
+       receivedAwardName: student.receivedAwardName
+     }));
+   };
+ const downloadPDF = () => {
+   const pdf = new jsPDF();
+   const pdfData = generateExportData(data as Student[] || []);
+   const headers = [
+     "No",
+     "NRP",
+     "Nama",
+     "Jurusan",
+     "Angkatan",
+     "Semester",
+     "IPK",
+     "Status",
+     "Tahun Lulus",
+     "Beasiswa"
+   ];
+   const dataRows = pdfData.map((student, index) => [
+     index + 1,
+     student.NRP,
+     student.Name,
+     student.Major,
+     student.Year,
+     student.Semester,
+     student.IPK,
+     student.Status,
+     student.Graduated,
+     student.receivedAwardName
+   ]);
+   autoTable(pdf, {
+     head: [headers],
+     body: dataRows,
+   })
+   pdf.save("students.pdf");
+ };
+   const downloadXLSX = () => {
+     const xlsxData = generateExportData(data as Student[] || []);
+     const worksheet = XLSX.utils.json_to_sheet(xlsxData);
+     const workbook = XLSX.utils.book_new();
+     XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
+     XLSX.writeFile(workbook, "students.xlsx");
+   };
+// Define renderStudent function
   const renderStudent = (
     page: number,
     pageSize: number,
@@ -290,6 +353,7 @@ export default function TableStudent() {
     const studentsToRender = filteredData?.slice(startIndex, endIndex);
     // Nomor urutan yang dimulai dari nomor tertentu (misalnya, 100)
     let orderNumber = startIndex + 1;
+   
     return studentsToRender?.map((student: Student) => {
       const currentOrderNumber = orderNumber++;
       return (
@@ -319,7 +383,7 @@ export default function TableStudent() {
           </TableCell>
           <TableCell>
             {!student.receivedAwardName ? (
-              <span>Not Receiving Scholarship</span>
+              <span>-</span>
             ) : (
               <span>{student.receivedAwardName}</span>
             )}
@@ -846,7 +910,159 @@ export default function TableStudent() {
       );
     });
   };
+   const csvData = generateExportData(data as Student[] || []);
+     const csvHeaders = [
+       { label: "No", key: "No" },
+       { label: "NRP", key: "NRP" },
+       { label: "Name", key: "Name" },
+       { label: "Major", key: "Major" },
+       { label: "Year", key: "Year" },
+       { label: "Semester", key: "Semester" },
+       { label: "IPK", key: "IPK" },
+       { label: "Status", key: "Status" },
+       { label: "Graduated", key: "Graduated" },
+     ];
+      const handleExportChange = (value: string) => {
+        if (value === "csv") {
+          // Trigger CSV download through CSVLink
+          const csvLink = document.getElementById("csv-link");
+          if (csvLink) {
+            csvLink.click();
+          }
+        } else if (value === "xlsx") {
+          downloadXLSX();
+        } else if (value === "pdf") {
+          downloadPDF();
+        }
+      };
+  const [file, setFile] = useState<File | null>(null);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleFileUpload = async () => {
+    if (file) {
+      const fileExtension = file.name.split(".").pop()?.toLowerCase();
+      if (fileExtension === "csv") {
+        parseCSV(file);
+      } else if (fileExtension === "xlsx" || fileExtension === "xls") {
+        parseXLSX(file);
+      } else {
+        toast({
+          title: "Error",
+          className: "w-[400px]",
+          description: "Invalid file format. Please upload a CSV or XLSX file.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  const parseCSV = (file: File) => {
+    Papa.parse(file, {
+      complete: (result) => processParsedData(result.data),
+      header: true,
+    });
+  };
+
+  const parseXLSX = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target) {
+        const data = new Uint8Array(e.target.result as ArrayBuffer);
+        const workbook = XLSX.read(data, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {
+          header: 1,
+        });
+        processParsedData(worksheet as unknown as Student[]);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  };
+
+ const processParsedData = async (data: any) => {
+   const formattedData = data.map((row: any, index: number) => {
+     console.log(`Row ${index}:`, row); // Debug log
+
+     // Parse numbers safely
+     const parseNumber = (value: any) => {
+       const parsed = Number(value);
+       return isNaN(parsed) ? null : parsed;
+     };
+
+     return {
+       name: row.name || row[1],
+       nrp: parseNumber(row.nrp || row[0]),
+       ipk: parseNumber(row.ipk || row[5]),
+       major: row.major || row[2],
+       year: parseNumber(row.year || row[3]),
+       semester: parseNumber(row.semester || row[4]),
+       status: row.status || row[6],
+       graduated: row.graduated || row[7],
+       receivedAwardId: row.receivedAwardId || row[8] || "",
+       receivedAwardName: row.receivedAwardName || row[9] || "",
+     };
+   });
+
+   console.log("Formatted Data:", formattedData); // Debug log
+
+   for (const student of formattedData) {
+     if (
+       student.name &&
+       student.nrp !== null &&
+       student.ipk !== null &&
+       student.major &&
+       student.year !== null &&
+       student.semester !== null &&
+       student.status &&
+       student.graduated
+     ) {
+       try {
+         await uploadStudents.mutateAsync(student);
+       } catch (error) {
+         console.error("Failed to upload student:", student, error); // Debug log
+       }
+     } else {
+       console.error("Invalid data:", student); // Log invalid data
+     }
+   }
+ };
+
+ const uploadStudents = useMutation({
+   mutationFn: async (studentData: any) => {
+     try {
+       const formData = new FormData();
+       for (const key in studentData) {
+         formData.append(key, studentData[key]);
+       }
+       const studentsRes = await axiosInstance.post("/students", formData, {
+         headers: {
+           "Content-Type": "multipart/form-data",
+         },
+       });
+       return studentsRes;
+     } catch (error) {
+       toast({
+         title: "Error",
+         className: "w-[400px]",
+         description: "Failed to post data",
+         variant: "destructive",
+       });
+       throw error;
+     }
+   },
+   onSuccess: () => {
+     toast({
+       title: "Success",
+       className: "w-[400px]",
+       description: "Data has been successfully posted",
+     });
+   },
+ });
   return (
     <div className="px-4 mt-3">
       <h1 className="font-semibold text-2xl">Students Data</h1>
@@ -1235,10 +1451,7 @@ export default function TableStudent() {
                                   if (reader.readyState === 2) {
                                     const file = e.target.files![0];
                                     if (file) {
-                                      formik.setFieldValue(
-                                        "image",
-                                        file
-                                      );
+                                      formik.setFieldValue("image", file);
                                       setPreview(reader.result as string);
                                     }
                                   }
@@ -1285,22 +1498,47 @@ export default function TableStudent() {
               </Formik>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button type="button" variant="secondary" onClick={handleReset}>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={handleReset}
+                  >
                     Close
-
                   </Button>
                 </DialogClose>
               </DialogFooter>
             </DialogContent>
           </Dialog>
         </div>
-        <div>
+        <div className="flex gap-2">
           <Input
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
-            placeholder="Cari siswa..."
-            className="md:w-full mt-2 mb-2 w-[300px]"
+            placeholder="Cari data..."
+            className="md:w-full  mb-2 w-[300px]"
+          />
+          <div className="flex gap-2">
+          <Input type="file" onChange={handleFileChange} />
+          <Button onClick={handleFileUpload} variant={"outline"}>Import</Button>
+
+          </div>
+          <Select onValueChange={handleExportChange}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Export Data" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="csv">Export CSV</SelectItem>
+              <SelectItem value="xlsx">Export XLSX</SelectItem>
+              <SelectItem value="pdf">Export PDF</SelectItem>
+            </SelectContent>
+          </Select>
+          <CSVLink
+            data={csvData}
+            headers={csvHeaders}
+            filename="students.csv"
+            id="csv-link"
+            style={{ display: "none" }}
           />
         </div>
       </div>
