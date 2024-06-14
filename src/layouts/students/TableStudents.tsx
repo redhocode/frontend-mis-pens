@@ -988,23 +988,37 @@ export default function TableStudent() {
    const formattedData = data.map((row: any, index: number) => {
      console.log(`Row ${index}:`, row); // Debug log
 
-     // Parse numbers safely
+     // Function to parse a value into a number safely
      const parseNumber = (value: any) => {
        const parsed = Number(value);
        return isNaN(parsed) ? null : parsed;
      };
 
+     // Extract values conditionally based on structure
+     const name = row.name || row.Name || row[2] || "";
+     const nrp = parseNumber(row.nrp || row.NRP || row[1] || null);
+     const ipk = parseNumber(row.ipk || row.IPK || row[6] || null);
+     const major = row.major || row.Major || row[3] || "";
+     const year = parseNumber(row.year || row.Year || row[4] || null);
+     const semester = parseNumber(
+       row.semester || row.Semester || row[5] || null
+     );
+     const status = row.status || row.Status || row[7] || "";
+     const graduated = row.graduated || row.Graduated || row[8] || "";
+     const receivedAwardId = row.receivedAwardId || row[9] || "";
+     const receivedAwardName = row.receivedAwardName || row[10] || "";
+
      return {
-       name: row.name || row[1],
-       nrp: parseNumber(row.nrp || row[0]),
-       ipk: parseNumber(row.ipk || row[5]),
-       major: row.major || row[2],
-       year: parseNumber(row.year || row[3]),
-       semester: parseNumber(row.semester || row[4]),
-       status: row.status || row[6],
-       graduated: row.graduated || row[7],
-       receivedAwardId: row.receivedAwardId || row[8] || "",
-       receivedAwardName: row.receivedAwardName || row[9] || "",
+       name,
+       nrp,
+       ipk,
+       major,
+       year,
+       semester,
+       status,
+       graduated,
+       receivedAwardId,
+       receivedAwardName,
      };
    });
 
@@ -1063,6 +1077,7 @@ export default function TableStudent() {
      });
    },
  });
+
   return (
     <div className="px-4 mt-3">
       <h1 className="font-semibold text-2xl">Students Data</h1>
