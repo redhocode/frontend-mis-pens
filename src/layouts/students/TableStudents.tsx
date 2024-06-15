@@ -67,6 +67,7 @@ import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import Papa from "papaparse";
+import ImportData from "../../components/importdata"
 export default function TableStudent() {
   const pageSize = 10; // Tentukan nilai pageSize
   const [page, setPage] = useState(1); // Tentukan nilai awal page
@@ -325,6 +326,7 @@ export default function TableStudent() {
     searchTerm: string
   ) => {
     // Menghitung indeks awal dan akhir data yang harus dirender berdasarkan halaman saat ini
+    refetchStudents();
     const startIndex = (page - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize, data?.length);
     const filteredData = data?.filter((student) => {
@@ -357,6 +359,7 @@ export default function TableStudent() {
     return studentsToRender?.map((student: Student) => {
       const currentOrderNumber = orderNumber++;
       return (
+        
         <TableRow key={student.id}>
           <TableCell className="w-[100px]" hidden>
             {student.id}
@@ -935,134 +938,7 @@ export default function TableStudent() {
           downloadPDF();
         }
       };
-  const [file, setFile] = useState<File | null>(null);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFile(e.target.files[0]);
-    }
-  };
-
-  const handleFileUpload = async () => {
-    if (file) {
-      const fileExtension = file.name.split(".").pop()?.toLowerCase();
-      if (fileExtension === "csv") {
-        parseCSV(file);
-      } else if (fileExtension === "xlsx" || fileExtension === "xls") {
-        parseXLSX(file);
-      } else {
-        toast({
-          title: "Error",
-          className: "w-[400px]",
-          description: "Invalid file format. Please upload a CSV or XLSX file.",
-          variant: "destructive",
-        });
-      }
-    }
-  };
-
-  const parseCSV = (file: File) => {
-    Papa.parse(file, {
-      complete: (result) => processParsedData(result.data),
-      header: true,
-    });
-  };
-
-  const parseXLSX = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      if (e.target) {
-        const data = new Uint8Array(e.target.result as ArrayBuffer);
-        const workbook = XLSX.read(data, { type: "array" });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {
-          header: 1,
-        });
-        processParsedData(worksheet as unknown as Student[]);
-      }
-    };
-    reader.readAsArrayBuffer(file);
-  };
-
- const processParsedData = async (data: any) => {
-   const formattedData = data.map((row: any, index: number) => {
-     console.log(`Row ${index}:`, row); // Debug log
-
-     // Parse numbers safely
-     const parseNumber = (value: any) => {
-       const parsed = Number(value);
-       return isNaN(parsed) ? null : parsed;
-     };
-
-     return {
-       name: row.name || row[1],
-       nrp: parseNumber(row.nrp || row[0]),
-       ipk: parseNumber(row.ipk || row[5]),
-       major: row.major || row[2],
-       year: parseNumber(row.year || row[3]),
-       semester: parseNumber(row.semester || row[4]),
-       status: row.status || row[6],
-       graduated: row.graduated || row[7],
-       receivedAwardId: row.receivedAwardId || row[8] || "",
-       receivedAwardName: row.receivedAwardName || row[9] || "",
-     };
-   });
-
-   console.log("Formatted Data:", formattedData); // Debug log
-
-   for (const student of formattedData) {
-     if (
-       student.name &&
-       student.nrp !== null &&
-       student.ipk !== null &&
-       student.major &&
-       student.year !== null &&
-       student.semester !== null &&
-       student.status &&
-       student.graduated
-     ) {
-       try {
-         await uploadStudents.mutateAsync(student);
-       } catch (error) {
-         console.error("Failed to upload student:", student, error); // Debug log
-       }
-     } else {
-       console.error("Invalid data:", student); // Log invalid data
-     }
-   }
- };
-
- const uploadStudents = useMutation({
-   mutationFn: async (studentData: any) => {
-     try {
-       const formData = new FormData();
-       for (const key in studentData) {
-         formData.append(key, studentData[key]);
-       }
-       const studentsRes = await axiosInstance.post("/students", formData, {
-         headers: {
-           "Content-Type": "multipart/form-data",
-         },
-       });
-       return studentsRes;
-     } catch (error) {
-       toast({
-         title: "Error",
-         className: "w-[400px]",
-         description: "Failed to post data",
-         variant: "destructive",
-       });
-       throw error;
-     }
-   },
-   onSuccess: () => {
-     toast({
-       title: "Success",
-       className: "w-[400px]",
-       description: "Data has been successfully posted",
-     });
-   },
- });
+ 
   return (
     <div className="px-4 mt-3">
       <h1 className="font-semibold text-2xl">Students Data</h1>
@@ -1515,13 +1391,12 @@ export default function TableStudent() {
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
-            placeholder="Cari data..."
+            placeholder="Search data..."
             className="md:w-full  mb-2 w-[300px]"
           />
           <div className="flex gap-2">
-          <Input type="file" onChange={handleFileChange} />
-          <Button onClick={handleFileUpload} variant={"outline"}>Import</Button>
-
+       
+         <ImportData/>
           </div>
           <Select onValueChange={handleExportChange}>
             <SelectTrigger className="w-[180px]">
